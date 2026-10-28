@@ -1,0 +1,18 @@
+import React from 'react';
+import {Composition, Folder} from 'remotion';
+import {EP_FRAMES, FPS, HEIGHT, WIDTH} from './config';
+import {Sandbox} from './Sandbox';
+import {CharacterSheet} from './CharacterSheet';
+import {Ep1} from './episodes/ep1';
+
+export const RemotionRoot: React.FC = () => (
+  <>
+    <Folder name="Episodes">
+      <Composition id="Ep1" component={Ep1} durationInFrames={EP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{standalone: true}} />
+    </Folder>
+    <Folder name="Checks">
+      <Composition id="CharacterSheet" component={CharacterSheet} durationInFrames={1} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{section: 'all' as const}} />
+      <Composition id="Sandbox" component={Sandbox} durationInFrames={300} fps={FPS} width={WIDTH} height={HEIGHT} />
+    </Folder>
+  </>
+);

@@ -3,7 +3,7 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 mkdir -p out
-render() { npx remotion render "$1" "$2" --codec h264 --crf 18 > "out/$1.log" 2>&1 && echo "$1 done $(date +%T)" || echo "$1 FAILED $(date +%T)"; }
+render() { npx remotion render "$1" "$2" --codec h264 --crf 18 --concurrency=2 --timeout=120000 > "out/$1.log" 2>&1 && echo "$1 done $(date +%T)" || echo "$1 FAILED $(date +%T)"; }
 ( render Ep1 out/ep01.mp4; render Ep3 out/ep03.mp4; render Ep5 out/ep05.mp4 ) &
 ( render Ep2 out/ep02.mp4; render Ep4 out/ep04.mp4 ) &
 wait

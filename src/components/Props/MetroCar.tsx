@@ -136,9 +136,11 @@ export const CarWall: React.FC<{
   id: string;
   dirt?: number;
   glass?: (w: Rect, i: number) => React.ReactNode;
-  emergencyLamp?: number; // яркость красных аварийных ламп 0..1
+  emergencyLamp?: number | number[]; // яркость красных аварийных ламп 0..1 (можно по секциям)
   coatsOnFloor?: boolean;
-}> = ({light, lamp = 1, id, dirt = 0, glass, emergencyLamp = 0, coatsOnFloor = false}) => {
+}> = ({light, lamp = 1, id, dirt = 0, glass, emergencyLamp: emIn = 0, coatsOnFloor = false}) => {
+  const emAt = (b: number) => (Array.isArray(emIn) ? emIn[b] ?? 0 : emIn);
+  const emergencyLamp = Array.isArray(emIn) ? Math.max(...emIn) : emIn;
   const c = setMapper(light, lamp);
   const wins = carWindows();
   const X0 = BAY_X0 - 200;
@@ -178,7 +180,7 @@ export const CarWall: React.FC<{
     els.push(<rect key={`ar${b}`} x={bx + 4} y={520} width={18} height={180} rx={8} fill={c(CAR.pole)} />);
     els.push(<rect key={`ar2${b}`} x={bx + 686} y={520} width={18} height={180} rx={8} fill={c(CAR.pole)} />);
     // аварийная лампа над дверью
-    els.push(<rect key={`el${b}`} x={bx + 800} y={160} width={60} height={26} rx={6} fill={emergencyLamp > 0 ? mix('#3a0806', '#E04030', emergencyLamp) : c('#5a2a26')} />);
+    els.push(<rect key={`el${b}`} x={bx + 800} y={160} width={60} height={26} rx={6} fill={emAt(b) > 0 ? mix('#3a0806', '#E04030', emAt(b)) : c('#5a2a26')} />);
   }
   // оконные рамы и уплотнители, отражения
   wins.forEach((w, i) => {
@@ -241,8 +243,8 @@ export const CarWall: React.FC<{
       {emergencyLamp > 0 ? (
         <Halation
           id={`${id}-eh`}
-          intensity={emergencyLamp}
-          glows={Array.from({length: BAYS}).map((_, b) => ({x: BAY_X0 + b * BAY + 830, y: 175, r: 300, rx: 420, ry: 300, color: '#B3261E', a: 0.55}))}
+          intensity={1}
+          glows={Array.from({length: BAYS}).map((_, b) => ({x: BAY_X0 + b * BAY + 830, y: 175, r: 300, rx: 420, ry: 300, color: '#B3261E', a: 0.55 * emAt(b)}))}
         />
       ) : null}
     </svg>

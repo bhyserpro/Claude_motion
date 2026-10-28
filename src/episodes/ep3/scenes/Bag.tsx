@@ -89,7 +89,7 @@ export const Ep3Bag: React.FC<{dur: number}> = ({dur}) => {
   );
 };
 
-const Ampoules: React.FC = () => {
+export const Ampoules: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <Stage25D cam={handheld(camKeys(frame, [{f: 0, zoom: 1.0}, {f: 180, zoom: 1.08}]), frame, 2, 'amp')} bg="#060505">

@@ -42,7 +42,7 @@ const turnYaw = (frame: number) =>
   interpolate(frame, [SHAFT.turn, SHAFT.turn + 12], [0, -0.85], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.bezier(0.7, 0, 0.3, 1)});
 
 /** Камера вентшахты: лестница вверх, серый свет, пепел; горы одежды; они сидят вдоль стен. */
-const Chamber: React.FC<{offset: number}> = ({offset}) => {
+export const Chamber: React.FC<{offset: number}> = ({offset}) => {
   const lf = useCurrentFrame();
   const frame = lf + offset; // кадр относительно начала сцены shaft
   const yaw = turnYaw(frame);
@@ -161,7 +161,7 @@ const Corridor: React.FC<{back?: boolean}> = ({back = false}) => {
 };
 
 /** Глеб замер, не дышит. Его лицо в слабом свете упавшего фонаря; мимо проходят они. */
-const Frozen: React.FC<{offset: number}> = ({offset}) => {
+export const Frozen: React.FC<{offset: number}> = ({offset}) => {
   const lf = useCurrentFrame();
   const frame = lf + offset;
   const S = 2.6;

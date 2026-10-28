@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, Sequence, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Easing, interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Stage25D} from '../../../components/Stage25D';
 import {Subtitle} from '../../../components/Text';
 import {NinaNotebook} from '../../../components/Props/Notebook';
@@ -29,11 +29,15 @@ export const Ep3List: React.FC<{dur: number}> = ({dur}) => {
   );
 };
 
-const Unfold: React.FC = () => {
+export const Unfold: React.FC = () => {
   const frame = useCurrentFrame();
   const fold = interpolate(frame, [30, 80], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const hl = interpolate(frame, [110, 150], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const cam = handheld(camKeys(frame, [{f: 0, zoom: 1, y: 0}, {f: 110, zoom: 1.0, y: 0}, {f: 330, zoom: 1.55, y: 290}]), frame, 2, 'unf');
+  const k = interpolate(frame, [100, 250], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  // наезд на последнюю строку списка (её центр — y≈997 в координатах листа)
+  const base = handheld(camKeys(frame, [{f: 0}]), frame, 2, 'unf');
+  const zoom = 1 + 0.6 * k;
+  const cam = {...base, zoom, shakeY: base.shakeY - k * ((997 - 540) * zoom - 40), shakeX: base.shakeX + k * 60};
   return (
     <Stage25D cam={cam} bg="#0a0303">
       <DSvg>

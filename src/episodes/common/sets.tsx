@@ -42,7 +42,7 @@ export const CarSideLayers: React.FC<{
   actors?: Actor[];
   mid?: Actor[];
   midZ?: number;
-  emergencyLamp?: number;
+  emergencyLamp?: number | number[];
   glass?: (w: Rect, i: number) => React.ReactNode;
   outside?: React.ReactNode;
   wallOverlay?: React.ReactNode; // поверх людей в слое стены (цифры, пыль)

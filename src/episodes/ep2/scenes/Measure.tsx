@@ -40,7 +40,7 @@ export const Ep2Measure: React.FC<{dur: number}> = ({dur}) => (
   </AbsoluteFill>
 );
 
-const Round: React.FC = () => {
+export const Round: React.FC = () => {
   const frame = useCurrentFrame();
   const nx = interpolate(frame, STOPS.map((s) => s[0]), STOPS.map((s) => s[1]), {extrapolateRight: 'clamp'});
   const moving = STOPS.some(([f], i) => i > 0 && frame > STOPS[i - 1][0] && frame < f && STOPS[i - 1][1] !== STOPS[i][1]);

@@ -216,3 +216,114 @@ export const FogWindowShot: React.FC<{
 
 /** Пальцы/ладонь: удобный экспорт для крупных планов. */
 export {LongHand};
+
+/** Руки ладонями вверх в луче фонаря. Кончики пальцев тёмные (сорваны ногти). */
+export const HandsShot: React.FC<{torn?: boolean; zoom?: number; skin?: string; beamX?: number; beamY?: number; pants?: string}> = ({
+  torn = true,
+  zoom = 1,
+  skin = '#ABA394',
+  beamX = 960,
+  beamY = 560,
+  pants = '#1A2230',
+}) => {
+  const frame = useCurrentFrame();
+  const L = (c: string) => LIGHT_FN.flashlight(c);
+  const dx = fbm1('hsx', frame / 50, 2) * 6;
+  const hand = (x: number, y: number, rot: number, flip: number) => (
+    <g transform={`translate(${x},${y}) rotate(${rot}) scale(${flip},1)`}>
+      <rect x={-130} y={-40} width={260} height={300} rx={110} fill={L(skin)} />
+      <rect x={-60} y={-10} width={150} height={190} rx={70} fill={L('#857e72')} opacity={0.35} />
+      {[-95, -35, 25, 85].map((fx, i) => (
+        <g key={i} transform={`translate(${fx},230)`}>
+          <rect x={-24} y={0} width={48} height={170 - Math.abs(i - 1.5) * 20} rx={24} fill={L(skin)} />
+          {torn ? <rect x={-22} y={120 - Math.abs(i - 1.5) * 20} width={44} height={46} rx={18} fill="#3A1A16" /> : null}
+          {torn && i % 2 === 0 ? <rect x={-6} y={160 - Math.abs(i - 1.5) * 20} width={10} height={40} rx={5} fill="#4a1410" /> : null}
+        </g>
+      ))}
+      <g transform="translate(-150,60) rotate(40)">
+        <rect x={-26} y={0} width={52} height={150} rx={26} fill={L(skin)} />
+        {torn ? <rect x={-24} y={110} width={48} height={40} rx={18} fill="#3A1A16" /> : null}
+      </g>
+    </g>
+  );
+  return (
+    <AbsoluteFill style={{background: '#030404'}}>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <g transform={`translate(${960 + dx},540) scale(${zoom}) translate(-960,-540)`}>
+          <rect x={-200} y={-200} width={2400} height={1500} fill={L(pants)} />
+          <path d="M-200,700 Q960,560 2200,700 L2200,1300 L-200,1300 Z" fill={L('#151D29')} opacity={0.6} />
+          {hand(720, 300, -8, 1)}
+          {hand(1200, 310, 8, -1)}
+        </g>
+      </svg>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <defs>
+          <radialGradient id="hs-b">
+            <stop offset="0%" stopColor="#000" stopOpacity={0} />
+            <stop offset="55%" stopColor="#000" stopOpacity={0.25} />
+            <stop offset="100%" stopColor="#000" stopOpacity={0.96} />
+          </radialGradient>
+        </defs>
+        <rect x={-500} y={-500} width={2920} height={2080} fill="#000" opacity={0.96} mask="url(#hs-mask)" />
+        <mask id="hs-mask">
+          <rect x={-500} y={-500} width={2920} height={2080} fill="#fff" />
+          <ellipse cx={beamX} cy={beamY} rx={620} ry={420} fill="url(#hs-bm)" />
+        </mask>
+        <radialGradient id="hs-bm">
+          <stop offset="0%" stopColor="#000" />
+          <stop offset="60%" stopColor="#000" stopOpacity={0.8} />
+          <stop offset="100%" stopColor="#000" stopOpacity={0} />
+        </radialGradient>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** Карман пальто Глеба крупно: рука опускает в него жёлтый дозиметр Павла. progress 0..1. */
+export const PocketShot: React.FC<{progress: number; light?: 'flashlight' | 'dark' | 'emergency'}> = ({progress, light = 'flashlight'}) => {
+  const frame = useCurrentFrame();
+  const L = (c: string) => LIGHT_FN[light](c);
+  const p = interpolate(progress, [0, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const dy = interpolate(p, [0, 0.7, 1], [-380, 40, 60]);
+  const handA = interpolate(p, [0.75, 1], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const sway = fbm1('pk', frame / 40, 2) * 5;
+  return (
+    <AbsoluteFill style={{background: '#030404'}}>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <g transform={`translate(${sway},0)`}>
+          {/* пальто */}
+          <rect x={-200} y={-200} width={2400} height={1500} fill={L('#4A4E43')} />
+          <path d="M1250,-200 L1500,1300 L2200,1300 L2200,-200 Z" fill={L('#353930')} />
+          {Array.from({length: 40}).map((_, i) => (
+            <circle key={i} cx={random(`pka${i}`) * 1920} cy={random(`pkb${i}`) * 1080} r={1.5 + random(`pkc${i}`) * 3} fill={L('#8D8F8A')} opacity={0.5} />
+          ))}
+          {/* прорезь кармана с клапаном */}
+          <rect x={560} y={520} width={760} height={34} fill={L('#1d201b')} />
+          {/* дозиметр уходит в карман: видна часть выше прорези */}
+          <g>
+            <defs>
+              <clipPath id="pk-clip">
+                <rect x={-200} y={-500} width={2400} height={1060} />
+              </clipPath>
+            </defs>
+            <g clipPath="url(#pk-clip)">
+              <g transform={`translate(860,${300 + dy}) rotate(-6)`}>
+                <rect x={0} y={0} width={190} height={270} rx={30} fill={L('#A88A2E')} />
+                <rect x={30} y={40} width={130} height={74} fill="#B9C64A" opacity={0.85} />
+                <g opacity={handA}>
+                  <path d="M-60,120 Q-90,40 -20,-10 L230,-30 Q300,40 260,140 Z" fill={L('#B8A996')} />
+                  {[0, 1, 2, 3].map((i) => (
+                    <rect key={i} x={-40 + i * 66} y={-70} width={56} height={110} rx={28} fill={L('#a89986')} />
+                  ))}
+                </g>
+              </g>
+            </g>
+          </g>
+          <path d="M540,500 L1340,500 L1330,580 L550,580 Z" fill={L('#353930')} opacity={p > 0.7 ? 0.9 : 0.6} />
+          <path d="M540,500 L1340,500 L1338,512 L542,512 Z" fill={L('#2A2C27')} />
+          {p > 0.85 ? <path d="M880,512 L1060,512 L1050,560 L890,560 Z" fill={L('#A88A2E')} opacity={0.9} /> : null}
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};

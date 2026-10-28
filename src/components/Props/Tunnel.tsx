@@ -180,32 +180,26 @@ export const Tunnel: React.FC<{
     }
     // следы в пыли (серия 2): ботинки к герме, босые — от ВШ-12 к поезду
     if (footprints && pr.depth(zm) < 16) {
-      const n = 2;
-      for (let k = 0; k < n; k++) {
-        const fz = z0 + k * 0.5 + 0.1;
-        if (footprints.boots > 0) {
-          const bx = 0.12 + (k % 2) * 0.18;
-          nodes.push(<polygon key={`fb${k}`} points={pr.poly([[bx, TUN.FLOOR - 0.005, fz], [bx + 0.1, TUN.FLOOR - 0.005, fz], [bx + 0.1, TUN.FLOOR - 0.005, fz + 0.27], [bx, TUN.FLOOR - 0.005, fz + 0.27]])} fill={col('#4a4e4a', fz)} opacity={footprints.boots * 0.8} />);
-        }
-        if (footprints.bare > 0 && passageZ !== null && fz < passageZ + 1.5) {
-          // босые: от бокового прохода через пути к поезду (к камере)
-          for (const [ox, oz] of [
-            [-0.6, 0],
-            [-0.35, 0.25],
-          ]) {
-            const xx = ox - (k % 2) * 0.1 - Math.max(0, (fz - (passageZ ?? 0)) * 0.2);
-            nodes.push(
-              <ellipse
-                key={`bf${k}-${ox}`}
-                cx={pr.P(xx, TUN.FLOOR, fz + oz)[0]}
-                cy={pr.P(xx, TUN.FLOOR, fz + oz)[1]}
-                rx={pr.scaleAt(fz + oz) * 0.045}
-                ry={pr.scaleAt(fz + oz) * 0.02}
-                fill={col('#4f534f', fz)}
-                opacity={footprints.bare * 0.85}
-              />,
-            );
+      // пыльная полоса вдоль путей, на которой видны отпечатки
+      nodes.push(<polygon key="dust" points={pr.poly([[-1.9, TUN.FLOOR - 0.004, z0], [0.95, TUN.FLOOR - 0.004, z0], [0.95, TUN.FLOOR - 0.004, z1], [-1.9, TUN.FLOOR - 0.004, z1]])} fill={col('#3a3e3a', zm)} />);
+      const print = (x: number, z: number, len: number, w: number, key: string, a: number, toes: boolean) => {
+        const [cx, cy] = pr.P(x, TUN.FLOOR - 0.006, z);
+        const s = pr.scaleAt(z);
+        const [, cy2] = pr.P(x, TUN.FLOOR - 0.006, z + len);
+        const ry = Math.max(1, Math.abs(cy - cy2) / 2);
+        nodes.push(<ellipse key={key} cx={cx} cy={(cy + cy2) / 2} rx={s * w} ry={ry} fill={col('#151817', z)} opacity={a} />);
+        if (toes) {
+          for (let t = 0; t < 4; t++) {
+            nodes.push(<circle key={`${key}t${t}`} cx={cx + (t - 1.5) * s * w * 0.55} cy={(cy + cy2) / 2 - ry * 1.35} r={Math.max(0.8, s * w * 0.22)} fill={col('#151817', z)} opacity={a} />);
           }
+        }
+      };
+      for (let k = 0; k < 2; k++) {
+        const fz = z0 + k * 0.5 + 0.1;
+        if (footprints.boots > 0) print(0.22 + (k % 2) * 0.2, fz, 0.28, 0.06, `fb${k}`, footprints.boots * 0.9, false);
+        if (footprints.bare > 0 && passageZ !== null && fz < passageZ + 1.4) {
+          const drift = Math.max(0, ((passageZ ?? 0) - fz) * 0.12);
+          print(-1.55 + drift + (k % 2) * 0.18, fz + 0.2, 0.22, 0.05, `bf${k}`, footprints.bare * 0.9, true);
         }
       }
     }
@@ -217,38 +211,49 @@ export const Tunnel: React.FC<{
     const z0 = passageZ;
     const z1 = passageZ + 1.4;
     const top = -0.75;
-    const pts: [number, number, number][] = [
-      [-circleX(top) + 0.02, top, z0],
-      [-circleX(top) + 0.02, top, z1],
-      [-circleX(TUN.FLOOR - 0.02) + 0.02, TUN.FLOOR, z1],
-      [-circleX(TUN.FLOOR - 0.02) + 0.02, TUN.FLOOR, z0],
+    const px = -2.3;
+    // проём — вертикальная плоскость, врезанная в изгиб стены, с бетонной рамой
+    const frame: [number, number, number][] = [
+      [px, top - 0.18, z0 - 0.15],
+      [px, top - 0.18, z1 + 0.15],
+      [px, TUN.FLOOR, z1 + 0.15],
+      [px, TUN.FLOOR, z0 - 0.15],
     ];
-    draw.push({z: z1 - 0.02, node: <polygon key="pass" points={pr.poly(pts)} fill="#030404" />});
+    const pts: [number, number, number][] = [
+      [px, top, z0],
+      [px, top, z1],
+      [px, TUN.FLOOR, z1],
+      [px, TUN.FLOOR, z0],
+    ];
+    draw.push({
+      z: z1 - 0.02,
+      node: (
+        <g key="pass">
+          <polygon points={pr.poly(frame)} fill={col('#3a403d', (z0 + z1) / 2)} />
+          <polygon points={pr.poly(pts)} fill="#030404" />
+        </g>
+      ),
+    });
     // табличка
-    const sz = z0 - 0.35;
-    const sy = -0.55;
-    const sx = -circleX(sy) + 0.04;
-    const [px0, py0] = pr.P(sx, sy, sz);
-    const [px1, py1] = pr.P(sx, sy + 0.3, sz + 0.55);
+    const sz = z0 - 0.75;
+    const sy = -0.6;
+    const sx = -2.32;
+    // табличка на кронштейне, развёрнута к камере
+    const [px0, py0] = pr.P(sx + 0.05, sy, sz);
+    const [px1, py1] = pr.P(sx + 0.75, sy + 0.32, sz);
     const s = pr.scaleAt(sz);
     draw.push({
       z: sz - 0.01,
       node: (
         <g key="sign">
-          <polygon points={pr.poly([[sx, sy, sz], [sx, sy, sz + 0.55], [sx, sy + 0.3, sz + 0.55], [sx, sy + 0.3, sz]])} fill={col('#c9c3a8', sz)} />
-          <text
-            x={(px0 + px1) / 2}
-            y={(py0 + py1) / 2 + s * 0.05}
-            textAnchor="middle"
-            fontFamily={FONT_MONO}
-            fontWeight={500}
-            fontSize={s * 0.17}
-            fill={col('#1a1a14', sz)}
-          >
+          <rect x={px0 - s * 0.05} y={py0 + s * 0.12} width={s * 0.1} height={s * 0.06} fill={col('#4a4e4a', sz)} />
+          <rect x={px0} y={py0} width={px1 - px0} height={py1 - py0} fill={col('#c9c3a8', sz)} />
+          <rect x={px0} y={py0} width={px1 - px0} height={(py1 - py0) * 0.12} fill={col('#7A1712', sz)} />
+          <text x={(px0 + px1) / 2} y={py0 + (py1 - py0) * 0.66} textAnchor="middle" fontFamily={FONT_MONO} fontWeight={500} fontSize={s * 0.17} fill={col('#1a1a14', sz)}>
             ВШ-12
           </text>
-          <text x={(px0 + px1) / 2} y={(py0 + py1) / 2 + s * 0.16} textAnchor="middle" fontFamily={FONT_MONO} fontSize={s * 0.06} fill={col('#3a3a30', sz)}>
-            → вентшахта
+          <text x={(px0 + px1) / 2} y={py0 + (py1 - py0) * 0.92} textAnchor="middle" fontFamily={FONT_MONO} fontSize={s * 0.055} fill={col('#3a3a30', sz)}>
+            вентшахта
           </text>
         </g>
       ),

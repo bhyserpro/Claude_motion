@@ -469,7 +469,15 @@ const RigBody: React.FC<RigProps & {spec: CharSpec; slots?: Slots; rimFill?: str
             </g>
           );
         case 'dead':
-          return <ellipse key={key} cx={cx} cy={ey} rx={R * 0.1 * sc} ry={R * 0.07} fill={rimFill ? rimFill : '#C9C2B4'} />;
+          return (
+            <g key={key}>
+              {!rimFill ? <ellipse cx={cx} cy={ey} rx={R * 0.17 * sc} ry={R * 0.12} fill={c('#5e5650')} opacity={0.7} /> : null}
+              <ellipse cx={cx} cy={ey} rx={R * 0.12 * sc} ry={R * 0.07} fill={rimFill ? rimFill : '#cfc9bd'} />
+              {!rimFill ? <circle cx={cx + R * 0.015} cy={ey - R * 0.02} r={R * 0.022} fill="#4a4844" /> : null}
+              {/* веко опущено на треть — неподвижный взгляд */}
+              {!rimFill ? <path d={`M${cx - R * 0.14 * sc},${ey - R * 0.01} Q${cx},${ey - R * 0.13} ${cx + R * 0.14 * sc},${ey - R * 0.01} L${cx + R * 0.14 * sc},${ey - R * 0.12} L${cx - R * 0.14 * sc},${ey - R * 0.12} Z`} fill={c(spec.skinShade)} /> : null}
+            </g>
+          );
         default:
           return null;
       }

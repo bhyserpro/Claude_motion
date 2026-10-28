@@ -55,7 +55,7 @@ export const Ep1Fifteen: React.FC<{dur: number}> = ({dur}) => (
   </AbsoluteFill>
 );
 
-const PhoneCount: React.FC = () => {
+export const PhoneCount: React.FC = () => {
   const frame = useCurrentFrame();
   const stepK = interpolate(frame, [STEP, STEP + 14], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const pcam = {x: 0.05, y: 0.05, z: 1.2 + stepK * 0.8, f: 900};
@@ -112,7 +112,7 @@ const PhoneCount: React.FC = () => {
   );
 };
 
-const DontCount: React.FC = () => {
+export const DontCount: React.FC = () => {
   const frame = useCurrentFrame();
   const progress = interpolate(frame, [20, 120], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const drip = interpolate(frame, [100, 170], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});

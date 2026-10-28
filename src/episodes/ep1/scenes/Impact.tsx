@@ -46,7 +46,7 @@ const lurch = (a: Actor, k: number, i: number): Actor => {
   return {...a, x: a.x + k * 30, pose: {...a.pose, rootRot: dir * tilt, armL: [k * 50, 20], armR: [k * 30, 40], headTilt: k * 20}};
 };
 
-const Chaos: React.FC = () => {
+export const Chaos: React.FC = () => {
   const frame = useCurrentFrame();
   const k = spring({frame, fps: 30, config: {damping: 9, mass: 0.7}});
   let cam = camKeys(frame, [{f: 0, x: 160, dolly: 0.15}]);

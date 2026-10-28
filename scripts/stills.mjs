@@ -16,7 +16,7 @@ const frames = framesArg.split(',').map((s) => {
 fs.mkdirSync(outDir, {recursive: true});
 const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
 const browserExecutable = fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined;
-const browser = await openBrowser('chrome', {browserExecutable});
+const browser = await openBrowser('chrome', {browserExecutable, chromiumOptions: {gl: 'swiftshader'}});
 const inputProps = propsArg ? JSON.parse(propsArg) : {};
 const composition = await selectComposition({serveUrl, id: compId, inputProps, puppeteerInstance: browser});
 for (const f of frames) {

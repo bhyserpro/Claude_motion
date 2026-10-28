@@ -2,7 +2,7 @@ import React, {createContext, useContext} from 'react';
 import {AbsoluteFill} from 'remotion';
 import {DESIGN_SCALE, DH, DW, HEIGHT} from '../config';
 import {Camera, CAM0} from '../lib/camera';
-import {hexToRgb} from '../lib/color';
+import {hexToRgb, luminance} from '../lib/color';
 
 type StageCtx = {cam: Camera; fog: string; fogStart: number; fogEnd: number; id: string};
 const Ctx = createContext<StageCtx>({cam: CAM0, fog: '#07090A', fogStart: 1, fogEnd: 8, id: 's'});
@@ -74,7 +74,9 @@ export const Layer: React.FC<{
   const [r, g, b] = hexToRgb(fogC).map((v) => v / 255);
   const k = 1 - f;
   const filters: string[] = [];
-  if (f > 0.001) filters.push(`url(#${fid})`);
+  // тёмный туман ≈ затемнение: CSS brightness() в разы дешевле SVG-фильтра
+  const darkFog = luminance(fogC) < 0.08;
+  if (f > 0.001) filters.push(darkFog ? `brightness(${(1 - f).toFixed(3)})` : `url(#${fid})`);
   if (blur > 0) filters.push(`blur(${blur}px)`);
   return (
     <div
@@ -88,7 +90,7 @@ export const Layer: React.FC<{
         ...style,
       }}
     >
-      {f > 0.001 ? (
+      {f > 0.001 && !darkFog ? (
         <svg width={0} height={0} style={{position: 'absolute'}}>
           <filter id={fid} colorInterpolationFilters="sRGB">
             <feColorMatrix

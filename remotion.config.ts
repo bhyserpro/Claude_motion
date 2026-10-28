@@ -5,7 +5,8 @@ Config.setVideoImageFormat('jpeg');
 Config.setJpegQuality(92);
 Config.setOverwriteOutput(true);
 Config.setConcurrency(4);
-Config.setChromiumOpenGlRenderer('swangle');
+// SwiftShader в этом контейнере рисует SVG в ~3 раза быстрее, чем SwANGLE
+Config.setChromiumOpenGlRenderer('swiftshader');
 
 // В облачном контейнере уже есть Chromium с доверенным сертификатом прокси (NSS) —
 // используем его, если он на месте; иначе Remotion скачает свой браузер.

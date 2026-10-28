@@ -138,6 +138,9 @@ export type RigProps = {
   opacity?: number;
   face?: Face;
   seed?: string;
+  /** только светящиеся глаза (рисуется поверх маски темноты) */
+  eyesOnly?: boolean;
+  rimWidth?: number;
 };
 
 export const LIGHT_FN: Record<Light, (c: string) => string> = {
@@ -180,8 +183,8 @@ export const Rig: React.FC<RigProps & {spec: CharSpec; slots?: Slots}> = (props)
     rimOpacity = 0.6,
     opacity = 1,
   } = props;
-  const wantRim = light === 'emergency' || light === 'silhouette';
-  const rimLen = (props.spec.heightCm / 180) * 1000 * 0.012;
+  const wantRim = (light === 'emergency' || light === 'silhouette') && !props.eyesOnly;
+  const rimLen = (props.spec.heightCm / 180) * 1000 * 0.012 * (props.rimWidth ?? 1);
   const rx = Math.cos((rimDir * Math.PI) / 180) * rimLen;
   const ry = Math.sin((rimDir * Math.PI) / 180) * rimLen;
   return (
@@ -191,7 +194,13 @@ export const Rig: React.FC<RigProps & {spec: CharSpec; slots?: Slots}> = (props)
           <RigBody {...props} rimFill={rimColor} />
         </g>
       ) : null}
-      <RigBody {...props} />
+      {props.eyesOnly ? (
+        <g fillOpacity={0} strokeOpacity={0}>
+          <RigBody {...props} />
+        </g>
+      ) : (
+        <RigBody {...props} />
+      )}
     </g>
   );
 };
@@ -464,8 +473,8 @@ const RigBody: React.FC<RigProps & {spec: CharSpec; slots?: Slots; rimFill?: str
           return (
             <g key={key}>
               {!rimFill ? <ellipse cx={cx} cy={ey} rx={R * 0.2 * sc} ry={R * 0.14} fill={c('#5b5148')} opacity={0.75} /> : null}
-              <ellipse cx={cx} cy={ey} rx={R * 0.2 * sc} ry={R * 0.12} fill="#E3DDD2" opacity={rimFill ? 0 : 0.25} />
-              <ellipse cx={cx} cy={ey} rx={R * 0.12 * sc} ry={R * 0.075} fill={rimFill ? rimFill : '#F1ECE3'} />
+              <ellipse cx={cx} cy={ey} rx={R * 0.24 * sc} ry={R * 0.15} fill="#E3DDD2" opacity={rimFill ? 0 : 0.25} fillOpacity={1} />
+              <ellipse cx={cx} cy={ey} rx={R * 0.12 * sc} ry={R * 0.075} fill={rimFill ? rimFill : '#F1ECE3'} fillOpacity={1} />
             </g>
           );
         case 'dead':

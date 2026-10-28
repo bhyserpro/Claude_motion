@@ -327,3 +327,148 @@ export const PocketShot: React.FC<{progress: number; light?: 'flashlight' | 'dar
     </AbsoluteFill>
   );
 };
+
+/**
+ * Глаз экстремально крупно. pupil — радиус зрачка (0..1 от радиуса радужки);
+ * reflection — что отражается в зрачке (рисуется в координатах отражения), ash — пепел на коже.
+ */
+export const EyeShot: React.FC<{
+  pupil?: number;
+  skin?: string;
+  light?: 'flashlight' | 'emergency' | 'dark';
+  reflection?: React.ReactNode;
+  lidOpen?: number;
+  ash?: number;
+  iris?: string;
+  beam?: number;
+}> = ({pupil = 0.45, skin = '#B8A996', light = 'flashlight', reflection, lidOpen = 1, ash = 0, iris = '#4a3f33', beam = 1}) => {
+  const frame = useCurrentFrame();
+  const L = (c: string) => LIGHT_FN[light](c);
+  const cx = 960;
+  const cy = 540;
+  const W = 760;
+  const H = 300 * lidOpen;
+  const ir = 190;
+  const dx = fbm1('eyx', frame / 14, 2) * 10;
+  const dy = fbm1('eyy', frame / 17, 2) * 6;
+  return (
+    <AbsoluteFill style={{background: '#020303'}}>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <defs>
+          <clipPath id="eye-open">
+            <path d={`M${cx - W / 2},${cy} Q${cx},${cy - H * 1.25} ${cx + W / 2},${cy} Q${cx},${cy + H * 0.95} ${cx - W / 2},${cy} Z`} />
+          </clipPath>
+          <radialGradient id="eye-light" cx="0.55" cy="0.45" r="0.6">
+            <stop offset="0%" stopColor="#000" stopOpacity={0.3} />
+            <stop offset="45%" stopColor="#000" stopOpacity={0.62} />
+            <stop offset="80%" stopColor="#000" stopOpacity={0.93} />
+            <stop offset="100%" stopColor="#000" stopOpacity={0.99} />
+          </radialGradient>
+        </defs>
+        <g transform={`translate(${dx * 0.3},${dy * 0.3})`}>
+          <rect x={-100} y={-100} width={2120} height={1280} fill={L(skin)} />
+          {/* складки века и тень глазницы */}
+          <path d={`M${cx - W / 2 - 80},${cy - 40} Q${cx},${cy - H * 1.9} ${cx + W / 2 + 80},${cy - 40}`} stroke={L(mix(skin, '#000', 0.3))} strokeWidth={26} fill="none" opacity={0.6} />
+          <path d={`M${cx - W / 2 - 40},${cy + 60} Q${cx},${cy + H * 1.4} ${cx + W / 2 + 40},${cy + 60}`} stroke={L(mix(skin, '#000', 0.25))} strokeWidth={14} fill="none" opacity={0.5} />
+          <ellipse cx={cx} cy={cy - 30} rx={W * 0.7} ry={H * 1.3} fill={L(mix(skin, '#000', 0.3))} opacity={0.35} />
+          {Array.from({length: Math.round(ash * 60)}).map((_, i) => (
+            <circle key={i} cx={random(`ea${i}`) * 1920} cy={random(`eb${i}`) * 1080} r={3 + random(`ec${i}`) * 6} fill={L('#8D8F8A')} opacity={0.8} />
+          ))}
+          <g clipPath="url(#eye-open)">
+            <rect x={cx - W} y={cy - H * 2} width={W * 2} height={H * 4} fill={L('#d8d2c6')} />
+            <g transform={`translate(${dx},${dy})`}>
+              <circle cx={cx} cy={cy} r={ir} fill={L(iris)} />
+              {Array.from({length: 36}).map((_, i) => {
+                const a = (i / 36) * Math.PI * 2;
+                return <line key={i} x1={cx + Math.cos(a) * ir * pupil} y1={cy + Math.sin(a) * ir * pupil} x2={cx + Math.cos(a) * ir * 0.95} y2={cy + Math.sin(a) * ir * 0.95} stroke={L(mix(iris, '#000', 0.4))} strokeWidth={3} opacity={0.5} />;
+              })}
+              <circle cx={cx} cy={cy} r={ir * pupil} fill="#030303" />
+              {/* отражение: фонарь и то, что к нему тянется */}
+              <g clipPath="url(#eye-open)">
+                <g transform={`translate(${cx},${cy})`}>{reflection}</g>
+              </g>
+              <ellipse cx={cx + ir * 0.35} cy={cy - ir * 0.35} rx={ir * 0.16} ry={ir * 0.1} fill="#eef3f4" opacity={0.85 * beam} />
+            </g>
+            <rect x={cx - W} y={cy - H * 2} width={W * 2} height={H * 0.9} fill="#000" opacity={0.25} transform={`translate(0,${H * 0.05})`} />
+          </g>
+          {/* ресницы */}
+          {Array.from({length: 14}).map((_, i) => {
+            const t = 0.12 + (i / 13) * 0.8;
+            const x = cx - W / 2 + t * W;
+            const y = cy - Math.sin(t * Math.PI) * H * 0.62;
+            const lx = (t - 0.5) * 70;
+            return <path key={i} d={`M${x},${y} q${lx * 0.3},-26 ${lx},-${28 + Math.sin(t * Math.PI) * 14}`} stroke="#1a1714" strokeWidth={7} strokeLinecap="round" fill="none" opacity={0.85} />;
+          })}
+        </g>
+        <rect x={-100} y={-100} width={2120} height={1280} fill="url(#eye-light)" />
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** Сгиб локтя: рукав закатан, прокол и капля крови. */
+export const ElbowShot: React.FC<{skin?: string; light?: 'flashlight' | 'emergency'; drop?: number}> = ({skin = '#B09C88', light = 'flashlight', drop = 1}) => {
+  const frame = useCurrentFrame();
+  const L = (c: string) => LIGHT_FN[light](c);
+  const sway = fbm1('elb', frame / 40, 2) * 6;
+  return (
+    <AbsoluteFill style={{background: '#030303'}}>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <g transform={`translate(${sway},0) rotate(-12 960 540)`}>
+          <path d="M-200,420 Q600,330 960,470 Q1400,620 2200,520 L2200,860 Q1400,900 960,760 Q560,640 -200,760 Z" fill={L(skin)} />
+          <path d="M-200,640 Q560,600 960,760 Q1400,900 2200,860 L2200,900 L-200,900 Z" fill={L(mix(skin, '#000', 0.25))} />
+          {/* вены */}
+          <path d="M-100,560 Q500,500 940,610 Q1300,700 2100,650" stroke={L('#7f7a86')} strokeWidth={10} fill="none" opacity={0.4} />
+          <path d="M700,560 Q840,600 960,620" stroke={L('#7f7a86')} strokeWidth={7} fill="none" opacity={0.35} />
+          {/* закатанный рукав куртки */}
+          <path d="M1500,380 Q1560,560 1500,960 L2300,960 L2300,380 Z" fill={L('#7A4B2E')} />
+          <path d="M1480,380 Q1540,560 1480,960 L1560,960 Q1620,560 1560,380 Z" fill={L('#5C3822')} />
+          {/* прокол и капля */}
+          <circle cx={950} cy={608} r={6} fill="#3a0a08" />
+          <ellipse cx={950} cy={608 + 22 * drop} rx={11} ry={16 * drop} fill="#7A1712" />
+          <ellipse cx={946} cy={604 + 18 * drop} rx={3} ry={4} fill="#d08070" opacity={0.6} />
+        </g>
+      </svg>
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 40% 45% at 50% 52%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 70%, rgba(0,0,0,0.97) 100%)'}} />
+    </AbsoluteFill>
+  );
+};
+
+/** Пепел на пальто, руках, волосах — крупно (улика). */
+export const AshShot: React.FC<{part: 'coat' | 'hands' | 'hair'; light?: 'flashlight' | 'emergency' | 'dark'}> = ({part, light = 'flashlight'}) => {
+  const frame = useCurrentFrame();
+  const L = (c: string) => LIGHT_FN[light](c);
+  const base = part === 'coat' ? '#4A4E43' : part === 'hands' ? '#B8A996' : '#2B2622';
+  const sway = fbm1(`ash${part}`, frame / 40, 2) * 5;
+  return (
+    <AbsoluteFill style={{background: '#030303'}}>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <g transform={`translate(${sway},0)`}>
+          <rect x={-100} y={-100} width={2120} height={1280} fill={L(base)} />
+          {part === 'hands' ? (
+            <g>
+              <rect x={-100} y={-100} width={2120} height={1280} fill={L('#1a1d1c')} />
+              <path d="M300,1200 Q260,700 520,560 L1300,520 Q1560,560 1620,1200 Z" fill={L(base)} />
+              {[0, 1, 2, 3].map((i) => (
+                <rect key={i} x={560 + i * 190} y={240 + Math.abs(i - 1.5) * 50} width={150} height={380} rx={75} fill={L(base)} />
+              ))}
+            </g>
+          ) : null}
+          {part === 'hair'
+            ? Array.from({length: 40}).map((_, i) => (
+                <path key={i} d={`M${i * 52 - 60},${-50} q30,${500 + (i % 5) * 60} ${-20},${1200}`} stroke={L('#1d1916')} strokeWidth={22} fill="none" opacity={0.6} />
+              ))
+            : null}
+          {part === 'coat' ? <path d="M1200,-100 L1500,1300 L2100,1300 L2100,-100 Z" fill={L('#353930')} /> : null}
+          {Array.from({length: 520}).map((_, i) => {
+            const x = random(`as${part}${i}`) * 1920;
+            const y = random(`at${part}${i}`) * 1080;
+            const r = 1.5 + random(`au${part}${i}`) * 5;
+            return <circle key={i} cx={x} cy={y} r={r} fill={L('#a3a59f')} opacity={0.4 + random(`av${part}${i}`) * 0.5} />;
+          })}
+        </g>
+      </svg>
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 45% 50% at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.96) 100%)'}} />
+    </AbsoluteFill>
+  );
+};

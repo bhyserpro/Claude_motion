@@ -120,15 +120,15 @@ export const LongHand: React.FC<{
   strips?: boolean;
   seed?: string;
 }> = ({c, len, skin, shade, nails = '#3a2d2a', pose = 'open', strips = false, seed = 'lh'}) => {
-  const pw = len * 0.42;
-  const ph = len * 0.48;
+  const pw = len * 0.34;
+  const ph = len * 0.42;
   const fingers = [
-    {x: -pw * 0.36, l: 0.48},
-    {x: -pw * 0.12, l: 0.58},
-    {x: pw * 0.12, l: 0.55},
-    {x: pw * 0.34, l: 0.44},
+    {x: -pw * 0.36, l: 0.62},
+    {x: -pw * 0.12, l: 0.78},
+    {x: pw * 0.12, l: 0.74},
+    {x: pw * 0.36, l: 0.56},
   ];
-  const fw = pw * 0.2;
+  const fw = pw * 0.19;
   return (
     <g>
       <rect x={-pw / 2} y={0} width={pw} height={ph} rx={pw * 0.25} fill={c(skin)} />

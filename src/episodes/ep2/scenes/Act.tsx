@@ -32,7 +32,7 @@ const Paper: React.FC = () => (
 );
 
 /** Следы в пыли: низкая камера над полотном, луч по полу. */
-const Footprints: React.FC = () => {
+export const Footprints: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <TunnelShot

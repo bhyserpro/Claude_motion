@@ -21,7 +21,7 @@ export const Subtitle: React.FC<{
   const size = (small ? 23 : 29) * UI;
   const bar = BAR_H > 60 ? BAR_H : 120;
   return (
-    <AbsoluteFill style={{pointerEvents: 'none', opacity: a}}>
+    <AbsoluteFill style={{pointerEvents: 'none', opacity: a, zIndex: 10}}>
       <div
         style={{
           position: 'absolute',

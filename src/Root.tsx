@@ -1,12 +1,14 @@
 import React from 'react';
 import {Composition, Folder} from 'remotion';
-import {EP_FRAMES, FPS, HEIGHT, WIDTH} from './config';
+import {EP_FRAMES, FILM_FRAMES, FPS, HEIGHT, WIDTH} from './config';
+import {FullFilm} from './FullFilm';
 import {Sandbox} from './Sandbox';
 import {CharacterSheet} from './CharacterSheet';
 import {Ep1} from './episodes/ep1';
 import {Ep2} from './episodes/ep2';
 import {Ep3} from './episodes/ep3';
 import {Ep4} from './episodes/ep4';
+import {Ep5} from './episodes/ep5';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -15,6 +17,8 @@ export const RemotionRoot: React.FC = () => (
       <Composition id="Ep2" component={Ep2} durationInFrames={EP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{standalone: true}} />
       <Composition id="Ep3" component={Ep3} durationInFrames={EP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{standalone: true}} />
       <Composition id="Ep4" component={Ep4} durationInFrames={EP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{standalone: true}} />
+      <Composition id="Ep5" component={Ep5} durationInFrames={EP_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{standalone: true}} />
+      <Composition id="FullFilm" component={FullFilm} durationInFrames={FILM_FRAMES} fps={FPS} width={WIDTH} height={HEIGHT} />
     </Folder>
     <Folder name="Checks">
       <Composition id="CharacterSheet" component={CharacterSheet} durationInFrames={1} fps={FPS} width={WIDTH} height={HEIGHT} defaultProps={{section: 'all' as const}} />

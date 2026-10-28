@@ -20,7 +20,7 @@ export const Timestamp: React.FC<{text: string; suffix?: string; start?: number;
   const size = 25 * UI;
   const bar = BAR_H > 60 ? BAR_H : 110;
   return (
-    <AbsoluteFill style={{pointerEvents: 'none', opacity: a * flick}}>
+    <AbsoluteFill style={{pointerEvents: 'none', opacity: a * flick, zIndex: 10}}>
       <div
         style={{
           position: 'absolute',

@@ -472,3 +472,51 @@ export const AshShot: React.FC<{part: 'coat' | 'hands' | 'hair'; light?: 'flashl
     </AbsoluteFill>
   );
 };
+
+/** Руки Глеба над бланком: капля крови из носа падает на бумагу, на пальцах — выпавшие волосы. */
+export const BloodOnPaper: React.FC<{dropAt?: number; light?: 'emergency' | 'dark' | 'flashlight'}> = ({dropAt = 60, light = 'emergency'}) => {
+  const frame = useCurrentFrame();
+  const L = (c: string) => LIGHT_FN[light](c);
+  const t = frame - dropAt;
+  const fallY = interpolate(t, [0, 10], [-80, 520], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const splash = interpolate(t, [10, 18], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const sway = fbm1('bop', frame / 40, 2) * 4;
+  const skin = '#9AA593';
+  return (
+    <AbsoluteFill style={{background: '#050202'}}>
+      <svg width={1920} height={1080} style={svgStyle}>
+        <g transform={`translate(${sway},0) rotate(-3 960 540)`}>
+          <rect x={360} y={120} width={1200} height={1000} fill={L('#CFC6B2')} />
+          {Array.from({length: 12}).map((_, i) => (
+            <line key={i} x1={420} x2={1500} y1={260 + i * 64} y2={260 + i * 64} stroke={L('#6f7a86')} strokeOpacity={0.3} strokeWidth={2} />
+          ))}
+          <text x={430} y={220} fontFamily="PT Serif, serif" fontWeight={700} fontSize={46} fill={L('#2e2b26')}>
+            АКТ ОСМОТРА №
+          </text>
+          {/* левая кисть с волосками */}
+          <g transform="translate(220,640) rotate(-18)">
+            <rect x={0} y={0} width={360} height={190} rx={80} fill={L(skin)} />
+            {[0, 1, 2, 3].map((i) => (
+              <rect key={i} x={300} y={10 + i * 44} width={170} height={38} rx={19} fill={L(i % 2 ? '#8e9686' : skin)} />
+            ))}
+            <path d="M330,30 q60,-10 120,6 M340,74 q50,8 110,-4 M330,120 q70,-6 130,10 M345,160 q40,10 90,2" stroke={L('#2B2622')} strokeWidth={2.5} fill="none" />
+          </g>
+          {/* капля */}
+          {t >= 0 && t < 10 ? <ellipse cx={1010} cy={fallY} rx={13} ry={20} fill="#7A1712" /> : null}
+          {splash > 0 ? (
+            <g>
+              <ellipse cx={1010} cy={540} rx={26 + splash * 18} ry={18 + splash * 12} fill="#6a120e" />
+              {[0, 1, 2, 3, 4].map((i) => {
+                const a = (i / 5) * Math.PI * 2 + 0.4;
+                return <circle key={i} cx={1010 + Math.cos(a) * 60 * splash} cy={540 + Math.sin(a) * 40 * splash} r={5} fill="#6a120e" />;
+              })}
+            </g>
+          ) : null}
+          {/* ещё одна, раньше */}
+          <ellipse cx={880} cy={700} rx={18} ry={12} fill="#5a100c" opacity={0.85} />
+        </g>
+      </svg>
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse 55% 60% at 52% 52%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.95) 100%)'}} />
+    </AbsoluteFill>
+  );
+};

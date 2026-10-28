@@ -41,7 +41,7 @@ export const Ep4Dose: React.FC<{dur: number}> = ({dur}) => {
   );
 };
 
-const NinaWhisper: React.FC = () => {
+export const NinaWhisper: React.FC = () => {
   const frame = useCurrentFrame();
   const soft = frame >= 95 && frame < 125;
   return (
@@ -59,7 +59,7 @@ const Pull: React.FC = () => {
   return <PocketShot light="dark" progress={interpolate(frame, [10, 110], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />;
 };
 
-const Crackle: React.FC<{offset: number}> = ({offset}) => {
+export const Crackle: React.FC<{offset: number}> = ({offset}) => {
   const lf = useCurrentFrame();
   const f = lf + offset;
   const v = runningDose(f);

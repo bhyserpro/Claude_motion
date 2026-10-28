@@ -192,7 +192,9 @@ const glebSlots = (ep: number, p: GlebProps): Slots => ({
 export const Gleb: React.FC<GlebProps> = (props) => {
   const ep = props.episode ?? 1;
   const ash = props.ash ?? (ep === 2 ? 0.1 : ep === 3 ? 0.6 : ep >= 4 ? 0.5 : 0);
-  return <Rig {...props} ash={ash} spec={glebSpec(ep)} slots={glebSlots(ep, props)} seed={props.seed ?? 'gleb'} />;
+  // дозиметр Павла лежит в кармане с конца серии 2
+  const p = {...props, pocketDosimeter: props.pocketDosimeter ?? ep >= 3};
+  return <Rig {...p} ash={ash} spec={glebSpec(ep)} slots={glebSlots(ep, p)} seed={props.seed ?? 'gleb'} />;
 };
 
 export const GLEB_POSES: Record<string, Pose> = {

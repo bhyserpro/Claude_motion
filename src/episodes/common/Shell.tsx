@@ -57,6 +57,7 @@ export const Recap: React.FC<{parts: React.ReactNode[]}> = ({parts}) => {
           letterSpacing: 6 * UI,
           color: '#A9ADA6',
           opacity: 0.75,
+          zIndex: 10,
         }}
       >
         РАНЕЕ
@@ -76,9 +77,7 @@ export const ChapterGap: React.FC<{dur: number; stamp: string; suffix?: string; 
   const a = interpolate(frame, [20, 40, dur - 20, dur], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      <AbsoluteFill style={{opacity: a}}>
-        <Timestamp text={stamp} suffix={suffix} suffixEnd={dur + 60} />
-      </AbsoluteFill>
+      <Timestamp text={stamp} suffix={suffix} start={20} end={dur} suffixEnd={dur + 60} />
       <Snd src={bed} dur={dur} vol={0.55} fadeIn={20} fadeOut={20} loop />
     </AbsoluteFill>
   );

@@ -42,7 +42,7 @@ export const HookText: React.FC<{lines: string[]; start?: number; cps?: number; 
   const {out} = typeLines(lines, frame, start, cps, 10);
   const fade = end ? interpolate(frame, [end - 8, end], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 1;
   return (
-    <AbsoluteFill style={{pointerEvents: 'none', opacity: fade}}>
+    <AbsoluteFill style={{pointerEvents: 'none', opacity: fade, zIndex: 10}}>
       <div
         style={{
           position: 'absolute',

@@ -2,7 +2,7 @@ import React from 'react';
 import {random} from 'remotion';
 import {mix} from '../../lib/color';
 import {rnd} from '../../lib/noise';
-import {CharSpec, Pose, POSES, Rig, RigProps, Slots} from './Rig';
+import {CharSpec, Ctx, Pose, POSES, Rig, RigProps, Slots} from './Rig';
 import {Backpack, HairCap, viewOff} from './parts';
 
 /**
@@ -12,7 +12,7 @@ import {Backpack, HairCap, viewOff} from './parts';
 export type PassengerType = 'olga' | 'akhmed' | 'office' | 'student' | 'oldman' | 'puffer' | 'worker' | 'teen' | 'business';
 export const PASSENGER_TYPES: PassengerType[] = ['office', 'student', 'oldman', 'puffer', 'worker', 'teen', 'business'];
 
-export type PassengerProps = RigProps & {type?: PassengerType; dirt?: number; coatOff?: boolean; cry?: boolean};
+export type PassengerProps = RigProps & {type?: PassengerType; dirt?: number; coatOff?: boolean; cry?: boolean; wrapped?: boolean};
 
 type Def = {spec: Omit<CharSpec, 'id'>; slots: (seed: string) => Slots};
 
@@ -193,7 +193,24 @@ export const Passenger: React.FC<PassengerProps> = (props) => {
     spec.topShade = dirty('#3a3836');
   }
   const pose: Pose = props.pose ?? POSES.sitFront;
-  return <Rig {...props} pose={pose} spec={spec} slots={def.slots(seed)} seed={seed} />;
+  const baseSlots = def.slots(seed);
+  // серия 5: лица обмотаны тканью, видны только глаза
+  const slots = props.wrapped
+    ? {
+        ...baseSlots,
+        head: (k: Ctx) => {
+          const R = k.h / 2;
+          return (
+            <g>
+              {baseSlots.head ? baseSlots.head(k) : null}
+              <path d={`M${-R * 1.03},${R * 0.08} L${R * 1.03},${R * 0.08} A${R * 1.03},${R * 1.03} 0 0 1 ${-R * 1.03},${R * 0.08} Z`} fill={k.c('#6B6A64')} />
+              <path d={`M${-R * 0.95},${R * 0.36} Q0,${R * 0.48} ${R * 0.95},${R * 0.36}`} stroke={k.c('#55544f')} strokeWidth={R * 0.05} fill="none" />
+            </g>
+          );
+        },
+      }
+    : baseSlots;
+  return <Rig {...props} pose={pose} spec={spec} slots={slots} seed={seed} face={props.wrapped ? {...props.face, mouth: 'none', nose: false} : props.face} />;
 };
 
 export const PASSENGER_POSES: Record<string, Pose> = {

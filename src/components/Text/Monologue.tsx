@@ -21,7 +21,7 @@ export const Monologue: React.FC<{lines: string[]; start?: number; end?: number;
   const fadeIn = interpolate(frame, [start, start + 4], [0, 1], {extrapolateRight: 'clamp'});
   const fadeOut = end ? interpolate(frame, [end - 12, end], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 1;
   return (
-    <AbsoluteFill style={{pointerEvents: 'none', opacity: fadeIn * fadeOut * dim}}>
+    <AbsoluteFill style={{pointerEvents: 'none', opacity: fadeIn * fadeOut * dim, zIndex: 10}}>
       <div
         style={{
           position: 'absolute',

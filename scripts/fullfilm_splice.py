@@ -62,7 +62,7 @@ def main():
                 segments.append((f'out/ep0{ep}.mp4', t, a))
             part = f'out/parts/ff_ep{ep}_{a}_{b}.mp4'
             if not os.path.exists(os.path.join(ROOT, part)):
-                run(['npx', 'remotion', 'render', 'FullFilm', part, f'--frames={off + a}-{off + b - 1}', '--codec', 'h264', '--crf', '18', '--log=error'])
+                run(['npx', 'remotion', 'render', 'FullFilm', part, f'--frames={off + a}-{off + b - 1}', '--codec', 'h264', '--crf', '18', '--concurrency=2', '--timeout=120000', '--log=error'])
             segments.append((part, 0, b - a))
             t = b
         if t < EP_FRAMES[ep]:

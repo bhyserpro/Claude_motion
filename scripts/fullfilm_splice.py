@@ -35,6 +35,12 @@ def run(cmd):
     subprocess.run(cmd, check=True, cwd=ROOT)
 
 
+def has_audio(path):
+    r = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a', '-show_entries', 'stream=index', '-of', 'csv=p=0', path],
+                       cwd=ROOT, capture_output=True, text=True)
+    return bool(r.stdout.strip())
+
+
 def main():
     os.makedirs(PARTS, exist_ok=True)
     for ep in range(1, 6):
@@ -58,19 +64,20 @@ def main():
             segments.append((f'out/ep0{ep}.mp4', t, EP))
 
     # 2. покадровая склейка
-    files = []
+    # у каждого куска свой вход: один и тот же поток в filter_complex можно взять только один раз
+    cmd = ['ffmpeg', '-y', '-v', 'error']
     for f, _, _ in segments:
-        if f not in files:
-            files.append(f)
-    cmd = ['ffmpeg', '-y']
-    for f in files:
         cmd += ['-i', f]
     chains = []
     labels = []
     for i, (f, a, b) in enumerate(segments):
-        k = files.index(f)
+        k = i
         chains.append(f'[{k}:v]trim=start_frame={a}:end_frame={b},setpts=PTS-STARTPTS[v{i}]')
-        chains.append(f'[{k}:a]atrim=start={a / FPS:.6f}:end={b / FPS:.6f},asetpts=PTS-STARTPTS[a{i}]')
+        if has_audio(f):
+            chains.append(f'[{k}:a]atrim=start={a / FPS:.6f}:end={b / FPS:.6f},asetpts=PTS-STARTPTS[a{i}]')
+        else:
+            # Remotion не пишет звуковую дорожку в полностью тихий кусок — подставляем тишину
+            chains.append(f'anullsrc=r=48000:cl=stereo,atrim=duration={(b - a) / FPS:.6f},asetpts=PTS-STARTPTS[a{i}]')
         labels.append(f'[v{i}][a{i}]')
     graph = ';'.join(chains) + ';' + ''.join(labels) + f'concat=n={len(segments)}:v=1:a=1[v][a]'
     cmd += ['-filter_complex', graph, '-map', '[v]', '-map', '[a]',

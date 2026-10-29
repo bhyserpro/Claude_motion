@@ -54,7 +54,8 @@ def render(names, worker, workers):
 
 def assemble(names):
     for n in names:
-        parts = [p for c, _, _, p in tasks([n])]
+        items = tasks([n])
+        parts = [p for c, _, _, p in items]
         missing = [p for p in parts if not os.path.exists(os.path.join(ROOT, p))]
         if missing:
             print(f'{n}: не хватает {len(missing)} кусков')
@@ -63,7 +64,12 @@ def assemble(names):
         cmd = ['ffmpeg', '-y', '-v', 'error']
         for p in parts:
             cmd += ['-i', p]
-        graph = ''.join(f'[{i}:v][{i}:a]' for i in range(len(parts))) + f'concat=n={len(parts)}:v=1:a=1[v][a]'
+        # точная длина каждого куска: звук у кусков бывает чуть длиннее картинки
+        chains = []
+        for i, (_, a, b, _) in enumerate(items):
+            chains.append(f'[{i}:v]trim=end_frame={b - a},setpts=PTS-STARTPTS[v{i}]')
+            chains.append(f'[{i}:a]atrim=end={(b - a) / FPS:.6f},asetpts=PTS-STARTPTS[a{i}]')
+        graph = ';'.join(chains) + ';' + ''.join(f'[v{i}][a{i}]' for i in range(len(parts))) + f'concat=n={len(parts)}:v=1:a=1[v][a]'
         cmd += ['-filter_complex', graph, '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-crf', '18', '-preset', 'medium',
                 '-pix_fmt', 'yuv420p', '-r', str(FPS), '-c:a', 'aac', '-b:a', '320k', '-movflags', '+faststart', f'out/ep0{ep}.mp4']
         print('$', n, flush=True)

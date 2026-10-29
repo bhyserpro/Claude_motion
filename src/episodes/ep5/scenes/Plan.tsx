@@ -8,7 +8,7 @@ import {Nina} from '../../../components/Characters/Nina';
 import {POSES} from '../../../components/Characters/Rig';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
-import {useVoiceEnd} from '../../../components/Voice';
+import {useVoiceEnd, useWordFrame} from '../../../components/Voice';
 import {Actor} from '../../common/cast';
 import {CarSideLayers, SIDE_FEET} from '../../common/sets';
 import {headCloseY} from '../../common/tunnelShot';
@@ -31,10 +31,13 @@ const HUDDLE: Actor[] = (
 export const Ep5Plan: React.FC<{dur: number}> = ({dur}) => {
   const look = useVoiceEnd('E5-05', 470) + 4;
   const eyes = look + 60;
+  const akhmed = useWordFrame('E5-N02', 'А', 260) - 4;
+  const gleb = useWordFrame('E5-N03', 'А', 285);
+  const nina = useWordFrame('E5-05', 'Я', 330) - 4;
   return (
     <AbsoluteFill>
       <Sequence durationInFrames={look}>
-        <Huddle />
+        <Huddle akhmed={akhmed} gleb={gleb} nina={nina} end={look} />
       </Sequence>
       <Sequence from={look} durationInFrames={eyes - look}>
         <Look />
@@ -53,9 +56,24 @@ export const Ep5Plan: React.FC<{dur: number}> = ({dur}) => {
   );
 };
 
-const Huddle: React.FC = () => {
+/** Кружок шёпотом; камера переходит к говорящему: Глеб → Ахмед → Глеб → Нина. */
+const Huddle: React.FC<{akhmed: number; gleb: number; nina: number; end: number}> = ({akhmed, gleb, nina, end}) => {
   const frame = useCurrentFrame();
-  const cam = handheld(camKeys(frame, [{f: 0, x: 0, dolly: 0.3}, {f: 570, x: 20, dolly: 0.42}]), frame, 1.8, 'hud');
+  const cam = handheld(
+    camKeys(frame, [
+      {f: 0, x: 0, dolly: 0.3},
+      {f: Math.max(1, akhmed - 40), x: 30, dolly: 0.4},
+      {f: akhmed, x: -260, dolly: 0.52, zoom: 1.04},
+      {f: gleb - 6, x: -250, dolly: 0.52, zoom: 1.04},
+      {f: gleb + 6, x: 0, dolly: 0.48},
+      {f: nina - 6, x: 10, dolly: 0.48},
+      {f: nina + 8, x: 200, dolly: 0.56, zoom: 1.05},
+      {f: end, x: 220, dolly: 0.62, zoom: 1.07},
+    ]),
+    frame,
+    1.8,
+    'hud',
+  );
   return (
     <Stage25D cam={cam} fogEnd={10}>
       <CarSideLayers

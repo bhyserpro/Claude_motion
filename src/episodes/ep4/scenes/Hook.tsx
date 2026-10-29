@@ -38,7 +38,7 @@ export const Ep4Hook: React.FC<{dur: number}> = ({dur}) => {
           }
         />
       </Stage25D>
-      <HookText lines={['Ты раскрыл убийство.', 'И сказал об этом **вслух**.']} start={3} end={dur - 3} top={0.68} />
+      <HookText voice="E4-01" lines={['Ты раскрыл убийство.', 'И сказал об этом **вслух**.']} start={3} end={dur - 3} top={0.68} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.5} loop />
       <Snd src="glass_squeak.wav" from={62} dur={48} vol={0.6} />
       <Snd src="glass_squeak.wav" from={118} dur={40} vol={0.5} trim={10} />

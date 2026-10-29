@@ -589,13 +589,13 @@ def run(ids=None):
         out_rel = f'voice/ep{line.ep}/{line.id}.wav'
         out_abs = os.path.join(ROOT, 'public', out_rel)
         scene_end = None
-        if line.scene and al:
+        if line.scene:
             scenes = scenes_by_ep.setdefault(line.ep, scene_times(line.ep))
             if line.scene not in scenes:
                 raise ValueError(f'{line.id}: нет сцены {line.scene} в ep{line.ep}/timing.ts')
             s0, scene_end = scenes[line.scene]
             first_at = s0 + line.pos
-            if line.at:
+            if line.at and al:
                 x, al, late = place_words(x, al, first_at, {w: s0 + t for w, t in line.at.items()})
                 for w, d in late:
                     report.append(f'{line.id}: «{w}» ' + ('не найдено в генерации' if d is None else f'опаздывает на {d:.2f} с'))
@@ -608,7 +608,7 @@ def run(ids=None):
         win_f = round((line.win[1] - line.win[0]) * FPS)
         start = round(line.win[0] * FPS)
         if scene_end is not None:
-            sw = spoken_words(al)
+            sw = spoken_words(al) if al else []
             t_first = (sw[0][1] - shift) if sw else 0.0  # первое слово в обработанном файле (дыхание без слов — начало файла)
             start = round((first_at - t_first) * FPS)
             over = (start + dur_f) / FPS - scene_end

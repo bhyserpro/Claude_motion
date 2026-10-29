@@ -7,10 +7,12 @@ import {camKeys, handheld} from '../../../lib/camera';
 import {geigerLed, GeigerTrack, Snd} from '../../common/audio';
 import {AshShot, DosimeterShot, PocketShot} from '../../common/closeups';
 
+const PULL = 150; // карман
+const CRACKLE = 260; // дозиметр Павла у пальто — треск
 const SEGS: [number, number][] = [
-  [430, 8],
-  [520, 40],
-  [600, 200],
+  [CRACKLE, 8],
+  [CRACKLE + 90, 40],
+  [CRACKLE + 170, 200],
 ];
 
 /** Значение на ЖК бежит вверх и не останавливается. */
@@ -21,21 +23,21 @@ export const runningDose = (f: number) => {
 };
 const fmt = (v: number) => (v < 10 ? v.toFixed(2) : v < 100 ? v.toFixed(1) : v < 10000 ? v.toFixed(0) : '9999').replace('.', ',');
 
-/** 2:20–2:50. Темнота, шёпот. «Я подделала всех. Кроме тебя.» Дозиметр Павла у пальто — сплошной треск. */
+/** Темнота, шёпот «Я подделала всех. Кроме тебя» (E4-08). Карман. Дозиметр Павла у пальто — сплошной треск, вдох Глеба (E4-09). */
 export const Ep4Dose: React.FC<{dur: number}> = ({dur}) => {
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      <Sequence durationInFrames={300}>
+      <Sequence durationInFrames={PULL}>
         <NinaWhisper />
       </Sequence>
-      <Sequence from={300} durationInFrames={130}>
+      <Sequence from={PULL} durationInFrames={CRACKLE - PULL}>
         <Pull />
       </Sequence>
-      <Sequence from={430} durationInFrames={dur - 430}>
+      <Sequence from={CRACKLE} durationInFrames={dur - CRACKLE}>
         <Crackle offset={430} />
       </Sequence>
-      <Subtitle voice="E4-08" who="НИНА" text="Я подделала всех. Кроме тебя." small start={70} end={230} />
-      <Snd src="breath_close.wav" dur={300} vol={0.3} loop />
+      <Subtitle voice="E4-08" who="НИНА" text="Я подделала всех. Кроме тебя." small start={20} end={140} />
+      <Snd src="breath_close.wav" dur={PULL} vol={0.3} loop />
       <GeigerTrack segs={SEGS} end={dur} vol={1} xfade={6} />
     </AbsoluteFill>
   );

@@ -293,27 +293,33 @@ LINES = [
       '[low, grim, controlled] Шесть и две десятых зиверта. [pause] Если она не врёт — мне осталось меньше недели. [pause] Если врёт... я узнаю, сколько ещё она соврала.',
       new=True, chain=True, prio=3),
     # ── СЕРИЯ 4. «Доза»
-    L('E4-01', '0:00', '0:06', 'gleb', 'DRY', 'quiet', '[low, close to the mic, grim] Ты раскрыл убийство. [pause] [quieter, with dread] И сказал об этом вслух.', chain=True),
+    L('E4-01', '0:00', '0:06', 'gleb', 'DRY', 'quiet', '[low, close to the mic, grim] Ты раскрыл убийство. [pause] [quieter, with dread] И сказал об этом вслух.', chain=True,
+      scene='hook', pos=0.15),
     L('E4-02', '0:14', '0:38', 'gleb', 'DRY', 'normal',
-      '[dry, measured, professional] Когда клиент присылает идеальные документы... они поддельные. [pause] У Нины были идеальные документы.', chain=True),
+      '[dry, measured, professional] Когда клиент присылает идеальные документы... они поддельные. [pause] У Нины были идеальные документы.', chain=True,
+      scene='dosimeters', pos=3.4),
     L('E4-03', '0:42', '1:14', 'gleb', 'CAR_DARK', 'raised',
       '[firm, clear, speaking to a room of people] Прокол на руке Семёна Аркадьевича. Пустые ампулы в её сумке. Морфин. [pause] '
       'Список. Галочка ставится после смерти. [pause] [slower, building intensity] И главное. Мы сидели в одном вагоне. Дышали одним '
       'воздухом. Когда она нас мерила — щелчки у всех были одинаковые. [pause] Нельзя облучиться сильнее, сидя на соседнем сиденье. '
-      '[firm, final] Её дозы — выдумка.'),
+      '[firm, final] Её дозы — выдумка.', scene='act', pos=2.0),
     L('E4-04', '1:14', '1:26', 'nina', 'CAR_DARK', 'quiet',
       '[calm, even, almost gentle] Воды на пять дней. Нас было тринадцать. [pause] Я выбирала тех, кто умрёт всё равно. [long pause] '
-      '[quiet, tired] Ошиблась я в одном. Всё равно умрут все.'),
-    L('E4-05', '1:23', '1:26', 'akhmed', 'CAR_DARK', 'shout', '[angry, voice rising] Ты их убила?! Ты сама решала, кому жить?!', new=True, dialogue='E4-crowd'),
-    L('E4-06', '1:24', '1:27', 'olga', 'CAR_DARK', 'raised', '[crying, voice breaking] Да как ты могла...', new=True, dialogue='E4-crowd'),
-    L('E4-07', '1:27', '1:28', 'gleb', 'CAR_DARK', 'shout', '[sharp, loud, urgent hiss] Тихо!'),
-    L('E4-08', '2:24', '2:30', 'nina', 'DRY', 'whisper', '[whispering, very close, intimate] Я подделала всех. [long pause] Кроме тебя.'),
-    L('E4-09', '2:35', '2:42', 'gleb', 'CAR_DARK', 'whisper', '[a sharp, quiet intake of breath] ... [silence]', variants=2),
+      '[quiet, tired] Ошиблась я в одном. Всё равно умрут все.', scene='act', pos=26.8),
+    L('E4-05', '1:23', '1:26', 'akhmed', 'CAR_DARK', 'shout', '[angry, voice rising] Ты их убила?! Ты сама решала, кому жить?!', new=True, dialogue='E4-crowd',
+      scene='act', pos=35.9),  # перебивает конец E4-04; без тайминга символов — от начала файла
+    L('E4-06', '1:24', '1:27', 'olga', 'CAR_DARK', 'raised', '[crying, voice breaking] Да как ты могла...', new=True, dialogue='E4-crowd',
+      scene='act', pos=37.0),
+    L('E4-07', '1:27', '1:28', 'gleb', 'CAR_DARK', 'shout', '[sharp, loud, urgent hiss] Тихо!', scene='act', pos=39.4),
+    L('E4-08', '2:24', '2:30', 'nina', 'DRY', 'whisper', '[whispering, very close, intimate] Я подделала всех. [long pause] Кроме тебя.', scene='dose', pos=0.8),
+    L('E4-09', '2:35', '2:42', 'gleb', 'CAR_DARK', 'whisper', '[a sharp, quiet intake of breath] ... [silence]', variants=2,
+      scene='dose', pos=9.17),  # без слов: на треск дозиметра
     # патч №1
     L('E4-N01', '0:30', '0:40', 'gleb', 'DRY', 'quiet',
       '[quiet, focused, comparing] Её прибор — ноль тридцать. Прибор машиниста — ноль тридцать. [pause] Одинаково. Как и должно быть.',
-      new=True, chain=True, prio=1),
-    L('E4-N02', '1:32', '1:36', 'gleb', 'DRY', 'whisper', '[barely audible whisper] Не дышать. Не двигаться. [pause] Они слушают.', new=True, chain=True, prio=1),
+      new=True, chain=True, prio=1, scene='dosimeters', pos=10.7),
+    L('E4-N02', '1:32', '1:36', 'gleb', 'DRY', 'whisper', '[barely audible whisper] Не дышать. Не двигаться. [pause] Они слушают.', new=True, chain=True, prio=1,
+      scene='siege', pos=2.0),
     L('E4-N03', '1:50', '1:56', 'gleb', 'DRY', 'whisper',
       '[whispering, faster, losing count] Двадцать... тридцать... сорок... [pause] Я перестал считать лица.', new=True, chain=True, prio=2),
     L('E4-N05', '2:56', '3:00', 'gleb', 'DRY', 'quiet',

@@ -8,6 +8,8 @@ import {Passenger, PASSENGER_POSES} from '../../../components/Characters/Passeng
 import {POSES, walkPose} from '../../../components/Characters/Rig';
 import {camKeys, handheld} from '../../../lib/camera';
 import {GeigerTrack, Snd} from '../../common/audio';
+import {useEpisodeFrame, useVoiceLine, useWordFrame} from '../../../components/Voice';
+import {A2} from '../act2';
 import {At} from '../../common/Offset';
 import {ElbowShot} from '../../common/closeups';
 import {CarSideLayers, SIDE_FEET} from '../../common/sets';
@@ -15,9 +17,28 @@ import {EP2_CAMP} from '../../ep2/cast';
 import {Round} from '../../ep2/scenes/Measure';
 import {Ampoules, NotebookClose} from '../../ep3/scenes/Bag';
 
+/** Крик Ахмеда и плач Ольги: реплики без тайминга символов — окна по длине файлов, две строки при наложении. */
+const AkhmedOlga: React.FC = () => {
+  const a = useVoiceLine('E4-05');
+  const o = useVoiceLine('E4-06');
+  const frame = useEpisodeFrame();
+  if (!a || !o) return null;
+  const on = (l: {startFrame: number; durationFrames: number}) => frame >= l.startFrame && frame < l.startFrame + l.durationFrames + 9;
+  const lines = [on(a) ? {who: 'АХМЕД', text: 'Ты их убила?! Ты сама решала, кому жить?!'} : null, on(o) ? {who: 'ОЛЬГА', text: 'Да как ты могла…'} : null].filter(Boolean) as {who: string; text: string}[];
+  return (
+    <>
+      {lines.map((l, i) => (
+        <div key={l.who} style={{position: 'absolute', inset: 0, transform: `translateY(${(i - lines.length + 1) * 38}px)`}}>
+          <Subtitle who={l.who} text={l.text} small={l.who === 'ОЛЬГА'} />
+        </div>
+      ))}
+    </>
+  );
+};
+
 const ITEMS = [
-  {text: ['Прокол на руке Семёна.', 'Пустые ампулы в её сумке.'], at: 165},
-  {text: ['Список с галочками.', 'Галочка — после смерти.'], at: 455, underline: true},
+  {text: ['Прокол на руке Семёна.', 'Пустые ампулы в её сумке.'], at: A2.paperA + 6},
+  {text: ['Список с галочками.', 'Галочка — после смерти.'], at: A2.paperB + 4, underline: true},
   {
     text: [
       'Главное: все сидели в одном вагоне,',
@@ -25,8 +46,8 @@ const ITEMS = [
       'были одинаковые. Нельзя облучиться сильнее,',
       'сидя на соседнем сиденье. Её «дозы» — выдумка.',
     ],
-    at: 695,
-    speed: 1.05,
+    at: A2.paperC + 2,
+    speed: 0.8,
   },
 ];
 
@@ -76,58 +97,65 @@ const NinaConfront: React.FC = () => {
   );
 };
 
-/** 0:40–1:30. Глеб излагает дело: «АКТ ОСМОТРА № 2». Нина не отрицает. Пассажиры двигаются на неё. */
+/**
+ * Глеб излагает дело (E4-03), вставки — за его словами: прокол → ампулы → список → бланк →
+ * «Мы сидели в одном вагоне» → Нина мерит всех, щелчки одинаковые → вывод на бланке.
+ * Нина не отрицает (E4-04), пассажиры двигаются на неё (E4-05, E4-06), «Тихо!» (E4-07).
+ */
 export const Ep4Act: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
+  const rush = useWordFrame('E4-07', 'Тихо', dur - 40) - 75;
+  const seg = (a: number, b: number) => ({from: a, durationInFrames: Math.max(1, b - a)});
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={150}>
+      <Sequence {...seg(0, A2.paperA)}>
         <Room phase="case" frame={frame} />
       </Sequence>
-      <Sequence from={150} durationInFrames={790}>
+      <Sequence {...seg(A2.paperA, A2.end)}>
         <InspectionAct
           number="2"
           red
           fields={[
-            {label: 'Объект:', value: 'вагон 4, смерть Семёна А.', at: 152},
-            {label: 'Заявитель:', value: 'Ведерникова Н.', at: 158},
+            {label: 'Объект:', value: 'вагон 4, смерть Семёна А.', at: A2.paperA + 2},
+            {label: 'Заявитель:', value: 'Ведерникова Н.', at: A2.paperA + 8},
           ]}
-          items={ITEMS}
+          items={ITEMS.map((it) => ({...it, at: it.at - A2.paperA}))}
           driftSeed="act2"
         />
       </Sequence>
-      <Sequence from={300} durationInFrames={80}>
+      <Sequence {...seg(A2.elbow, A2.ampoules)}>
         <ElbowShot />
       </Sequence>
-      <Sequence from={380} durationInFrames={60}>
+      <Sequence {...seg(A2.ampoules, A2.notebook)}>
         <Ampoules />
       </Sequence>
-      <Sequence from={600} durationInFrames={80}>
+      <Sequence {...seg(A2.notebook, A2.paperB)}>
         <NotebookClose fold={1} />
       </Sequence>
-      <Sequence from={940} durationInFrames={110}>
+      <Sequence {...seg(A2.room, A2.round)}>
+        <Room phase="case" frame={frame} />
+      </Sequence>
+      <Sequence {...seg(A2.round, A2.paperC)}>
         <At at={20}>
           <Round />
         </At>
       </Sequence>
-      <Sequence from={1050} durationInFrames={290}>
+      <Sequence {...seg(A2.end, rush)}>
         <NinaConfront />
       </Sequence>
-      <Sequence from={1340} durationInFrames={dur - 1340}>
+      <Sequence {...seg(rush, dur)}>
         <Room phase="rush" frame={frame} />
       </Sequence>
-      <Subtitle voice="E4-04" who="НИНА" text="Воды на пять дней. Нас было тринадцать." start={1065} end={1155} />
-      <Subtitle voice="E4-04" who="НИНА" text="Я выбирала тех, кто умрёт всё равно." start={1160} end={1245} />
-      <Subtitle voice="E4-04" who="НИНА" text="Ошиблась я в одном. Всё равно умрут все." start={1250} end={1338} />
-      <Subtitle voice="E4-05" who="АХМЕД" text="Ты их убила?! Ты сама решала, кому жить?!" start={1340} end={1398} />
-      <Subtitle voice="E4-06" who="ОЛЬГА" text="Да как ты могла…" small start={1398} end={1438} />
-      <Subtitle voice="E4-07" who="ГЛЕБ" text="Тихо!" start={1440} end={dur} />
-      <GeigerTrack segs={[[946, 2]]} end={1050} vol={0.7} />
+      <Subtitle voice="E4-04" who="НИНА" text="Воды на пять дней. Нас было тринадцать." />
+      <Subtitle voice="E4-04" who="НИНА" text="Я выбирала тех, кто умрёт всё равно." />
+      <Subtitle voice="E4-04" who="НИНА" text="Ошиблась я в одном. Всё равно умрут все." />
+      {/* E4-05 и E4-06 накладываются: две строки, верхняя — тот, кто начал раньше (§5) */}
+      <AkhmedOlga />
+      <Subtitle voice="E4-07" who="ГЛЕБ" text="Тихо!" />
+      <GeigerTrack segs={[[A2.round + 4, 2]]} end={A2.paperC} vol={0.7} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={130} />
-      <Snd src="shuffle.wav" from={1340} dur={dur - 1340} vol={0.7} loop />
-      <Snd src="cry_short.wav" from={1352} dur={16} vol={0.55} rate={0.8} />
-      <Snd src="cry_short.wav" from={1395} dur={16} vol={0.5} rate={1.1} />
-      <Snd src="hit.wav" from={1440} dur={30} vol={0.3} />
+      <Snd src="shuffle.wav" from={rush} dur={dur - rush} vol={0.7} loop />
+      <Snd src="hit.wav" from={rush + 75} dur={30} vol={0.3} />
     </AbsoluteFill>
   );
 };

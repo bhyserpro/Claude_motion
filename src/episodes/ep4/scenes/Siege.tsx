@@ -26,15 +26,19 @@ const FACES: [number, number, number][] = [
   [4, -70, 285],
   [8, 80, 305],
 ];
-const OFF = [380, 440, 500, 560]; // секции гаснут
-const PULL = 640;
-const CLICK = 1000;
-const STOP = 1065;
-const AWAY = 1110;
+const OFF = [200, 260, 320, 380]; // секции гаснут — каждые 2 с
+const PULL = 440; // рывок дверей
+const HUSH = 600; // единственная «драматическая тишина» серии (патч №1: до 1,5 с) — они слушают
+const CLICK = 645; // щелчок дозиметра Нины
+const STOP = CLICK + 65;
+const AWAY = CLICK + 110;
 const COAT_WIN = 5;
 const NINA_X = 485;
 
-/** 1:30–2:20. Лица в окнах, ладони, скрип. Свет гаснет секция за секцией. Щелчок — все поворачиваются. */
+/**
+ * Лица в окнах каждые ~0,7 с, ладони, скрип, шёпот «Не дышать…» (E4-N02). Свет гаснет секция за секцией,
+ * рывок дверей, скрип ладоней; 1,5 с полной тишины — щелчок, все поворачиваются; уходят; в окне — пальто.
+ */
 export const Ep4Siege: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
   const turn = interpolate(frame, [CLICK + 6, CLICK + 18], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.bezier(0.7, 0, 0.3, 1)});
@@ -47,7 +51,7 @@ export const Ep4Siege: React.FC<{dur: number}> = ({dur}) => {
   const lamp = interpolate(frame, [OFF[0], OFF[3]], [0.7, 0.32], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   let cam = handheld({...CAM0}, frame, 1.5, 'sg');
   cam = impact(cam, frame, PULL, 6, 50, 'pull');
-  const push = interpolate(frame, [1300, dur], [1, 1.45], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  const push = interpolate(frame, [AWAY + 150, dur], [1, 1.45], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
   const w = WIN[COAT_WIN];
   cam = {...cam, zoom: push, shakeX: cam.shakeX - (w.x + w.w / 2 - 960) * (push - 1), shakeY: cam.shakeY + (540 - (w.y + w.h / 2)) * (push - 1)};
   return (
@@ -98,7 +102,9 @@ export const Ep4Siege: React.FC<{dur: number}> = ({dur}) => {
       <Snd src="scrape.wav" from={PULL} dur={70} vol={0.7} />
       <Snd src="knock.wav" from={PULL + 6} dur={30} vol={0.9} />
       <Snd src="knock.wav" from={PULL + 26} dur={30} vol={0.8} />
-      <Snd src="heartbeat.wav" from={760} dur={CLICK - 760} vol={0.25} loop fadeIn={60} />
+      <Snd src="glass_squeak.wav" from={PULL + 70} dur={40} vol={0.4} trim={6} />
+      <Snd src="knock.wav" from={PULL + 110} dur={30} vol={0.45} />
+      <Snd src="heartbeat.wav" from={PULL + 30} dur={HUSH - PULL - 30} vol={0.3} loop fadeIn={20} fadeOut={6} />
       <GeigerTrack segs={[[CLICK, 2]]} end={STOP} vol={0.9} />
       <Snd src="noise_cut.wav" from={STOP} dur={8} vol={0.2} />
       <Snd src="shuffle.wav" from={AWAY} dur={200} vol={0.25} loop fadeOut={60} />

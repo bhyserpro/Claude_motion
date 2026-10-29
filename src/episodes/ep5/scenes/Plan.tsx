@@ -8,6 +8,7 @@ import {Nina} from '../../../components/Characters/Nina';
 import {POSES} from '../../../components/Characters/Rig';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
+import {useVoiceEnd} from '../../../components/Voice';
 import {Actor} from '../../common/cast';
 import {CarSideLayers, SIDE_FEET} from '../../common/sets';
 import {headCloseY} from '../../common/tunnelShot';
@@ -26,22 +27,26 @@ const HUDDLE: Actor[] = (
   ] as [Actor['id'], number, 1 | -1][]
 ).map(([id, x, f]) => ({id, x, y: SIDE_FEET + 80, scale: 0.42, view: 'three_quarter' as const, facing: f, pose: CROUCH, dirt: 0.8, extra: {wrapped: true}}));
 
-/** 0:40–1:10. Шёпотом — план. Нина: «Я пойду с ними». Глеб долго смотрит. Кивает. */
+/** Шёпотом — план (E5-04). Ахмед: «А вы?» — «А я посчитаю». Нина: «Я пойду с ними» (E5-05). Глеб смотрит, кивает. */
 export const Ep5Plan: React.FC<{dur: number}> = ({dur}) => {
+  const look = useVoiceEnd('E5-05', 470) + 4;
+  const eyes = look + 60;
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={570}>
+      <Sequence durationInFrames={look}>
         <Huddle />
       </Sequence>
-      <Sequence from={570} durationInFrames={210}>
+      <Sequence from={look} durationInFrames={eyes - look}>
         <Look />
       </Sequence>
-      <Sequence from={780} durationInFrames={dur - 780}>
+      <Sequence from={eyes} durationInFrames={dur - eyes}>
         <NinaEyes />
       </Sequence>
-      <Subtitle voice="E5-04" who="ГЛЕБ" text="Когда загудит — идите к шахте. Вдоль стены." small start={34} end={190} />
-      <Subtitle voice="E5-04" who="ГЛЕБ" text="Не говорите. Не светите. Не считайте." small start={198} end={365} />
-      <Subtitle voice="E5-05" who="НИНА" text="Я пойду с ними. Без того, кто знает про дозу, они не дойдут." small start={400} end={565} />
+      <Subtitle voice="E5-04" who="ГЛЕБ" text="Когда загудит — идите к шахте. Вдоль стены." small />
+      <Subtitle voice="E5-04" who="ГЛЕБ" text="Не говорите. Не светите. Не считайте." small />
+      <Subtitle voice="E5-N02" who="АХМЕД" text="А вы?" small />
+      <Subtitle voice="E5-N03" who="ГЛЕБ" text="А я посчитаю." small />
+      <Subtitle voice="E5-05" who="НИНА" text="Я пойду с ними. Без того, кто знает про дозу, они не дойдут." small />
       <Snd src="breath_close.wav" dur={dur} vol={0.22} loop />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.3} loop trim={140} />
     </AbsoluteFill>
@@ -84,7 +89,7 @@ const Huddle: React.FC = () => {
 const Look: React.FC = () => {
   const frame = useCurrentFrame();
   const S = 3.0;
-  const nod = interpolate(frame, [150, 165, 182], [0.1, 0.55, 0.1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const nod = interpolate(frame, [22, 36, 52], [0.1, 0.55, 0.1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage25D cam={handheld(camKeys(frame, [{f: 0, zoom: 1}, {f: 210, zoom: 1.08}]), frame, 1, 'lk')} bg="#050505">
       <DSvg>

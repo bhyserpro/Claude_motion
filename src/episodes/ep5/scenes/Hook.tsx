@@ -13,7 +13,7 @@ export const Ep5Hook: React.FC<{dur: number}> = ({dur}) => {
   return (
     <AbsoluteFill>
       <Windshield frame={frame} cam={handheld({...CAM0, zoom: 1.05}, frame, 2.5, 'h5')} crowd={1} approach={0.25 + frame * 0.0006} strobeK={s} handle hand={<HornHand squeeze={squeeze} strobeK={s} />} />
-      <HookText lines={['Тебе осталось жить несколько дней.', 'Ты потратишь их, чтобы нажать **одну кнопку**.']} start={3} end={dur - 2} top={0.12} />
+      <HookText voice="E5-01" lines={['Тебе осталось жить несколько дней.', 'Ты потратишь их, чтобы нажать **одну кнопку**.']} start={3} end={dur - 2} top={0.12} />
       <GeigerTrack segs={[[0, 200]]} end={168} vol={0.7} />
     </AbsoluteFill>
   );

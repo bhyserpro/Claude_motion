@@ -10,7 +10,7 @@ import {walkPose} from '../../../components/Characters/Rig';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
 
-/** 2:40–2:55. Поверхность. Мёртвый серый город. Часы стоят на 18:47. «…оставайтесь на местах…» */
+/** Поверхность. Мёртвый серый город. Часы стоят на 18:47. «…оставайтесь на местах…» */
 export const Ep5Surface: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
   const cam = handheld(camKeys(frame, [{f: 0, x: 120, dolly: 0.25, y: 20}, {f: dur, x: -160, dolly: 0.0, y: 0}]), frame, 1.5, 'srf');
@@ -63,8 +63,8 @@ export const Ep5Surface: React.FC<{dur: number}> = ({dur}) => {
         </Layer>
       </Stage25D>
       <Timestamp text="ДЕНЬ 7 — 18:47" start={0} end={dur} />
-      <Subtitle text="…оставайтесь на местах…" italic start={140} end={280} />
-      <Subtitle text="…оставайтесь на местах…" italic start={300} end={dur - 6} />
+      <Subtitle voice="E5-09" text="…оставайтесь на местах…" italic start={140} end={280} />
+      <Subtitle voice="E5-09" text="…не покидайте укрытия…" italic start={300} end={dur - 6} />
       <Snd src="announcement_bed.wav" from={120} dur={dur - 120} vol={0.5} trim={140} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.25} loop trim={10} />
       <Snd src="shuffle.wav" dur={240} vol={0.25} loop />

@@ -5,6 +5,7 @@ import {Monologue, PencilNumber, Timestamp} from '../../../components/Text';
 import {Gleb} from '../../../components/Characters/Gleb';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
+import {useWordFrame} from '../../../components/Voice';
 import {At} from '../../common/Offset';
 import {BloodOnPaper} from '../../common/closeups';
 import {headCloseY} from '../../common/tunnelShot';
@@ -22,45 +23,46 @@ const Memory: React.FC<{children: React.ReactNode; note: string; x?: number; y?:
   </AbsoluteFill>
 );
 
-/** 0:12–0:40. День 6, 04:00. Капля крови на бланке. «Свой посчитал за минуту.» Пепел → решётка открыта. Они идут на звук. */
+/**
+ * День 6, 04:00. Капля крови на бланке: «Свой посчитал за минуту» (E5-02). Воспоминания — по словам E5-03:
+ * «В шахту падает пепел» → решётка открыта, «Им нужен звук» → идут на звук, «Я дам им звук» — Глеб.
+ */
 export const Ep5Reason: React.FC<{dur: number; standalone: boolean}> = ({dur, standalone}) => {
-  const frame = useCurrentFrame();
+  const memA = useWordFrame('E5-03', 'В', 190) - 4;
+  const memB = useWordFrame('E5-03', 'Им', 320) - 4;
+  const sick = useWordFrame('E5-03', 'Я', 360) - 4;
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={300}>
+      <Sequence durationInFrames={memA}>
         <BloodOnPaper dropAt={70} />
       </Sequence>
-      <Sequence from={300} durationInFrames={120}>
+      <Sequence from={memA} durationInFrames={memB - memA}>
         <Memory note="пепел → решётка открыта" x={1250} y={250}>
-          <At at={SHAFT.enterChamber + 40 - SHAFT.enterChamber}>
+          <At at={40}>
             <Chamber offset={SHAFT.enterChamber} />
           </At>
         </Memory>
       </Sequence>
-      <Sequence from={420} durationInFrames={110}>
+      <Sequence from={memB} durationInFrames={sick - memB}>
         <Memory note="идут на звук" x={1200} y={260}>
           <At at={SHAFT.turn - 10 - SHAFT.enterChamber}>
             <Chamber offset={SHAFT.enterChamber} />
           </At>
         </Memory>
       </Sequence>
-      <Sequence from={530} durationInFrames={100}>
-        <Memory note="не считай" x={1400} y={820}>
-          <At at={150}>
-            <DontCount />
-          </At>
-        </Memory>
-      </Sequence>
-      <Sequence from={630} durationInFrames={dur - 630}>
+      <Sequence from={sick} durationInFrames={dur - sick}>
         <GlebSick />
       </Sequence>
       <Timestamp text="ДЕНЬ 6 — 04:00" suffix={standalone ? 'за 2 часа до этого' : undefined} start={0} end={dur} suffixEnd={130} />
-      <Monologue voice="E5-02" start={30} end={290} lines={['Двадцать лет я считал чужие убытки.', 'Свой посчитал за минуту.']} />
-      <Monologue voice="E5-03" start={650} end={dur - 4} lines={['Им нужен звук. Я дам им звук.']} />
+      <Monologue voice="E5-02" start={30} end={memA} lines={['Двадцать лет я считал чужие убытки.', 'Свой посчитал за минуту.']} />
+      <Monologue voice="E5-03" start={memA} end={memB} lines={['В шахту падает пепел.', 'Значит, наверху открыто.']} />
+      <Monologue voice="E5-03" start={memB} end={dur - 4} lines={['Им нужен звук. Я дам им звук.']} />
       <Snd src="hit.wav" dur={50} vol={0.6} />
       <Snd src="drip.wav" from={80} dur={14} vol={0.6} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={60} />
-      <Snd src="heartbeat.wav" from={630} dur={dur - 630} vol={0.4} loop fadeIn={30} />
+      <Snd src="heartbeat.wav" from={sick} dur={dur - sick} vol={0.4} loop fadeIn={20} />
+      <Snd src="noise_cut.wav" from={memA} dur={10} vol={0.15} />
+      <Snd src="noise_cut.wav" from={memB} dur={10} vol={0.15} />
     </AbsoluteFill>
   );
 };

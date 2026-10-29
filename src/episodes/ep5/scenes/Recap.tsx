@@ -7,20 +7,21 @@ import {GeigerTrack} from '../../common/audio';
 import {Ep4Siege} from '../../ep4/scenes/Siege';
 import {Crackle, NinaWhisper} from '../../ep4/scenes/Dose';
 
-/** РАНЕЕ: лица в окнах, «Кроме тебя», треск дозиметра. */
+/** РАНЕЕ (патч №1, §4) — голосом из готовых записей: «Тихо!» → «Кроме тебя.» → рёв дозиметра. */
 export const Ep5Recap: React.FC = () => (
   <Recap
     parts={[
       <AbsoluteFill key="a">
-        <At at={420}>
-          <Ep4Siege dur={1500} />
+        <At at={300}>
+          <Ep4Siege dur={1050} />
         </At>
+        <Subtitle voice="R5-1" who="ГЛЕБ" text="Тихо!" />
       </AbsoluteFill>,
       <AbsoluteFill key="b">
         <At at={85}>
           <NinaWhisper />
         </At>
-        <Subtitle who="НИНА" text="Я подделала всех. Кроме тебя." small start={0} end={60} />
+        <Subtitle voice="R5-2" who="НИНА" text="Кроме тебя." small />
       </AbsoluteFill>,
       <AbsoluteFill key="c">
         <At at={620}>

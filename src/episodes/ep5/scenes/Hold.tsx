@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, random, Sequence, useCurrentFrame} from 'remotion';
 import {Stage25D} from '../../../components/Stage25D';
 import {GlassCracks} from '../../../components/FX';
-import {Monologue} from '../../../components/Text';
+import {Monologue, Subtitle} from '../../../components/Text';
 import {CoatFigure, COAT_POSES} from '../../../components/Characters/CoatFigure';
 import {CAB_FLOOR} from '../../../components/Props/Cab';
 import {CAM0, handheld, rumble} from '../../../lib/camera';
@@ -12,16 +12,17 @@ import {PalmOnGlass, WindowFace, WIN} from '../../ep4/faces';
 import {strobe} from '../shared';
 import {CabAlone} from './Act';
 
-const RELEASE = 420;
-const COAT_IN = 560;
-const FINGER = 600;
-const NOD = 668;
+const PALMS = 150;
+const RELEASE = 290; // отпускает гудок
+const COAT_IN = 335; // 1,5 с тишины — единственная «драматическая тишина» серии (патч №1)
+const FINGER = 370; // палец к губам, «Тсс» (E5-08)
+const NOD = 430;
 
 /** Пустой вагон: ладони на всех окнах, стекло трескается (зеркально серии 1). */
 const Palms: React.FC = () => {
   const frame = useCurrentFrame();
   const s = strobe(frame, 12, 5);
-  const crack = interpolate(frame, [60, 200], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const crack = interpolate(frame, [30, 140], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <Stage25D cam={rumble(handheld({...CAM0}, frame, 2, 'plm'), frame, 4)} fogEnd={10}>
       <CarSideLayers
@@ -53,17 +54,17 @@ const Palms: React.FC = () => {
   );
 };
 
-/** 2:15–2:40. Глеб держит гудок. «Нас было четырнадцать». Отпускает. Тишина. Не считает. Пятнадцатый садится рядом. */
+/** Глеб держит гудок. «Нас было четырнадцать». Отпускает. Тишина. Не считает. Пятнадцатый садится рядом. */
 export const Ep5Hold: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
   const finger = interpolate(frame, [FINGER, FINGER + 40], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const nod = interpolate(frame, [NOD, NOD + 12, NOD + 26], [0.2, 0.6, 0.2], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      <Sequence durationInFrames={250}>
+      <Sequence durationInFrames={PALMS}>
         <Palms />
       </Sequence>
-      <Sequence from={250} durationInFrames={RELEASE - 250}>
+      <Sequence from={PALMS} durationInFrames={RELEASE - PALMS}>
         <CabAlone frame={frame} pose="horn" strobeK={strobe(frame, 12, 5)} />
       </Sequence>
       <Sequence from={RELEASE} durationInFrames={COAT_IN - RELEASE}>
@@ -83,10 +84,11 @@ export const Ep5Hold: React.FC<{dur: number}> = ({dur}) => {
           }
         />
       </Sequence>
-      <Monologue voice="E5-07" start={265} end={RELEASE - 5} lines={['Нас было четырнадцать. Я всегда считаю.']} />
-      <Snd src="horn.wav" dur={RELEASE} loop trim={40} vol={(f) => (f < 250 ? 1 : 0.85)} />
+      <Monologue voice="E5-07" start={PALMS + 12} end={RELEASE + 10} lines={['Нас было четырнадцать. Я всегда считаю.']} />
+      <Subtitle voice="E5-08" text="Тсс." italic small />
+      <Snd src="horn.wav" dur={RELEASE} loop trim={40} vol={(f) => (f < PALMS ? 1 : 0.85)} />
       <Snd src="glass_squeak.wav" from={30} dur={48} vol={0.4} />
-      <Snd src="boom.wav" from={70} dur={150} vol={0.35} trim={30} />
+      <Snd src="boom.wav" from={40} dur={150} vol={0.35} trim={30} />
       <Snd src="drip.wav" from={COAT_IN + 10} dur={14} vol={0.4} />
       <Snd src="drip.wav" from={COAT_IN + 50} dur={14} vol={0.3} />
     </AbsoluteFill>

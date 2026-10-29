@@ -7,3 +7,4 @@ __pycache__/
 *.pyc
 voice/raw/**/*.vtmp.*
 preview/
+01_Claude/

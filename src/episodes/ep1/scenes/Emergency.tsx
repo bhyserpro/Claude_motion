@@ -59,7 +59,7 @@ export const RedCorridor: React.FC<{z0: number; z1: number; dur: number; id: str
   );
 };
 
-/** 1:29–1:57. Красный аварийный свет, пыль в лучах, интерком, оповещение, телефоны 18:47. */
+/** Красный аварийный свет, пыль в лучах, интерком, оповещение, телефоны 18:47. */
 export const Ep1Emergency: React.FC<{dur: number}> = ({dur}) => (
   <AbsoluteFill>
     <Sequence durationInFrames={430}>
@@ -68,14 +68,14 @@ export const Ep1Emergency: React.FC<{dur: number}> = ({dur}) => (
     <Sequence from={430} durationInFrames={dur - 430}>
       <PhonesShot />
     </Sequence>
-    <Subtitle voice="E1-05" who="ПАВЕЛ" text="Без паники. Связи нет. Ждём." start={40} end={175} />
+    <Subtitle voice="E1-05" who="ПАВЕЛ" text="Говорит машинист. Без паники. Связи нет. Ждём." start={30} end={160} />
     <Subtitle voice="E1-06" text="…режим радиационной опасности…" italic start={205} end={300} />
     <Subtitle voice="E1-06" text="…гермозатворы закрыты…" italic start={305} end={390} />
     <Subtitle voice="E1-06" text="…оставайтесь на местах…" italic start={395} end={480} />
     <Subtitle voice="E1-06" text="…не покидайте укрытия…" italic start={485} end={560} />
     <Snd src="tunnel_drone.wav" dur={dur} vol={0.42} loop trim={300} />
-    <Snd src="announcement_bed.wav" from={20} dur={170} vol={0.5} fadeOut={10} />
-    <Snd src="announcement_bed.wav" from={205} dur={dur - 215} vol={0.55} trim={120} loop duck={false} fadeIn={6} fadeOut={30} />
+    <Snd src="announcement_bed.wav" from={10} dur={160} vol={0.5} fadeOut={10} />
+    <Snd src="announcement_bed.wav" from={165} dur={dur - 175} vol={0.55} trim={120} loop duck={false} fadeIn={6} fadeOut={30} />
     <Snd src="breath_close.wav" from={430} dur={dur - 430} vol={0.18} loop />
   </AbsoluteFill>
 );

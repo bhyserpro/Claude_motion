@@ -7,40 +7,57 @@ import {Pavel, PAVEL_POSES} from '../../../components/Characters/Pavel';
 import {Gleb} from '../../../components/Characters/Gleb';
 import {camKeys, CAM0, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
+import {useWordFrame} from '../../../components/Voice';
 import {CarSideLayers, corridorItems} from '../../common/sets';
 import {EP1_CORRIDOR, EP1_COUNT_ORDER, EP1_SIDE} from '../cast';
 
 const PAN_A = -2300;
-const PAN_B = 1250;
-const PAN_DUR = 480;
 const STANDING = new Set(['korneev', 'worker', 'teen']);
+const NUMBERS = ['Один', 'Два', 'Три', 'Четыре', 'Пять', 'Шесть', 'Семь', 'Восемь', 'Девять', 'Десять'];
 
-/** 0:30–0:55. POV Глеба: счёт пассажиров 1…12, Павел в стекле кабины — 13, своё отражение — 14. */
+/** Камера: при каком x камеры человек с центром x проходит правее центра кадра (там и пишется его номер). */
+const camAt = (x: number) => (x - 1150) * 1.48;
+
+/**
+ * POV Глеба: счёт пассажиров вслух 1…12 (E1-N02 + E1-03) — цифра пишется в момент, когда её произносят,
+ * панорама идёт за счётом; «тринадцать» — Павел в стекле кабины, «четырнадцать» — своё отражение, затем E1-04.
+ */
 export const Ep1Count: React.FC<{dur: number}> = ({dur}) => {
+  const fallback = (i: number) => 20 + i * 30;
+  const at = [
+    ...NUMBERS.map((w, i) => useWordFrame('E1-N02', w, fallback(i))),
+    useWordFrame('E1-03', 'Одиннадцать', fallback(10)),
+    useWordFrame('E1-03', 'двенадцать', fallback(11)),
+  ];
+  const cab = useWordFrame('E1-03', 'тринадцать', fallback(12));
+  const self = useWordFrame('E1-03', 'четырнадцать', fallback(13));
+  const mono = useWordFrame('E1-04', 'Четырнадцать', self + 30);
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={PAN_DUR}>
-        <SidePan />
+      <Sequence durationInFrames={cab}>
+        <SidePan at={at} dur={cab} />
       </Sequence>
-      <Sequence from={PAN_DUR} durationInFrames={120}>
-        <CabGlance />
+      <Sequence from={cab} durationInFrames={self - cab}>
+        <CabGlance dur={self - cab} />
       </Sequence>
-      <Sequence from={PAN_DUR + 120} durationInFrames={dur - PAN_DUR - 120}>
+      <Sequence from={self} durationInFrames={dur - self}>
         <Reflection />
       </Sequence>
-      <Monologue voice="E1-04" start={PAN_DUR + 140} end={dur} lines={['Четырнадцать. Я всегда считаю.', 'Привычка. Потом проще описывать ущерб.']} />
+      <Monologue voice="E1-04" start={mono - 2} end={dur} lines={['Четырнадцать. Я всегда считаю.', 'Привычка. Потом проще описывать ущерб.']} />
       <Snd src="rails_loop.wav" dur={dur} vol={0.6} loop trim={60} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.3} loop trim={200} />
     </AbsoluteFill>
   );
 };
 
-const SidePan: React.FC = () => {
+const SidePan: React.FC<{at: number[]; dur: number}> = ({at, dur}) => {
   const frame = useCurrentFrame();
-  const camX = interpolate(frame, [0, PAN_DUR], [PAN_A, PAN_B]);
+  // ключи панорамы: к моменту каждого числа нужный человек стоит правее центра
+  const keys = EP1_COUNT_ORDER.map((p, i) => [at[i], camAt(p.x)] as [number, number]);
+  const f = [0, ...keys.map((k) => k[0]), dur];
+  const xs = [Math.min(PAN_A, keys[0][1] - 140), ...keys.map((k) => k[1]), keys[keys.length - 1][1] + 160];
+  const camX = interpolate(frame, f, xs, {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const cam = handheld({...CAM0, x: camX, dolly: 0.12}, frame, 2.5, 'cnt');
-  // кадр появления цифры: когда человек проходит правее центра
-  const appear = (x: number) => Math.max(8, Math.round(((x - 1150) * (1.6 - 0.12) - PAN_A) / (PAN_B - PAN_A) * PAN_DUR));
   return (
     <Stage25D cam={cam} fogEnd={10}>
       <CarSideLayers
@@ -52,7 +69,7 @@ const SidePan: React.FC = () => {
         wallOverlay={
           <>
             {EP1_COUNT_ORDER.map((p, i) => (
-              <PencilNumber key={p.id} x={p.x + 10} y={STANDING.has(p.id) ? 300 : 392} text={String(i + 1)} at={appear(p.x)} size={70} />
+              <PencilNumber key={p.id} x={p.x + 10} y={STANDING.has(p.id) ? 300 : 392} text={String(i + 1)} at={Math.max(0, at[i] - 1)} size={70} />
             ))}
           </>
         }
@@ -61,9 +78,9 @@ const SidePan: React.FC = () => {
   );
 };
 
-const CabGlance: React.FC = () => {
+const CabGlance: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
-  const z = interpolate(frame, [0, 120], [11.0, 14.6]);
+  const z = interpolate(frame, [0, Math.max(30, dur)], [11.0, 13.4]);
   const cam = handheld(camKeys(frame, [{f: 0}]), frame, 2, 'cab');
   return (
     <Stage25D cam={cam}>
@@ -83,7 +100,7 @@ const CabGlance: React.FC = () => {
           )}
         />
       </Layer>
-      <PencilNumber x={1110} y={330} text="13" at={20} size={84} color="#2a2724" />
+      <PencilNumber x={1110} y={330} text="13" at={1} size={84} color="#2a2724" />
     </Stage25D>
   );
 };
@@ -103,7 +120,7 @@ const Reflection: React.FC = () => {
         <path d="M420,140 L560,140 L300,930 L200,930 Z" fill="#fff" opacity={0.03} />
       </svg>
       <div style={{position: 'absolute', inset: 0}}>
-        <PencilNumber x={1230} y={380} text="14" at={18} size={96} />
+        <PencilNumber x={1230} y={380} text="14" at={1} size={96} />
       </div>
     </AbsoluteFill>
   );

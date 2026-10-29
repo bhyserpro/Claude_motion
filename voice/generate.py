@@ -6,6 +6,7 @@
   python3 voice/generate.py --ep 2         # одна серия
   python3 voice/generate.py --redo E1-05 E2-03
   python3 voice/generate.py --choose E3-08 3   # выбрать вариант 3 из нескольких сгенерированных
+  python3 voice/generate.py --new          # патч №1: только реплики, которых нет в voice/raw, по приоритетам P1 → P2 → P3
 
 Порядок внутри серии: монолог Глеба цепочкой (previous_request_ids, до трёх предыдущих — только на eleven_v4),
 потом остальные реплики (короткие — с previous_text/next_text), потом диалоговые блоки (Text to Dialogue).
@@ -88,21 +89,22 @@ def critical(res):
     return [f for f in res['flags'] if f.startswith(RETRY_ON)]
 
 
-def gen_line(line: Line, voices, model, stitch, chain, stt):
-    """Генерация с автопроверкой; возвращает request_id выбранного варианта."""
+def gen_line(line: Line, voices, model, stitch, chain, stt, attempts=ATTEMPTS, context_only=False):
+    """Генерация с автопроверкой; возвращает request_id выбранного варианта.
+    context_only — соседние уже озвученные реплики как previous_text/next_text вместо склейки запросов."""
     v = voices[line.who]
-    prev_text, next_text = neighbours(line)
+    prev_text, next_text = neighbours(line, only=done if context_only else None)
     short = len(plain(line.text)) < 40
     kw = {}
-    if line.chain and stitch:
+    if line.chain and stitch and not context_only:
         kw['previous_request_ids'] = chain[-3:]
-    elif short or not line.chain:
+    elif short or not line.chain or context_only:
         kw['previous_text'], kw['next_text'] = prev_text, next_text
     variants = max(1, line.variants)
     best = None
     attempt = 0
     tried = []
-    while attempt < ATTEMPTS * variants:
+    while attempt < attempts * variants:
         if tried and budget_left() < len(line.text) * 3:  # повтор не должен съесть символы следующих реплик
             break
         s = seed_for(line.id, attempt)
@@ -130,6 +132,34 @@ def gen_line(line: Line, voices, model, stitch, chain, stt):
             os.remove(w)
             os.remove(w[:-4] + '.json')
     return meta.get('request_id'), attempt, meta['qa']['flags']
+
+
+def done(line_id):
+    return os.path.exists(paths(line_id)[0])
+
+
+def gen_new(voices, model, stt):
+    """Патч №1: новые реплики (prio) без файла, P1 → P2 → P3; не больше одного повтора; стоп, когда кончились символы."""
+    todo = sorted([l for l in LINES if l.prio and not done(l.id)], key=lambda l: (l.prio, l.ep, l.win[0]))
+    need = {p: sum(len(l.text) for l in todo if l.prio == p) for p in (1, 2, 3)}
+    left = budget_left()
+    print(f'нужно символов: P1 {need[1]}, P2 {need[2]}, P3 {need[3]}, всего {sum(need.values())}; осталось {left}')
+    made, skipped = [], []
+    for l in todo:
+        if len(l.text) > budget_left():
+            skipped.append(l.id)
+            continue
+        try:
+            _, n, flags = gen_line(l, voices, model, False, [], stt, attempts=2, context_only=True)
+        except el.ElevenError as e:
+            if 'quota_exceeded' not in str(e):
+                raise
+            skipped.append(l.id)  # счётчик расхода отстаёт от списания — отказ по квоте бесплатный, идём к более коротким
+            continue
+        made.append(l.id)
+        print(f'{l.id} (P{l.prio}): попыток {n}{" · СЛУШАТЬ: " + "; ".join(flags) if flags else ""}', flush=True)
+    print('озвучено:', ' '.join(made) or 'ничего')
+    print('не хватило символов:', ' '.join(skipped) or 'нет')
 
 
 def gen_dialogue(group, voices, model, stt):
@@ -166,6 +196,12 @@ def main():
         shutil.copyfile(src_js, dst_js)
         print(f'{lid}: выбран вариант {k}')
         return
+    if '--new' in args:
+        voices = load_voices()
+        gen_new(voices, el.pick_model(), qa.scribe())
+        used, limit = el.usage()
+        print(f'символов израсходовано: {used} из {limit}')
+        return
     redo = set(args[args.index('--redo') + 1:]) if '--redo' in args else set()
     eps = [int(args[args.index('--ep') + 1])] if '--ep' in args else [1, 2, 3, 4, 5]
     voices = load_voices()
@@ -178,7 +214,7 @@ def main():
         with open(LOG, encoding='utf-8') as f:
             log = json.load(f)
     for ep in eps:
-        ep_lines = [l for l in LINES if l.ep == ep and not l.reuse]
+        ep_lines = [l for l in LINES if l.ep == ep and not l.reuse and not l.prio]  # новые реплики патча — только через --new
         todo = lambda l: l.id in redo or (not redo and not os.path.exists(paths(l.id)[0]))
         chain = []
         # 1. монолог цепочкой (уже готовые реплики тоже дают request_id для склейки)

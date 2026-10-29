@@ -10,28 +10,32 @@ import {CarSideLayers} from '../../common/sets';
 import {WatchShot} from '../../common/closeups';
 import {EP1_SIDE} from '../cast';
 
-const HIT = 15;
+// единственная «драматическая тишина» серии (патч №1, §1: до 1,5 с): часы на 18:47, ни звука
+const HIT = 36;
+const WHITE = HIT + 103;
+const RED = WHITE + 60;
 
-/** 1:10–1:25. 18:47. Тишина 15 кадров → инфразвуковой удар, трещины, люди падают, 3 кадра белого, тьма. */
+/** 18:47. Тишина 1,2 с → инфразвуковой удар, трещины, люди падают, 3 кадра белого, 2 с тьмы с криком и дыханием, красные вспышки. */
 export const Ep1Impact: React.FC<{dur: number}> = ({dur}) => (
   <AbsoluteFill style={{background: '#000'}}>
     <Sequence durationInFrames={HIT}>
       <WatchShot h={18} m={47} s={0.4} zoom={1.3} />
     </Sequence>
-    <Sequence from={HIT} durationInFrames={118 - HIT}>
+    <Sequence from={HIT} durationInFrames={WHITE - HIT}>
       <Chaos />
     </Sequence>
-    <Sequence from={118} durationInFrames={3}>
+    <Sequence from={WHITE} durationInFrames={3}>
       <AbsoluteFill style={{background: '#F4F2EC'}} />
     </Sequence>
-    <Sequence from={300} durationInFrames={dur - 300}>
+    <Sequence from={RED} durationInFrames={dur - RED}>
       <RedFlickers />
     </Sequence>
     <Snd src="boom.wav" from={HIT} dur={210} vol={1} />
-    <Snd src="scrape.wav" from={60} dur={110} vol={0.5} />
-    <Snd src="cry_short.wav" from={175} dur={20} vol={0.35} />
-    <Snd src="breath_close.wav" from={200} dur={dur - 200} vol={0.25} loop fadeIn={30} />
-    <Snd src="tunnel_drone.wav" from={130} dur={dur - 130} vol={0.4} loop fadeIn={60} />
+    <Snd src="scrape.wav" from={HIT + 45} dur={110} vol={0.5} />
+    <Snd src="cry_short.wav" from={WHITE + 20} dur={20} vol={0.35} />
+    <Snd src="knock.wav" from={WHITE + 45} dur={30} vol={0.35} />
+    <Snd src="breath_close.wav" from={WHITE + 30} dur={dur - WHITE - 30} vol={0.25} loop fadeIn={20} />
+    <Snd src="tunnel_drone.wav" from={WHITE + 10} dur={dur - WHITE - 10} vol={0.4} loop fadeIn={40} />
   </AbsoluteFill>
 );
 

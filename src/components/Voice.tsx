@@ -97,6 +97,29 @@ const spokenWords = (chars: VoiceChar[]): Word[] => {
 };
 
 /**
+ * Кадр (в текущей Sequence), на котором начинается слово реплики: nth — какое по счёту вхождение (с 0).
+ * Нужен, чтобы цифра, мигание света или смена плана попадали ровно на произнесённое слово.
+ * Без голоса — fallback.
+ */
+export const useWordFrame = (id: string, word: string, fallback: number, nth = 0): number => {
+  const line = useVoiceLine(id);
+  const {base} = useContext(VoiceCtx);
+  const off = Internals.useTimelinePosition() - base - useCurrentFrame();
+  if (!line || !line.chars.length) return fallback;
+  const hits = spokenWords(line.chars).filter((w) => w.w === norm(word));
+  const w = hits[nth];
+  return w ? line.startFrame + Math.round(w.a * FPS) - off : fallback;
+};
+
+/** Кадр (в текущей Sequence), на котором реплика заканчивается. */
+export const useVoiceEnd = (id: string, fallback: number): number => {
+  const line = useVoiceLine(id);
+  const {base} = useContext(VoiceCtx);
+  const off = Internals.useTimelinePosition() - base - useCurrentFrame();
+  return line ? line.startFrame + line.durationFrames - off : fallback;
+};
+
+/**
  * Время (с от начала реплики) появления каждого символа показанного текста.
  * Показанный текст может отличаться от произнесённого (цифры, «—» вместо «...», часть реплики):
  * слова сопоставляются по порядку, несовпавшие получают время соседей.

@@ -6,3 +6,4 @@ export * from './PencilNumber';
 export * from './InspectionAct';
 export * from './TitleCard';
 export * from './typing';
+export * from './ContractClause';

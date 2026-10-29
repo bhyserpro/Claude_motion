@@ -1,0 +1,1501 @@
+{
+ "E1-01": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[low, close to the mic, calm and quiet] Ты едешь домой с работы. [pause] [slower, almost a whisper] Через восемь минут... твоего города не станет.",
+  "spoken": "Ты едешь домой с работы. Через восемь минут... твоего города не станет.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-01.wav",
+  "dur": 5.6,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 548101274,
+  "request_id": "XlduFa0pGOMzbRcwBKlM",
+  "flags": [
+   "высота 80 Гц при эталоне 96",
+   "высота 80 Гц вне 95–115",
+   "щелчки: 1"
+  ]
+ },
+ "E1-02": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[low, tired, dry irony] Двадцать лет я оцениваю убытки. [pause] Пожар. Потоп. Авария. Я прихожу после... и считаю, что осталось.",
+  "spoken": "Двадцать лет я оцениваю убытки. Пожар. Потоп. Авария. Я прихожу после... и считаю, что осталось.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-02.wav",
+  "dur": 9.04,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 966921504,
+  "request_id": "rFegCIPQBxtQX4lkjL5z",
+  "flags": [
+   "высота 83 Гц при эталоне 96",
+   "центроид 569 Гц при эталоне 759",
+   "щелчки: 3"
+  ]
+ },
+ "E1-03": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[barely audible, muttering to himself] Одиннадцать... двенадцать... тринадцать... четырнадцать.",
+  "spoken": "Одиннадцать... двенадцать... тринадцать... четырнадцать.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-03.wav",
+  "dur": 4.24,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1319452086,
+  "request_id": "4stslXOpVIlSwVMPkgJq",
+  "flags": [
+   "центроид 902 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E1-04": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[calm, matter-of-fact] Четырнадцать. Я всегда считаю. [pause] Привычка. Потом проще описывать ущерб.",
+  "spoken": "Четырнадцать. Я всегда считаю. Привычка. Потом проще описывать ущерб.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-04.wav",
+  "dur": 6.0,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1354868757,
+  "request_id": "1Ta4PAOfOb5ARuoFwDmu",
+  "flags": [
+   "высота 115 Гц при эталоне 96",
+   "щелчки: 3"
+  ]
+ },
+ "E1-05": {
+  "ep": 1,
+  "who": "pavel",
+  "text": "[trying to sound calm, tense underneath] Говорит машинист. Без паники. Связи нет. [pause] Ждём.",
+  "spoken": "Говорит машинист. Без паники. Связи нет. Ждём.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-05.wav",
+  "dur": 4.4,
+  "voice_id": "cjVigY5qzO86Huf0OWal",
+  "model": "eleven_v4",
+  "seed": 667326595,
+  "request_id": "UyVsSgp9vn5ipDyShyP6",
+  "flags": [
+   "центроид 873 Гц при эталоне 571"
+  ]
+ },
+ "E1-06": {
+  "ep": 1,
+  "who": "announcer",
+  "text": "[formal, measured, cold] Внимание. Говорит штаб гражданской обороны. В городе объявлен режим радиационной опасности. Гермозатворы метрополитена закрыты. Оставайтесь на местах. Не покидайте укрытия. Ожидайте указаний. [pause] Внимание. Говорит штаб гражданской обороны...",
+  "spoken": "Внимание. Говорит штаб гражданской обороны. В городе объявлен режим радиационной опасности. Гермозатворы метрополитена закрыты. Оставайтесь на местах. Не покидайте укрытия. Ожидайте указаний. Внимание. Говорит штаб гражданской обороны...",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-06.wav",
+  "dur": 19.44,
+  "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+  "model": "eleven_v4",
+  "seed": 1053804857,
+  "request_id": "QCZ594vKgluL4R6QLW90",
+  "flags": [
+   "щелчки: 3",
+   "тишина по краям 0.03/0.49 с",
+   "длина 19.4 с при окне 16 с"
+  ]
+ },
+ "E1-07": {
+  "ep": 1,
+  "who": "nina",
+  "text": "[calm, gentle, reassuring] Это ещё ничего.",
+  "spoken": "Это ещё ничего.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-07.wav",
+  "dur": 1.28,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 1237907887,
+  "request_id": "69ICFh9d6XmF6aosTrPb",
+  "flags": [
+   "центроид 757 Гц при эталоне 556"
+  ]
+ },
+ "E1-08": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[quiet, slow] Она сказала это так... как врачи говорят о том, что уже случилось.",
+  "spoken": "Она сказала это так... как врачи говорят о том, что уже случилось.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-08.wav",
+  "dur": 5.12,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1501029438,
+  "request_id": "WZAVAHRH3TT3judbo6vZ",
+  "flags": [
+   "центроид 623 Гц при эталоне 759"
+  ]
+ },
+ "E1-09": {
+  "ep": 1,
+  "who": "pavel",
+  "text": "[quiet, steady, forcing confidence] Схожу до гермы. Посмотрю. Двери не открывать.",
+  "spoken": "Схожу до гермы. Посмотрю. Двери не открывать.",
+  "new": true,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-09.wav",
+  "dur": 4.0,
+  "voice_id": "cjVigY5qzO86Huf0OWal",
+  "model": "eleven_v4",
+  "seed": 779146408,
+  "request_id": "jat33o3UcsP5cjAXwDhF",
+  "flags": [
+   "центроид 656 Гц при эталоне 571"
+  ]
+ },
+ "E1-10": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[whispering, slow] Двенадцать... тринадцать... четырнадцать... [long pause] [breath catches, barely audible] пятнадцать.",
+  "spoken": "Двенадцать... тринадцать... четырнадцать... пятнадцать.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-10.wav",
+  "dur": 6.24,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1320639821,
+  "request_id": "urUabycmXfgoh8jvn8mo",
+  "flags": [
+   "текст: 11 % ошибок",
+   "центроид 4065 Гц при эталоне 759"
+  ]
+ },
+ "E1-N01": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[dry, quoting from memory, quiet irony] Пункт девять-четыре. Не является страховым случаем ущерб вследствие... радиоактивного заражения. [pause] Мелкий шрифт. Его никто не читает.",
+  "spoken": "Пункт девять-четыре. Не является страховым случаем ущерб вследствие... радиоактивного заражения. Мелкий шрифт. Его никто не читает.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-N01.wav",
+  "dur": 10.08,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1423067818,
+  "request_id": "AVwrZwN5r8lppGMyycSG",
+  "flags": [
+   "щелчки: 6"
+  ]
+ },
+ "E1-N02": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[quiet but clearly audible, muttering to himself, steady rhythm] Один. Два. Три. Четыре. Пять. Шесть. Семь. Восемь. Девять. Десять.",
+  "spoken": "Один. Два. Три. Четыре. Пять. Шесть. Семь. Восемь. Девять. Десять.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-N02.wav",
+  "dur": 9.44,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1306204944,
+  "request_id": "6No5Tmj7GJsB1oPRn58i",
+  "flags": [
+   "центроид 1201 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E1-N03": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[calm, observant, low] Восемнадцать сорок шесть. Свет мигнул. [pause] В моей работе это называется — первый признак. [pause] Его тоже никто не замечает.",
+  "spoken": "Восемнадцать сорок шесть. Свет мигнул. В моей работе это называется — первый признак. Его тоже никто не замечает.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-N03.wav",
+  "dur": 8.56,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 987507590,
+  "request_id": "CcmOOnZyJA33V7dQuUMT",
+  "flags": [
+   "центроид 605 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E1-N04": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[low, quiet, counting slowly] Я считал его шаги. [pause] Сто десять... сто одиннадцать... сто двенадцать... [pause] Потом считать стало нечего.",
+  "spoken": "Я считал его шаги. Сто десять... сто одиннадцать... сто двенадцать... Потом считать стало нечего.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep1/E1-N04.wav",
+  "dur": 9.6,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 616087077,
+  "request_id": "CWfyhxc9AeMUUplljlqG",
+  "flags": [
+   "высота 81 Гц при эталоне 96",
+   "тишина по краям 0.10/0.54 с",
+   "длина 9.6 с при окне 8 с"
+  ]
+ },
+ "E1-N05": {
+  "ep": 1,
+  "who": "gleb",
+  "text": "[whispering, close] Пятнадцатый был мокрый. [pause] А туннель — сухой.",
+  "spoken": "Пятнадцатый был мокрый. А туннель — сухой.",
+  "new": true,
+  "prio": 3,
+  "reuse": null,
+  "exists": false
+ },
+ "E2-01": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[low, close to the mic, steady] Ты нашёл человека, который ушёл за помощью. [pause] [quieter] У него во рту... камни.",
+  "spoken": "Ты нашёл человека, который ушёл за помощью. У него во рту... камни.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-01.wav",
+  "dur": 5.44,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 840889204,
+  "request_id": "GtWVPXfYvoMFiKYrwdXb",
+  "flags": [
+   "высота 81 Гц при эталоне 96",
+   "высота 81 Гц вне 95–115",
+   "центроид 509 Гц при эталоне 759"
+  ]
+ },
+ "E2-02": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[dry, cold, measured] На третий день люди перестают быть пассажирами. [pause] Становятся заявителями. [slight bitter irony] Каждый уверен, что его случай особый.",
+  "spoken": "На третий день люди перестают быть пассажирами. Становятся заявителями. Каждый уверен, что его случай особый.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-02.wav",
+  "dur": 8.56,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 722969294,
+  "request_id": "lDNoFzymfhjPtRpPbvfe",
+  "flags": [
+   "щелчки: 2"
+  ]
+ },
+ "E2-03": {
+  "ep": 2,
+  "who": "semyon",
+  "text": "[slow, a little out of breath] До гермы двести метров. Я тут тридцать лет ходил.",
+  "spoken": "До гермы двести метров. Я тут тридцать лет ходил.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-03.wav",
+  "dur": 4.4,
+  "voice_id": "pqHfZKP75CvOlQylNhV4",
+  "model": "eleven_v4",
+  "seed": 1544589912,
+  "request_id": "ts7PAG4iw3wuel0BSZlt",
+  "flags": [
+   "высота 155 Гц при эталоне 128",
+   "щелчки: 1"
+  ]
+ },
+ "E2-04": {
+  "ep": 2,
+  "who": "semyon",
+  "text": "[pointing something out, matter-of-fact] Вентшахта. Наверх ведёт. Решётка там на замке.",
+  "spoken": "Вентшахта. Наверх ведёт. Решётка там на замке.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-04.wav",
+  "dur": 3.76,
+  "voice_id": "pqHfZKP75CvOlQylNhV4",
+  "model": "eleven_v4",
+  "seed": 1114900475,
+  "request_id": "MIMb617gr3XWBJsvabK8",
+  "flags": [
+   "высота 158 Гц при эталоне 128",
+   "щелчки: 1"
+  ]
+ },
+ "E2-05": {
+  "ep": 2,
+  "who": "semyon",
+  "text": "[whispering, shaken, trembling voice] Паша... Господи, Паша.",
+  "spoken": "Паша... Господи, Паша.",
+  "new": true,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-05.wav",
+  "dur": 2.4,
+  "voice_id": "pqHfZKP75CvOlQylNhV4",
+  "model": "eleven_v4",
+  "seed": 896743277,
+  "request_id": "Rgn00OMdyDg47DG7X4Vq",
+  "flags": [
+   "центроид 3490 Гц при эталоне 858"
+  ]
+ },
+ "E2-06": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[quiet, precise, like dictating a report] Акт осмотра номер один. [pause] Пункт первый. Ожогов нет. [pause] Пункт второй. Ногти сорваны. Он царапал герму. [pause] Пункт третий. Царапины на герме... [long pause] [quieter] и с этой стороны. [pause] Пункт четвёртый. Следы. Его ботинки — к герме. Другие — босые. От шахты. К поезду. [pause] Обратно — нет. [pause] Пункт пятый. Дозиметр машиниста. Ноль целых четыре десятых миллизиверта.",
+  "spoken": "Акт осмотра номер один. Пункт первый. Ожогов нет. Пункт второй. Ногти сорваны. Он царапал герму. Пункт третий. Царапины на герме... и с этой стороны. Пункт четвёртый. Следы. Его ботинки — к герме. Другие — босые. От шахты. К поезду. Обратно — нет. Пункт пятый. Дозиметр машиниста. Ноль целых четыре десятых миллизиверта.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-06.wav",
+  "dur": 30.08,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 746219223,
+  "request_id": "Jbr2M4BCMZJ356sLdjed",
+  "flags": [
+   "щелчки: 4"
+  ]
+ },
+ "E2-07": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[low, grim, quiet] С такой дозой живут. [pause] От неё не умирают с камнями во рту.",
+  "spoken": "С такой дозой живут. От неё не умирают с камнями во рту.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-07.wav",
+  "dur": 4.48,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1534940737,
+  "request_id": "dNFIDObdK2sg7fXrGhKQ",
+  "flags": [
+   "высота 78 Гц при эталоне 96",
+   "высота 78 Гц вне 95–115",
+   "центроид 347 Гц при эталоне 759",
+   "длина 4.5 с при окне 2 с"
+  ]
+ },
+ "E2-08": {
+  "ep": 2,
+  "who": "nina",
+  "text": "[calm, gentle, final] У вас много. Вам нужно отдельно.",
+  "spoken": "У вас много. Вам нужно отдельно.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-08.wav",
+  "dur": 2.64,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 1271024592,
+  "request_id": "muOP5vQ33B9ysKBdBinr",
+  "flags": [
+   "центроид 332 Гц при эталоне 556"
+  ]
+ },
+ "E2-09": {
+  "ep": 2,
+  "who": "nina",
+  "text": "[soft, after a short hesitation] Нормально.",
+  "spoken": "Нормально.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-09.wav",
+  "dur": 1.2,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 1019575110,
+  "request_id": "JOfCabeP8NOp8ondsNVG",
+  "flags": [
+   "высота 180 Гц при эталоне 218",
+   "центроид 257 Гц при эталоне 556"
+  ]
+ },
+ "E2-10": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[quiet, suspicious, slow] Она мерила всех. [pause] Себя — нет.",
+  "spoken": "Она мерила всех. Себя — нет.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-10.wav",
+  "dur": 4.0,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1543697059,
+  "request_id": "HE5jL7Hp8XXCjNhd1Lsw",
+  "flags": [
+   "центроид 1006 Гц при эталоне 759"
+  ]
+ },
+ "E2-11": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[barely audible whisper] Пятнадцать.",
+  "spoken": "Пятнадцать.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-11.wav",
+  "dur": 1.2,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 721797685,
+  "request_id": "qrau37Po9OHemH5KD0uD",
+  "flags": [
+   "центроид 2797 Гц при эталоне 759"
+  ]
+ },
+ "E2-12": {
+  "ep": 2,
+  "who": "semyon",
+  "text": "[a short, choked cry of fear, cut off abruptly] А-а...",
+  "spoken": "А-а...",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-12.wav",
+  "dur": 2.56,
+  "voice_id": "pqHfZKP75CvOlQylNhV4",
+  "model": "eleven_v4",
+  "seed": 839685007,
+  "request_id": "sT10j0HVlcUtHBigXPlj",
+  "flags": [
+   "текст: 100 % ошибок",
+   "высота 238 Гц при эталоне 128",
+   "высота 238 Гц вне 110–135",
+   "длина 2.6 с при окне 2 с"
+  ]
+ },
+ "E2-N01": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[dry, quoting, bitter irony] Пункт три-один. Страхователь обязан принять все меры к уменьшению убытков. [pause] Корнеев принял меры первым.",
+  "spoken": "Пункт три-один. Страхователь обязан принять все меры к уменьшению убытков. Корнеев принял меры первым.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-N01.wav",
+  "dur": 7.68,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 326250618,
+  "request_id": "NtyaeMWOXuaybQ86L4oW",
+  "flags": [
+   "высота 111 Гц при эталоне 96",
+   "центроид 988 Гц при эталоне 759",
+   "щелчки: 5"
+  ]
+ },
+ "E2-N02": {
+  "ep": 2,
+  "who": "korneev",
+  "text": "[gruff, loud enough for everyone, threatening] Воду делю я. По крышке в час. [pause] Кто тронет — пожалеет.",
+  "spoken": "Воду делю я. По крышке в час. Кто тронет — пожалеет.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-N02.wav",
+  "dur": 4.64,
+  "voice_id": "pNInz6obpgDQGcFmaJgB",
+  "model": "eleven_v4",
+  "seed": 175858112,
+  "request_id": "VoAZLAJZ7N0ASzNBOGra",
+  "flags": [
+   "высота 177 Гц при эталоне 112",
+   "высота 177 Гц вне 100–125",
+   "центроид 1401 Гц при эталоне 611"
+  ]
+ },
+ "E2-N03": {
+  "ep": 2,
+  "who": "semyon",
+  "text": "[slow, uneasy, lowering his voice] Слышишь? [pause] Туннель всегда гудит. А сейчас молчит. [pause] Плохо это.",
+  "spoken": "Слышишь? Туннель всегда гудит. А сейчас молчит. Плохо это.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-N03.wav",
+  "dur": 6.88,
+  "voice_id": "pqHfZKP75CvOlQylNhV4",
+  "model": "eleven_v4",
+  "seed": 2105299286,
+  "request_id": "oPv42JNhdi28H1Ivqg7z",
+  "flags": [
+   "центроид 1617 Гц при эталоне 858",
+   "длина 6.9 с при окне 4 с"
+  ]
+ },
+ "E2-N04": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[quiet, focused, deducing] Фонарь машиниста ещё горел. [pause] Батарейки садятся за двое суток. [pause] Значит, он сидит здесь... с первой ночи.",
+  "spoken": "Фонарь машиниста ещё горел. Батарейки садятся за двое суток. Значит, он сидит здесь... с первой ночи.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-N04.wav",
+  "dur": 8.56,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1662567669,
+  "request_id": "tJ2BeSzh7ksconXn0OC7",
+  "flags": [
+   "центроид 882 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E2-N05": {
+  "ep": 2,
+  "who": "nina",
+  "text": "[calm, quiet, clinical] Ноль тридцать. [pause] Ноль тридцать. [pause] Ноль тридцать одна. [pause] Ноль тридцать.",
+  "spoken": "Ноль тридцать. Ноль тридцать. Ноль тридцать одна. Ноль тридцать.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-N05.wav",
+  "dur": 6.72,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 337638499,
+  "request_id": "yeIDNxTUFztrcHcW2xJ3",
+  "flags": [
+   "центроид 385 Гц при эталоне 556",
+   "щелчки: 1",
+   "длина 6.7 с при окне 4 с"
+  ]
+ },
+ "E2-N06": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[whispering, slow, in rhythm with knocks] Девять... десять... одиннадцать... двенадцать... тринадцать... четырнадцать...",
+  "spoken": "Девять... десять... одиннадцать... двенадцать... тринадцать... четырнадцать...",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep2/E2-N06.wav",
+  "dur": 7.04,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 219588057,
+  "request_id": "p0g3HvwUig2uOvrZQyds",
+  "flags": [
+   "щелчки: 1",
+   "длина 7.0 с при окне 6 с"
+  ]
+ },
+ "E2-N07": {
+  "ep": 2,
+  "who": "gleb",
+  "text": "[low, grim, whispering] Семён кричал недолго. [pause] Утром у него были сложены руки. Сам он так лечь не мог.",
+  "spoken": "Семён кричал недолго. Утром у него были сложены руки. Сам он так лечь не мог.",
+  "new": true,
+  "prio": 3,
+  "reuse": null,
+  "exists": false
+ },
+ "E3-01": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[barely audible whisper, holding his breath] Ты стоишь в темноте. [pause] Тебя трогают за лицо. [long pause] Если вздохнёшь... умрёшь.",
+  "spoken": "Ты стоишь в темноте. Тебя трогают за лицо. Если вздохнёшь... умрёшь.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-01.wav",
+  "dur": 7.36,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 178426897,
+  "request_id": "Hv1Tg8N59vDY2nLjwI49",
+  "flags": [
+   "длина 7.4 с при окне 6 с"
+  ]
+ },
+ "E3-02": {
+  "ep": 3,
+  "who": "nina",
+  "text": "[calm, quiet, matter-of-fact] Лучевая. Я предупреждала.",
+  "spoken": "Лучевая. Я предупреждала.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-02.wav",
+  "dur": 2.56,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 330024363,
+  "request_id": "DHA2QJhSz402H6b6JOJa",
+  "flags": [
+   "высота 189 Гц при эталоне 218",
+   "центроид 415 Гц при эталоне 556",
+   "щелчки: 1"
+  ]
+ },
+ "E3-03": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[low, slow, cold] Острая лучевая убивает за дни. [pause] Не за ночь. [pause] Убыток не сходился с причиной.",
+  "spoken": "Острая лучевая убивает за дни. Не за ночь. Убыток не сходился с причиной.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-03.wav",
+  "dur": 6.88,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1689056573,
+  "request_id": "PzpVlFvmdDU3UtxC49an",
+  "flags": [
+   "центроид 390 Гц при эталоне 759"
+  ]
+ },
+ "E3-04": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[whispering, tense] Морфин. Из больничного сейфа. [pause] Пустые. [pause] Список. Имена... дозы. [long pause] И галочки.",
+  "spoken": "Морфин. Из больничного сейфа. Пустые. Список. Имена... дозы. И галочки.",
+  "new": true,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-04.wav",
+  "dur": 9.04,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 2059952286,
+  "request_id": "mhbndACPEjxvFa76yQcB",
+  "flags": [
+   "центроид 1125 Гц при эталоне 759",
+   "щелчки: 2"
+  ]
+ },
+ "E3-05": {
+  "ep": 3,
+  "who": "korneev",
+  "text": "[gruff, impatient, decided] Хватит. Я наверх, через шахту.",
+  "spoken": "Хватит. Я наверх, через шахту.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-05.wav",
+  "dur": 2.72,
+  "voice_id": "pNInz6obpgDQGcFmaJgB",
+  "model": "eleven_v4",
+  "seed": 231690248,
+  "request_id": "wzM4Z25KfJBHTIjF6xiK",
+  "flags": [
+   "высота 157 Гц при эталоне 112",
+   "высота 157 Гц вне 100–125",
+   "центроид 1321 Гц при эталоне 611"
+  ]
+ },
+ "E3-06": {
+  "ep": 3,
+  "who": "korneev",
+  "text": "[whispering, terrified] Господи...",
+  "spoken": "Господи...",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-06.wav",
+  "dur": 1.28,
+  "voice_id": "pNInz6obpgDQGcFmaJgB",
+  "model": "eleven_v4",
+  "seed": 348520882,
+  "request_id": "yM9Q2hb2dghssX4KiZzH",
+  "flags": [
+   "центроид 4476 Гц при эталоне 611"
+  ]
+ },
+ "E3-07": {
+  "ep": 3,
+  "who": "korneev",
+  "text": "[panicked, shouting] Назад! Пошли назад! [screaming] Не трогай меня!",
+  "spoken": "Назад! Пошли назад! Не трогай меня!",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-07.wav",
+  "dur": 3.12,
+  "voice_id": "pNInz6obpgDQGcFmaJgB",
+  "model": "eleven_v4",
+  "seed": 1673605412,
+  "request_id": "9ZyY4xxYYgNpfFcyDEy3",
+  "flags": [
+   "высота 193 Гц при эталоне 112",
+   "высота 193 Гц вне 100–125",
+   "центроид 1324 Гц при эталоне 611",
+   "щелчки: 1"
+  ]
+ },
+ "E3-08": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[holding his breath, a tiny shaky inhale through the nose] ... [long pause] [a long, silent, trembling exhale]",
+  "spoken": "...",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-08.wav",
+  "dur": 5.28,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1937648821,
+  "request_id": "3iRXBWAFwH3dXJdpDjOC",
+  "flags": [
+   "центроид 6027 Гц при эталоне 759",
+   "тишина по краям 0.03/0.46 с"
+  ]
+ },
+ "E3-09": {
+  "ep": 3,
+  "who": "fifteen",
+  "text": "[extremely quiet, breathy whisper] Тсс.",
+  "spoken": "Тсс.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-09.wav",
+  "dur": 0.88,
+  "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+  "model": "eleven_v4",
+  "seed": 75045923,
+  "request_id": "aCM2hqLtmzXO85L555sk",
+  "flags": [
+   "текст: 100 % ошибок",
+   "центроид 6054 Гц при эталоне 603",
+   "щелчки: 1"
+  ]
+ },
+ "E3-10": {
+  "ep": 3,
+  "who": "nina",
+  "text": "[soft, almost tender, sincere] Мне жаль. [pause] Я хотела, чтобы ты не мучился.",
+  "spoken": "Мне жаль. Я хотела, чтобы ты не мучился.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-10.wav",
+  "dur": 4.56,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 1690211782,
+  "request_id": "QePvyoiQnlxxjvYZVuLz",
+  "flags": [
+   "текст: 14 % ошибок",
+   "центроид 686 Гц при эталоне 556",
+   "щелчки: 1"
+  ]
+ },
+ "E3-N01": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[quiet, close, examining] Зрачки — с булавочную головку. [pause] И прокол на сгибе локтя. Свежий.",
+  "spoken": "Зрачки — с булавочную головку. И прокол на сгибе локтя. Свежий.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-N01.wav",
+  "dur": 5.6,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 772938186,
+  "request_id": "L7IZojeyHXSX2VhWZNRm",
+  "flags": [
+   "высота 82 Гц при эталоне 96",
+   "центроид 423 Гц при эталоне 759",
+   "щелчки: 3"
+  ]
+ },
+ "E3-N02": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[whispering, reading quickly] Семён Аркадьевич. Семь зивертов. Галочка. [pause] Ниже — загнуто.",
+  "spoken": "Семён Аркадьевич. Семь зивертов. Галочка. Ниже — загнуто.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": false
+ },
+ "E3-N03": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[quiet, decided] Я с тобой.",
+  "spoken": "Я с тобой.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-N03.wav",
+  "dur": 0.96,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1075607782,
+  "request_id": "CmbcMPSQVPbvT0BO9mgQ",
+  "flags": [
+   "высота 84 Гц при эталоне 96",
+   "центроид 1256 Гц при эталоне 759"
+  ]
+ },
+ "E3-N04": {
+  "ep": 3,
+  "who": "korneev",
+  "text": "[gruff, low] Не отставай. Свети под ноги.",
+  "spoken": "Не отставай. Свети под ноги.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": false
+ },
+ "E3-N05": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[whispering, uneasy] Сверху сыпался пепел. Мокрый. [pause] Наверху шёл дождь. [pause] Вот почему он был мокрый.",
+  "spoken": "Сверху сыпался пепел. Мокрый. Наверху шёл дождь. Вот почему он был мокрый.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-N05.wav",
+  "dur": 7.28,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 696245715,
+  "request_id": "N4N2b5T1DJzRyUrxri1w",
+  "flags": [
+   "центроид 561 Гц при эталоне 759"
+  ]
+ },
+ "E3-N06": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[barely audible whisper, counting automatically] Три... четыре... семь... десять... [stops himself, terrified whisper] Не считай. [pause] Не считай.",
+  "spoken": "Три... четыре... семь... десять... Не считай. Не считай.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-N06.wav",
+  "dur": 6.16,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 813075561,
+  "request_id": "1oKRC1cCcPUeE5WxulsA",
+  "flags": [
+   "центроид 1332 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E3-N07": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[shaky, low, out of breath] Корнеев не вернулся. Я вернулся один. [pause] Нина не спала.",
+  "spoken": "Корнеев не вернулся. Я вернулся один. Нина не спала.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep3/E3-N07.wav",
+  "dur": 5.12,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1198636287,
+  "request_id": "Uwke8QLxaDmOfd3cUtvB",
+  "flags": [
+   "щелчки: 1"
+  ]
+ },
+ "E3-N08": {
+  "ep": 3,
+  "who": "gleb",
+  "text": "[low, grim, controlled] Шесть и две десятых зиверта. [pause] Если она не врёт — мне осталось меньше недели. [pause] Если врёт... я узнаю, сколько ещё она соврала.",
+  "spoken": "Шесть и две десятых зиверта. Если она не врёт — мне осталось меньше недели. Если врёт... я узнаю, сколько ещё она соврала.",
+  "new": true,
+  "prio": 3,
+  "reuse": null,
+  "exists": false
+ },
+ "E4-01": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[low, close to the mic, grim] Ты раскрыл убийство. [pause] [quieter, with dread] И сказал об этом вслух.",
+  "spoken": "Ты раскрыл убийство. И сказал об этом вслух.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-01.wav",
+  "dur": 3.92,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 393587880,
+  "request_id": "IWV6cIrqgkN7vA9Sbcrb",
+  "flags": [
+   "высота 78 Гц при эталоне 96",
+   "высота 78 Гц вне 95–115",
+   "центроид 2136 Гц при эталоне 759"
+  ]
+ },
+ "E4-02": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[dry, measured, professional] Когда клиент присылает идеальные документы... они поддельные. [pause] У Нины были идеальные документы.",
+  "spoken": "Когда клиент присылает идеальные документы... они поддельные. У Нины были идеальные документы.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-02.wav",
+  "dur": 7.28,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 243072274,
+  "request_id": "s49ZgUsZN92uu08Z8uI6",
+  "flags": [
+   "высота 116 Гц при эталоне 96",
+   "центроид 407 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E4-03": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[firm, clear, speaking to a room of people] Прокол на руке Семёна Аркадьевича. Пустые ампулы в её сумке. Морфин. [pause] Список. Галочка ставится после смерти. [pause] [slower, building intensity] И главное. Мы сидели в одном вагоне. Дышали одним воздухом. Когда она нас мерила — щелчки у всех были одинаковые. [pause] Нельзя облучиться сильнее, сидя на соседнем сиденье. [firm, final] Её дозы — выдумка.",
+  "spoken": "Прокол на руке Семёна Аркадьевича. Пустые ампулы в её сумке. Морфин. Список. Галочка ставится после смерти. И главное. Мы сидели в одном вагоне. Дышали одним воздухом. Когда она нас мерила — щелчки у всех были одинаковые. Нельзя облучиться сильнее, сидя на соседнем сиденье. Её дозы — выдумка.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-03.wav",
+  "dur": 24.48,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 2038156676,
+  "request_id": "sLo89QnVgdjowIVs3fvp",
+  "flags": [
+   "высота 124 Гц при эталоне 96",
+   "центроид 961 Гц при эталоне 759",
+   "щелчки: 2"
+  ]
+ },
+ "E4-04": {
+  "ep": 4,
+  "who": "nina",
+  "text": "[calm, even, almost gentle] Воды на пять дней. Нас было тринадцать. [pause] Я выбирала тех, кто умрёт всё равно. [long pause] [quiet, tired] Ошиблась я в одном. Всё равно умрут все.",
+  "spoken": "Воды на пять дней. Нас было тринадцать. Я выбирала тех, кто умрёт всё равно. Ошиблась я в одном. Всё равно умрут все.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-04.wav",
+  "dur": 10.88,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 1730107431,
+  "request_id": "LZfXk403MMS4Rf1NZ6xh",
+  "flags": [
+   "высота 174 Гц при эталоне 218",
+   "центроид 706 Гц при эталоне 556",
+   "щелчки: 2"
+  ]
+ },
+ "E4-05": {
+  "ep": 4,
+  "who": "akhmed",
+  "text": "[angry, voice rising] Ты их убила?! Ты сама решала, кому жить?!",
+  "spoken": "Ты их убила?! Ты сама решала, кому жить?!",
+  "new": true,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-05.wav",
+  "dur": 3.16,
+  "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+  "model": "eleven_v4",
+  "seed": null,
+  "request_id": null,
+  "flags": [
+   "высота 259 Гц при эталоне 152",
+   "высота 259 Гц вне 110–150",
+   "центроид 930 Гц при эталоне 476"
+  ]
+ },
+ "E4-06": {
+  "ep": 4,
+  "who": "olga",
+  "text": "[crying, voice breaking] Да как ты могла...",
+  "spoken": "Да как ты могла...",
+  "new": true,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-06.wav",
+  "dur": 2.44,
+  "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+  "model": "eleven_v4",
+  "seed": null,
+  "request_id": null,
+  "flags": [
+   "высота 264 Гц при эталоне 223",
+   "высота 264 Гц вне 160–210"
+  ]
+ },
+ "E4-07": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[sharp, loud, urgent hiss] Тихо!",
+  "spoken": "Тихо!",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-07.wav",
+  "dur": 0.56,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 2115373469,
+  "request_id": "zTmafygdMnC3KAw0zxib",
+  "flags": [
+   "центроид 2588 Гц при эталоне 759"
+  ]
+ },
+ "E4-08": {
+  "ep": 4,
+  "who": "nina",
+  "text": "[whispering, very close, intimate] Я подделала всех. [long pause] Кроме тебя.",
+  "spoken": "Я подделала всех. Кроме тебя.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-08.wav",
+  "dur": 3.44,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 1856574476,
+  "request_id": "Sp1BNMuCahHrvUjbGrWn",
+  "flags": [
+   "центроид 6098 Гц при эталоне 556"
+  ]
+ },
+ "E4-09": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[a sharp, quiet intake of breath] ... [silence]",
+  "spoken": "...",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-09.wav",
+  "dur": 2.08,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 430844043,
+  "request_id": "IgCaMOBnFBRbLeOjUsHt",
+  "flags": [
+   "центроид 1276 Гц при эталоне 759"
+  ]
+ },
+ "E4-N01": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[quiet, focused, comparing] Её прибор — ноль тридцать. Прибор машиниста — ноль тридцать. [pause] Одинаково. Как и должно быть.",
+  "spoken": "Её прибор — ноль тридцать. Прибор машиниста — ноль тридцать. Одинаково. Как и должно быть.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-N01.wav",
+  "dur": 7.52,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 473089498,
+  "request_id": "mhmjveEglmGfS7Fr2ye5",
+  "flags": [
+   "центроид 604 Гц при эталоне 759"
+  ]
+ },
+ "E4-N02": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[barely audible whisper] Не дышать. Не двигаться. [pause] Они слушают.",
+  "spoken": "Не дышать. Не двигаться. Они слушают.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep4/E4-N02.wav",
+  "dur": 3.44,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 87790688,
+  "request_id": "npBpGmCTwVCMiIr3ehOO",
+  "flags": [
+   "центроид 2309 Гц при эталоне 759"
+  ]
+ },
+ "E4-N03": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[whispering, faster, losing count] Двадцать... тридцать... сорок... [pause] Я перестал считать лица.",
+  "spoken": "Двадцать... тридцать... сорок... Я перестал считать лица.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": false
+ },
+ "E4-N05": {
+  "ep": 4,
+  "who": "gleb",
+  "text": "[quiet, stunned, slow] Пепел из шахты. В моём кармане. Два дня. [pause] Я сам принёс себе приговор.",
+  "spoken": "Пепел из шахты. В моём кармане. Два дня. Я сам принёс себе приговор.",
+  "new": true,
+  "prio": 3,
+  "reuse": null,
+  "exists": false
+ },
+ "E5-01": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[calm, tired, close to the mic] Тебе осталось жить несколько дней. [pause] Ты потратишь их, чтобы нажать одну кнопку.",
+  "spoken": "Тебе осталось жить несколько дней. Ты потратишь их, чтобы нажать одну кнопку.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-01.wav",
+  "dur": 5.76,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 801754061,
+  "request_id": "G4zmom7tlm6O26SnEh2P",
+  "flags": [
+   "высота 81 Гц при эталоне 96",
+   "центроид 546 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E5-02": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[tired, dry throat, quiet irony] Двадцать лет я считал чужие убытки. [pause] Свой посчитал за минуту.",
+  "spoken": "Двадцать лет я считал чужие убытки. Свой посчитал за минуту.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-02.wav",
+  "dur": 5.76,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 918592119,
+  "request_id": "g8hyo74axviycrxmeCOE",
+  "flags": [
+   "высота 79 Гц при эталоне 96",
+   "высота 79 Гц вне 95–115",
+   "центроид 994 Гц при эталоне 759"
+  ]
+ },
+ "E5-03": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[low, focused, thinking aloud] В шахту падает пепел. Значит, наверху открыто. [pause] Им нужен звук. [pause] [quiet, decided] Я дам им звук.",
+  "spoken": "В шахту падает пепел. Значит, наверху открыто. Им нужен звук. Я дам им звук.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-03.wav",
+  "dur": 7.92,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1103604449,
+  "request_id": "I4Bgzox9MIFE0RThOEy5",
+  "flags": [
+   "центроид 449 Гц при эталоне 759",
+   "щелчки: 2"
+  ]
+ },
+ "E5-04": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[whispering, calm and clear] Когда загудит — идите к шахте. Вдоль стены. Не говорите. Не светите. [pause] Не считайте.",
+  "spoken": "Когда загудит — идите к шахте. Вдоль стены. Не говорите. Не светите. Не считайте.",
+  "new": true,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-04.wav",
+  "dur": 7.04,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1604534082,
+  "request_id": "TolZVqr2AO6C6urkbxa7",
+  "flags": [
+   "щелчки: 3"
+  ]
+ },
+ "E5-05": {
+  "ep": 5,
+  "who": "nina",
+  "text": "[whispering, steady] Я пойду с ними. [pause] Без того, кто знает про дозу, они не дойдут.",
+  "spoken": "Я пойду с ними. Без того, кто знает про дозу, они не дойдут.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-05.wav",
+  "dur": 4.72,
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "model": "eleven_v4",
+  "seed": 681840596,
+  "request_id": "8aiz008cUzDLwdxFMFK6",
+  "flags": [
+   "центроид 1116 Гц при эталоне 556",
+   "щелчки: 6"
+  ]
+ },
+ "E5-06": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[quiet, slow, weak but steady, dictating a report] Акт осмотра номер три. Объект: вагон четыре. Перегон Заводская — Площадь Труда. [pause] Причина убытка... [long pause] [almost a whisper] Ущерб: полный.",
+  "spoken": "Акт осмотра номер три. Объект: вагон четыре. Перегон Заводская — Площадь Труда. Причина убытка... Ущерб: полный.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-06.wav",
+  "dur": 12.4,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 833445486,
+  "request_id": "aKX0arI7YrKZRY2Zpqim",
+  "flags": [
+   "щелчки: 5"
+  ]
+ },
+ "E5-07": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[calm, tender, quiet certainty] Нас было четырнадцать. [pause] Я всегда считаю.",
+  "spoken": "Нас было четырнадцать. Я всегда считаю.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-07.wav",
+  "dur": 3.68,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1185574648,
+  "request_id": "akYw0bpV8MhzxQ4Zvk4d",
+  "flags": [
+   "центроид 1003 Гц при эталоне 759"
+  ]
+ },
+ "E5-08": {
+  "ep": 5,
+  "who": "fifteen",
+  "text": "[extremely quiet, breathy whisper] Тсс.",
+  "spoken": "Тсс.",
+  "new": false,
+  "prio": 0,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-08.wav",
+  "dur": 1.6,
+  "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+  "model": "eleven_v4",
+  "seed": 1444246377,
+  "request_id": "FsK3YgAFGZ58NI4ut78I",
+  "flags": [
+   "текст: 100 % ошибок",
+   "центроид 7721 Гц при эталоне 603"
+  ]
+ },
+ "E5-09": {
+  "ep": 5,
+  "who": "announcer",
+  "text": null,
+  "spoken": null,
+  "new": false,
+  "prio": 0,
+  "reuse": "E1-06",
+  "exists": true,
+  "file": "voice/raw/ep1/E1-06.wav",
+  "dur": 19.44,
+  "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+  "model": "eleven_v4",
+  "seed": 1053804857,
+  "request_id": "QCZ594vKgluL4R6QLW90",
+  "flags": [
+   "щелчки: 3",
+   "тишина по краям 0.03/0.49 с",
+   "длина 19.4 с при окне 16 с"
+  ]
+ },
+ "E5-N01": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[tired, dry throat, professional] Кровь из носа. Волосы на пальцах. [pause] Классическая картина. Я видел такие акты.",
+  "spoken": "Кровь из носа. Волосы на пальцах. Классическая картина. Я видел такие акты.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": false
+ },
+ "E5-N02": {
+  "ep": 5,
+  "who": "akhmed",
+  "text": "[whispering, scared] А вы?",
+  "spoken": "А вы?",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-N02.wav",
+  "dur": 0.56,
+  "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+  "model": "eleven_v4",
+  "seed": 945536464,
+  "request_id": "3WYTAxsKRVUY1XUOVz7q",
+  "flags": []
+ },
+ "E5-N03": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[whispering, calm, a faint smile in the voice] А я посчитаю.",
+  "spoken": "А я посчитаю.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-N03.wav",
+  "dur": 1.04,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1331465542,
+  "request_id": "vT1Q2BG79X6ebbMafmHP",
+  "flags": [
+   "центроид 1688 Гц при эталоне 759"
+  ]
+ },
+ "E5-N04": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[quiet, counting slowly, listening] Сорок шагов до поворота. [pause] Тридцать... двадцать... десять... [pause] Всё. Ушли.",
+  "spoken": "Сорок шагов до поворота. Тридцать... двадцать... десять... Всё. Ушли.",
+  "new": true,
+  "prio": 1,
+  "reuse": null,
+  "exists": true,
+  "file": "voice/raw/ep5/E5-N04.wav",
+  "dur": 8.56,
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "model": "eleven_v4",
+  "seed": 1362630885,
+  "request_id": "fQV5SLcc8YRYIgUwuNtB",
+  "flags": [
+   "центроид 958 Гц при эталоне 759",
+   "щелчки: 1"
+  ]
+ },
+ "E5-N05": {
+  "ep": 5,
+  "who": "nina",
+  "text": "[whispering, firm] Вверх. Не останавливаться. Не смотреть вниз.",
+  "spoken": "Вверх. Не останавливаться. Не смотреть вниз.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": false
+ },
+ "E5-N06": {
+  "ep": 5,
+  "who": "gleb",
+  "text": "[calm, almost tender, quoting] Последний пункт договора. [pause] Страховая сумма выплачивается выгодоприобретателю. [pause] Пусть это будут они.",
+  "spoken": "Последний пункт договора. Страховая сумма выплачивается выгодоприобретателю. Пусть это будут они.",
+  "new": true,
+  "prio": 2,
+  "reuse": null,
+  "exists": false
+ }
+}

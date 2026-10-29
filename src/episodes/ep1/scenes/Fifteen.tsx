@@ -9,6 +9,7 @@ import {POSES} from '../../../components/Characters/Rig';
 import {camKeys, handheld, impact} from '../../../lib/camera';
 import {makeProjector} from '../../../lib/persp';
 import {GeigerTrack, Snd} from '../../common/audio';
+import {useWordFrame} from '../../../components/Voice';
 import {CorridorActor, corridorItems} from '../../common/sets';
 import {FogWindowShot} from '../../common/closeups';
 
@@ -27,35 +28,53 @@ const NIGHT: CorridorActor[] = [
   {id: 'teen', side: -1, z: 4.5, pose: POSES.sitSlumped},
 ];
 const COAT_Z = 13.4;
-const STEP = 420;
-const GONE = 520;
-const GEIGER: [number, number][] = [
-  [300, 2],
-  [430, 8],
-  [500, 40],
-];
+/** Моменты сцены: цифры — по словам E1-10, остальное отсчитывается от «пятнадцать». */
+type T = {n12: number; n13: number; n14: number; n15: number; step: number; blink: number; gone: number; end: number};
 
-/** 2:25–2:50. День 1, 23:10. Счёт при свете телефона: 12, 13, 14… и пятнадцатый. «НЕ СЧИТАЙ». */
-export const Ep1Fifteen: React.FC<{dur: number}> = ({dur}) => (
-  <AbsoluteFill>
-    <Sequence durationInFrames={580}>
-      <PhoneCount />
-    </Sequence>
-    <Sequence from={580} durationInFrames={dur - 580}>
-      <DontCount />
-    </Sequence>
-    <Timestamp text="ДЕНЬ 1 — 23:10" start={0} end={580} />
-    <Snd src="tunnel_drone.wav" dur={300} vol={0.45} loop trim={900} fadeOut={30} />
-    <Snd src="breath_close.wav" dur={300} vol={0.16} loop fadeOut={30} />
-    <GeigerTrack segs={GEIGER} end={580} vol={0.9} />
-    <Snd src="shuffle.wav" from={STEP} dur={18} vol={0.5} />
-    <Snd src="glass_squeak.wav" from={620} dur={48} vol={0.32} />
-    <Snd src="glass_squeak.wav" from={672} dur={48} vol={0.3} trim={8} />
-    <Snd src="drip.wav" from={720} dur={14} vol={0.4} />
-  </AbsoluteFill>
-);
+const useTimes = (): T => {
+  const n12 = useWordFrame('E1-10', 'Двенадцать', 40);
+  const n13 = useWordFrame('E1-10', 'тринадцать', 80);
+  const n14 = useWordFrame('E1-10', 'четырнадцать', 120);
+  const n15 = useWordFrame('E1-10', 'пятнадцать', 190);
+  const step = n15 + 50; // шаг пятнадцатого — толчок камеры
+  const blink = n15 + 80; // телефон мигает
+  const gone = n15 + 120; // свет вернулся — на сиденье только мокрое пятно
+  return {n12, n13, n14, n15, step, blink, gone, end: gone + 40};
+};
 
-export const PhoneCount: React.FC = () => {
+/** День 1, 23:10. Счёт при свете телефона: 12, 13, 14… и пятнадцатый. «НЕ СЧИТАЙ». */
+export const Ep1Fifteen: React.FC<{dur: number}> = ({dur}) => {
+  const t = useTimes();
+  const geiger: [number, number][] = [
+    [t.n15 - 30, 2],
+    [t.step + 10, 8],
+    [t.blink + 20, 40],
+  ];
+  return (
+    <AbsoluteFill>
+      <Sequence durationInFrames={t.end}>
+        <PhoneCount t={t} />
+      </Sequence>
+      <Sequence from={t.end} durationInFrames={dur - t.end}>
+        <DontCount />
+      </Sequence>
+      <Timestamp text="ДЕНЬ 1 — 23:10" start={0} end={t.end} />
+      <Snd src="tunnel_drone.wav" dur={t.gone} vol={0.45} loop trim={900} fadeOut={30} />
+      <Snd src="breath_close.wav" dur={t.gone} vol={0.16} loop fadeOut={30} />
+      <GeigerTrack segs={geiger} end={t.end} vol={0.9} />
+      <Snd src="shuffle.wav" from={t.step} dur={18} vol={0.5} />
+      <Snd src="glass_squeak.wav" from={t.end + 30} dur={48} vol={0.32} />
+      <Snd src="glass_squeak.wav" from={t.end + 80} dur={48} vol={0.3} trim={8} />
+      <Snd src="drip.wav" from={t.end + 125} dur={14} vol={0.4} />
+    </AbsoluteFill>
+  );
+};
+
+/** Тайминг без голоса (для «РАНЕЕ» в серии 2). */
+const STATIC_T: T = {n12: 40, n13: 100, n14: 165, n15: 300, step: 420, blink: 470, gone: 520, end: 580};
+
+export const PhoneCount: React.FC<{t?: T}> = ({t = STATIC_T}) => {
+  const {step: STEP, gone: GONE} = t;
   const frame = useCurrentFrame();
   const stepK = interpolate(frame, [STEP, STEP + 14], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const pcam = {x: 0.05, y: 0.05, z: 1.2 + stepK * 0.8, f: 900};
@@ -65,18 +84,18 @@ export const PhoneCount: React.FC = () => {
   // луч телефона ведёт по людям, потом ложится на дальнее сиденье справа
   const targets: [number, number, number, number][] = [
     [0, -1.1, 0.9, 5.0],
-    [60, -1.1, 0.9, 7.5],
-    [120, 1.1, 0.9, 8.0],
-    [185, -1.1, 0.9, 11.9],
-    [250, 1.15, 0.75, COAT_Z],
-    [999, 1.15, 0.75, COAT_Z],
+    [t.n12, -1.1, 0.9, 7.5],
+    [t.n13, 1.1, 0.9, 8.0],
+    [t.n14, -1.1, 0.9, 11.9],
+    [Math.round(t.n14 + (t.n15 - t.n14) * 0.6), 1.15, 0.75, COAT_Z],
+    [t.n15 + 999, 1.15, 0.75, COAT_Z],
   ];
   const keyF = targets.map((t) => t[0]);
   const bx = interpolate(frame, keyF, targets.map((t) => t[1]), {extrapolateRight: 'clamp'});
   const by = interpolate(frame, keyF, targets.map((t) => t[2]), {extrapolateRight: 'clamp'});
   const bz = interpolate(frame, keyF, targets.map((t) => t[3]), {extrapolateRight: 'clamp'});
   const [tx, ty] = pr.P(bx, by, bz);
-  const blink = frame >= 470 && frame < GONE && Math.floor((frame - 470) / 8) % 2 === 0 ? 0 : 1;
+  const blink = frame >= t.blink && frame < GONE && Math.floor((frame - t.blink) / 8) % 2 === 0 ? 0 : 1;
   const r = pr.scaleAt(bz) * 2.1;
   const coatHere = frame < GONE;
   const items = corridorItems(NIGHT, 'flashlight', frame, 0);
@@ -103,10 +122,10 @@ export const PhoneCount: React.FC = () => {
         haze={0.12}
       />
       <div style={{position: 'absolute', inset: 0}}>
-        <PencilNumber x={n12x} y={n12y} text="12" at={40} size={64} until={GONE} />
-        <PencilNumber x={n13x} y={n13y} text="13" at={100} size={64} until={GONE} />
-        <PencilNumber x={n14x} y={n14y} text="14" at={165} size={66} until={GONE} />
-        <PencilNumber x={n15x} y={n15y - 20} text="15" at={300} size={88} tremble={4} until={GONE + 30} />
+        <PencilNumber x={n12x} y={n12y} text="12" at={t.n12} size={64} until={GONE} />
+        <PencilNumber x={n13x} y={n13y} text="13" at={t.n13} size={64} until={GONE} />
+        <PencilNumber x={n14x} y={n14y} text="14" at={t.n14} size={66} until={GONE} />
+        <PencilNumber x={n15x} y={n15y - 20} text="15" at={t.n15} size={88} tremble={4} until={GONE + 30} />
       </div>
     </Stage25D>
   );

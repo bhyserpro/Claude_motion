@@ -26,6 +26,7 @@ SR = 44100
 FPS = 30
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 RAW = os.path.join(ROOT, 'voice', 'raw')
+TRIMMED = os.path.join(ROOT, 'voice', 'trimmed')  # паузы сокращены (voice/trim.py) — берётся в первую очередь
 PUB = os.path.join(ROOT, 'public', 'voice')
 PEAK_DB = -1.0
 
@@ -370,7 +371,7 @@ def lowpass_choke(x, frames):
 # ─────────────────────────── реплика целиком
 
 def target_lufs(line: Line):
-    return CHARACTERS[line.who].base_lufs + LEVEL_DB[line.level]
+    return CHARACTERS[line.who].base_lufs + LEVEL_DB[line.level] + line.gain_db
 
 
 def process_line(line: Line, x, alignment):
@@ -518,8 +519,9 @@ def chars_from(alignment, shift, keep=None):
 
 def load_raw(line_id):
     ep = int(line_id[1])
-    wav = os.path.join(RAW, f'ep{ep}', f'{line_id}.wav')
-    meta = os.path.join(RAW, f'ep{ep}', f'{line_id}.json')
+    base = TRIMMED if os.path.exists(os.path.join(TRIMMED, f'ep{ep}', f'{line_id}.wav')) else RAW
+    wav = os.path.join(base, f'ep{ep}', f'{line_id}.wav')
+    meta = os.path.join(base, f'ep{ep}', f'{line_id}.json')
     if not os.path.exists(wav):
         return None, None
     x, sr = sf.read(wav, dtype='float32', always_2d=False)
@@ -586,7 +588,7 @@ def run(ids=None):
     for ep, items in entries.items():
         if not items:
             continue
-        loose = [l.id for l in LINES if l.ep == ep and not l.scene]
+        loose = [e['id'] for e in items if not BY_ID[e['id']].scene]  # не озвученные (нет файла) не мешают
         if loose:  # пока реплики серии не привязаны к сценам, серия остаётся без голоса — WAV готовы, voice.json не трогаем
             report.append(f'ep{ep}: voice.json не записан — нет привязки к сценам у {" ".join(loose)}')
             continue

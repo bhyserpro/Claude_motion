@@ -86,7 +86,7 @@ export const Ep5Hold: React.FC<{dur: number}> = ({dur}) => {
       </Sequence>
       <Monologue voice="E5-07" start={PALMS + 12} end={RELEASE + 10} lines={['Нас было четырнадцать. Я всегда считаю.']} />
       <Subtitle voice="E5-08" text="Тсс." italic small />
-      <Snd src="horn.wav" dur={RELEASE} loop trim={40} vol={(f) => (f < PALMS ? 1 : 0.85)} />
+      <Snd src="horn.wav" dur={RELEASE} loop trim={40} vol={(f) => (f < PALMS ? 0.34 : 0.28)} />
       <Snd src="glass_squeak.wav" from={30} dur={48} vol={0.4} />
       <Snd src="boom.wav" from={40} dur={150} vol={0.35} trim={30} />
       <Snd src="drip.wav" from={COAT_IN + 10} dur={14} vol={0.4} />

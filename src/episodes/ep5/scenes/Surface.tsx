@@ -67,7 +67,8 @@ export const Ep5Surface: React.FC<{dur: number}> = ({dur}) => {
       <Subtitle voice="E5-09" text="…не покидайте укрытия…" italic start={300} end={dur - 6} />
       <Snd src="announcement_bed.wav" from={120} dur={dur - 120} vol={0.5} trim={140} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.25} loop trim={10} />
-      <Snd src="shuffle.wav" dur={240} vol={0.25} loop />
+      <Snd src="shuffle.wav" dur={dur - 10} vol={(f) => (f < 240 ? 0.25 : 0.15)} loop />
+      <Snd src="noise_cut.wav" from={dur - 75} dur={10} vol={0.12} />
     </AbsoluteFill>
   );
 };

@@ -139,8 +139,15 @@ export const Ep5Horn: React.FC<{dur: number}> = ({dur}) => {
       </Sequence>
       <Snd src="horn.wav" from={20} dur={dur - 20} loop vol={(f) => {
         const g = f + 20;
-        return g < 330 || (g >= 600 && g < 800) ? 1.0 : 0.3;
+        // гудок в файле около −4 dBFS: на полной громкости он задавливал всю серию (−6 LUFS) — держим ниже голоса
+        return g < 330 || (g >= 600 && g < 800) ? 0.34 : 0.12;
       }} />
+      {/* лестница: удары ботинок по железным перекладинам и шорох одежды, пока лезут */}
+      {Array.from({length: Math.max(0, Math.floor((dur - 810) / 38))}).map((_, i) => (
+        <Snd key={`rung${i}`} src="knock.wav" from={810 + i * 38} dur={20} vol={0.22 + (i % 3) * 0.05} rate={1.3 + (i % 2) * 0.2} />
+      ))}
+      <Snd src="drip.wav" from={880} dur={14} vol={0.35} />
+      <Snd src="scrape.wav" from={960} dur={40} vol={0.2} />
       <Snd src="shuffle.wav" from={60} dur={dur - 60} vol={0.45} loop rate={1.4} />
     </AbsoluteFill>
   );

@@ -18,6 +18,19 @@ npx remotion render FullFilm out/peregon_full.mp4 --codec h264 --crf 18
 ./scripts/render_all.sh                                         # всё сразу
 ```
 
+Рендер долгий (≈1–2 кадра/с на 4 ядрах), поэтому есть возобновляемый вариант — кусками по 900 кадров, которые переживают перезапуск машины:
+
+```bash
+python3 scripts/render_chunks.py render Ep3 Ep4 Ep5 ff --worker 0 --workers 2 &   # две очереди параллельно
+python3 scripts/render_chunks.py render Ep3 Ep4 Ep5 ff --worker 1 --workers 2 &
+python3 scripts/render_chunks.py assemble Ep3 Ep4 Ep5                            # покадрово точная склейка
+python3 scripts/fullfilm_splice.py                                               # out/peregon_full.mp4
+```
+
+`fullfilm_splice.py` дорендеривает из композиции `FullFilm` только кадры, которые отличаются от отдельных серий (паузы вместо «РАНЕЕ», таймкоды без приписки, без карточек серий — ≈5300 кадров), и склеивает их с готовыми сериями покадрово. Честный рендер всех 27000 кадров — `npx remotion render FullFilm out/peregon_full.mp4 --codec h264 --crf 18` (или `FULL_RENDER=1 ./scripts/render_all.sh`); результат тот же.
+
+В облачном контейнере SVG рисуется программно, и SwiftShader здесь в ~3 раза быстрее SwANGLE (`remotion.config.ts`).
+
 Стоп-кадры для проверки (один бандл на все кадры, контактный лист):
 
 ```bash

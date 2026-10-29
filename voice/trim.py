@@ -32,6 +32,8 @@ XF = 0.02
 # E3-08 и E4-09 — задержанное дыхание без слов, пауза и есть содержание реплики
 MEANINGFUL = {'E3-01': 0.9, 'E4-08': 0.9, 'E5-06': 0.9, 'E3-08': 0.9, 'E4-09': 0.9, 'E2-06': None}
 E2_06_SCRAPE_PAUSE = 0.8  # «Царапины на герме… и с этой стороны» — под скрежет за гермой
+# лишнее в начале генерации, которое нельзя перегенерировать (кредиты): E3-10 начинается с «Тсс» из соседней реплики
+HEAD_CUT = {'E3-10': 0.8}
 
 
 def envelope_db(x, win=0.02):
@@ -83,6 +85,10 @@ def trim_line(line_id):
     meta = json.load(open(src[:-4] + '.json', encoding='utf-8'))
     al = meta.get('alignment')
     ps, a, b = pauses(x)
+    head = int(HEAD_CUT.get(line_id, 0) * SR)
+    if head:
+        ps = [p for p in ps if p[0] > head]
+        a = max(a, head + int(EDGE * SR))
     cap = MEANINGFUL.get(line_id, TARGET)
     # куски, которые остаются: [(с, по)] в исходных отсчётах
     keep = []

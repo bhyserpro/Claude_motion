@@ -22,7 +22,7 @@ export const Ep3Hook: React.FC<{dur: number}> = ({dur}) => {
   const touch = interpolate(frame, [125, 165], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={170}>
+      <Sequence durationInFrames={dur}>
         <EyeShot pupil={0.62} ash={0.6} reflection={<Reflection reach={reach} />} />
         {/* пальцы входят в кадр справа и касаются щеки */}
         <svg width={1920} height={1080} style={{position: 'absolute', inset: 0}}>
@@ -31,9 +31,9 @@ export const Ep3Hook: React.FC<{dur: number}> = ({dur}) => {
           </g>
         </svg>
       </Sequence>
-      <HookText lines={['Ты стоишь в темноте. Тебя трогают за лицо.', 'Если вздохнёшь — **умрёшь**.']} start={3} end={168} top={0.12} />
-      <Snd src="breath_close_left.wav" dur={170} vol={0.8} loop />
-      <Snd src="heartbeat.wav" dur={170} vol={0.75} loop />
+      <HookText voice="E3-01" lines={['Ты стоишь в темноте. Тебя трогают за лицо.', 'Если вздохнёшь — **умрёшь**.']} start={3} end={dur - 2} top={0.12} />
+      <Snd src="breath_close_left.wav" dur={dur} vol={0.8} loop />
+      <Snd src="heartbeat.wav" dur={dur} vol={0.75} loop />
     </AbsoluteFill>
   );
 };

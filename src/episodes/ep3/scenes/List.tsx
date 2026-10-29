@@ -1,30 +1,38 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Stage25D} from '../../../components/Stage25D';
-import {Subtitle} from '../../../components/Text';
+import {Monologue, Subtitle} from '../../../components/Text';
 import {NinaNotebook} from '../../../components/Props/Notebook';
 import {Nina} from '../../../components/Characters/Nina';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
 import {NinaAsleep} from './Bag';
 
-/** 2:20–2:45. Вагон. Нина не спит. Загиб расправлен. Последняя строка: «Сомов Г. — 6,2 Зв». */
+/**
+ * Возвращение (E3-N07): «Корнеев не вернулся. Я вернулся один. Нина не спала.» Загиб расправлен —
+ * последняя строка «Сомов Г. — 6,2 Зв». Нина: «Мне жаль…» (E3-10).
+ */
+const UNFOLD = 162;
+const CLOSE = UNFOLD + 200;
 export const Ep3List: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={190}>
+      <Sequence durationInFrames={UNFOLD}>
         <NinaAsleep frame={frame} awake glebPose="stand" push={0.15} />
       </Sequence>
-      <Sequence from={190} durationInFrames={330}>
+      <Sequence from={UNFOLD} durationInFrames={CLOSE - UNFOLD}>
         <Unfold />
       </Sequence>
-      <Sequence from={520} durationInFrames={dur - 520}>
+      <Sequence from={CLOSE} durationInFrames={dur - CLOSE}>
         <NinaClose />
       </Sequence>
-      <Subtitle voice="E3-10" who="НИНА" text="Мне жаль. Я хотела, чтобы ты не мучился." start={545} end={dur - 10} />
+      <Monologue voice="E3-N07" start={10} end={UNFOLD} lines={['Корнеев не вернулся. Я вернулся один.', 'Нина не спала.']} />
+      <Subtitle voice="E3-10" who="НИНА" text="Мне жаль. Я хотела, чтобы ты не мучился." start={CLOSE + 10} end={dur - 10} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.38} loop trim={10} />
-      <Snd src="heartbeat.wav" from={260} dur={dur - 260} vol={0.35} loop fadeIn={40} />
+      <Snd src="shuffle.wav" dur={40} vol={0.4} />
+      <Snd src="noise_cut.wav" from={UNFOLD + 30} dur={10} vol={0.15} />
+      <Snd src="heartbeat.wav" from={UNFOLD + 110} dur={dur - UNFOLD - 110} vol={0.35} loop fadeIn={30} />
     </AbsoluteFill>
   );
 };
@@ -33,7 +41,7 @@ export const Unfold: React.FC = () => {
   const frame = useCurrentFrame();
   const fold = interpolate(frame, [30, 80], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const hl = interpolate(frame, [110, 150], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const k = interpolate(frame, [100, 250], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  const k = interpolate(frame, [90, 190], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
   // наезд на последнюю строку списка (её центр — y≈997 в координатах листа)
   const base = handheld(camKeys(frame, [{f: 0}]), frame, 2, 'unf');
   const zoom = 1 + 0.6 * k;

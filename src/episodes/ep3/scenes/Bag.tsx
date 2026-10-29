@@ -10,6 +10,7 @@ import {Gleb, GLEB_POSES} from '../../../components/Characters/Gleb';
 import {camKeys, handheld} from '../../../lib/camera';
 import {fbm1} from '../../../lib/noise';
 import {Snd} from '../../common/audio';
+import {useWordFrame} from '../../../components/Voice';
 import {CarSideLayers, SIDE_FEET} from '../../common/sets';
 import {EP2_CAMP, lie} from '../../ep2/cast';
 
@@ -63,31 +64,35 @@ const NotebookClose: React.FC<{fold: number; highlight?: number; light?: 'flashl
 };
 export {NotebookClose};
 
-/** 0:40–1:05. Нина спит. Сумка: ампулы, пустые. Блокнот: список, «доза», ✓. Загиб внизу. Нина шевелится. */
+/** Нина спит. На «Морфин» — ампулы, пустые; на «Список» — блокнот с галочками; потом Нина шевелится (E3-04). */
 export const Ep3Bag: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
+  const amp = useWordFrame('E3-04', 'Морфин', 50) - 6;
+  const list = useWordFrame('E3-04', 'Список', 170) - 6;
+  const stir = useWordFrame('E3-04', 'галочки', 260) + 26;
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={150}>
+      <Sequence durationInFrames={amp}>
         <NinaAsleep frame={frame} />
       </Sequence>
-      <Sequence from={150} durationInFrames={180}>
+      <Sequence from={amp} durationInFrames={list - amp}>
         <Ampoules />
       </Sequence>
-      <Sequence from={330} durationInFrames={260}>
+      <Sequence from={list} durationInFrames={stir - list}>
         <NotebookClose fold={1} />
       </Sequence>
-      <Sequence from={590} durationInFrames={60}>
+      <Sequence from={stir} durationInFrames={60}>
         <Stirs />
       </Sequence>
-      <Sequence from={650} durationInFrames={dur - 650}>
+      <Sequence from={stir + 60} durationInFrames={dur - stir - 60}>
         <NinaAsleep frame={frame} push={0.1} />
       </Sequence>
-      <Monologue voice="E3-04" start={130} end={320} lines={['Морфин. Из больничного сейфа.', 'Пустые.']} />
-      <Monologue voice="E3-04" start={350} end={640} lines={['Список. Имена… дозы.', 'И галочки.']} />
+      <Monologue voice="E3-04" start={amp} end={list} lines={['Морфин. Из больничного сейфа.', 'Пустые.']} />
+      <Monologue voice="E3-04" start={list} end={stir + 30} lines={['Список. Имена… дозы.', 'И галочки.']} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.38} loop trim={150} />
       <Snd src="breath_close.wav" dur={dur} vol={0.12} loop />
-      <Snd src="noise_cut.wav" from={600} dur={14} vol={0.25} />
+      <Snd src="noise_cut.wav" from={stir + 10} dur={14} vol={0.25} />
+      <Snd src="shuffle.wav" from={amp - 4} dur={16} vol={0.3} />
     </AbsoluteFill>
   );
 };

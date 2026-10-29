@@ -8,6 +8,7 @@ import {walkPose} from '../../../components/Characters/Rig';
 import {TUN} from '../../../components/Props/Tunnel';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
+import {useVoiceEnd} from '../../../components/Voice';
 import {placeAt} from '../../common/cast';
 import {CarSideLayers} from '../../common/sets';
 import {TunnelShot} from '../../common/tunnelShot';
@@ -15,25 +16,29 @@ import {EP2_CAMP} from '../../ep2/cast';
 import {Bottles} from '../../ep2/scenes/Camp';
 import {PASSAGE_Z} from '../../ep2/scenes/Walk';
 
-/** 1:05–1:25. Корнеев: «Хватит. Я наверх, через шахту.» Глеб идёт с ним. */
-export const Ep3Korneev: React.FC<{dur: number}> = ({dur}) => (
-  <AbsoluteFill>
-    <Sequence durationInFrames={300}>
-      <Decide />
-    </Sequence>
-    <Sequence from={300} durationInFrames={dur - 300}>
-      <ToShaft dur={dur - 300} />
-    </Sequence>
-    <Subtitle voice="E3-05" who="КОРНЕЕВ" text="Хватит. Я наверх, через шахту." start={50} end={170} />
-    <Snd src="tunnel_drone.wav" dur={dur} vol={0.45} loop trim={170} />
-    <Snd src="shuffle.wav" from={300} dur={dur - 300} vol={0.4} loop />
-  </AbsoluteFill>
-);
+/** Корнеев: «Хватит. Я наверх, через шахту» (E3-05). Глеб: «Я с тобой» (E3-N03) — и они уходят в туннель. */
+export const Ep3Korneev: React.FC<{dur: number}> = ({dur}) => {
+  const go = useVoiceEnd('E3-N03', 165) + 12;
+  return (
+    <AbsoluteFill>
+      <Sequence durationInFrames={go}>
+        <Decide />
+      </Sequence>
+      <Sequence from={go} durationInFrames={dur - go}>
+        <ToShaft dur={dur - go} />
+      </Sequence>
+      <Subtitle voice="E3-05" who="КОРНЕЕВ" text="Хватит. Я наверх, через шахту." start={50} end={170} />
+      <Subtitle voice="E3-N03" who="ГЛЕБ" text="Я с тобой." />
+      <Snd src="tunnel_drone.wav" dur={dur} vol={0.45} loop trim={170} />
+      <Snd src="shuffle.wav" from={go} dur={dur - go} vol={0.4} loop />
+    </AbsoluteFill>
+  );
+};
 
 const Decide: React.FC = () => {
   const frame = useCurrentFrame();
   const up = interpolate(frame, [20, 50], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const cam = handheld(camKeys(frame, [{f: 0, x: 420, dolly: 0.2}, {f: 300, x: 470, dolly: 0.3}]), frame, 2.5, 'kd');
+  const cam = handheld(camKeys(frame, [{f: 0, x: 420, dolly: 0.2}, {f: 180, x: 470, dolly: 0.3}]), frame, 2.5, 'kd');
   return (
     <Stage25D cam={cam} fogEnd={10}>
       <CarSideLayers

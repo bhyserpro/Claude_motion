@@ -608,7 +608,8 @@ def run(ids=None):
         win_f = round((line.win[1] - line.win[0]) * FPS)
         start = round(line.win[0] * FPS)
         if scene_end is not None:
-            t_first = spoken_words(al)[0][1] - shift  # первое слово в обработанном файле
+            sw = spoken_words(al)
+            t_first = (sw[0][1] - shift) if sw else 0.0  # первое слово в обработанном файле (дыхание без слов — начало файла)
             start = round((first_at - t_first) * FPS)
             over = (start + dur_f) / FPS - scene_end
             if over > 0.3:

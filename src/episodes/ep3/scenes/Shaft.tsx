@@ -2,7 +2,8 @@ import React from 'react';
 import {AbsoluteFill, Easing, interpolate, random, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Layer, Stage25D} from '../../../components/Stage25D';
 import {Beam, FlashlightMask} from '../../../components/FX';
-import {Subtitle} from '../../../components/Text';
+import {Monologue, PencilNumber, Subtitle} from '../../../components/Text';
+import {useWordFrame} from '../../../components/Voice';
 import {Passage, PASS} from '../../../components/Props/Passage';
 import {ShaftAsh, ShaftBack, ShaftPiles, SHAFT_FLOOR} from '../../../components/Props/VentShaft';
 import {Blind} from '../../../components/Characters/Blind';
@@ -52,7 +53,7 @@ export const Chamber: React.FC<{offset: number}> = ({offset}) => {
   let cam = handheld(camKeys(frame, [{f: SHAFT.enterChamber, x: -120, y: -260, zoom: 1.0}, {f: SHAFT.findThem, x: 60, y: 60, zoom: 1.12}, {f: SHAFT.god, x: 160, y: 80, zoom: 1.22}]), frame, panic && !lost ? 9 : 3, 'ch');
   if (panic) cam = impact(cam, frame, SHAFT.panic + 48, 22, 30, 'kfall');
   // луч Корнеева: вверх по лестнице → вниз на кучи → по стенам → находит их → мечется
-  const keys = [SHAFT.enterChamber, SHAFT.enterChamber + 120, SHAFT.findThem - 120, SHAFT.findThem, SHAFT.findThem + 90, SHAFT.god];
+  const keys = [SHAFT.enterChamber, SHAFT.enterChamber + 45, SHAFT.findThem - 30, SHAFT.findThem, SHAFT.findThem + 90, SHAFT.god];
   let tx = interpolate(frame, keys, [960, 960, 980, 520, 1500, 1520], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   let ty = interpolate(frame, keys, [-60, 120, 860, 840, 820, 800], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   if (panic && !lost) {
@@ -121,7 +122,7 @@ export const Chamber: React.FC<{offset: number}> = ({offset}) => {
 /** Узкий проход. Где-то рядом чужое дыхание. */
 const Corridor: React.FC<{back?: boolean}> = ({back = false}) => {
   const frame = useCurrentFrame();
-  const z = back ? interpolate(frame, [0, 100], [6, 3.4]) : interpolate(frame, [0, 300], [0, 4.5]);
+  const z = back ? interpolate(frame, [0, 90], [6, 3.4]) : interpolate(frame, [0, SHAFT.enterChamber], [0, 3.2]);
   const pcam = {x: 0.05, y: -0.05, z, f: 900};
   const ph = (frame / 32) % 1;
   return (
@@ -193,8 +194,34 @@ export const Frozen: React.FC<{offset: number}> = ({offset}) => {
   );
 };
 
-/** 1:25–2:20. Главная хоррор-сцена сериала. */
+/** Цифры, которые Глеб считает по сидящим (E3-N06): где пишутся (кадр шахты, по лучу). */
+const COUNTED: {word: string; text: string; x: number; y: number}[] = [
+  {word: 'Три', text: '3', x: 1090, y: 640},
+  {word: 'четыре', text: '4', x: 1270, y: 625},
+  {word: 'семь', text: '7', x: 1480, y: 640},
+  {word: 'десять', text: '10', x: 1720, y: 630},
+];
+
+/** Карандашная черта поперёк цифры: «Не считай». */
+const Strike: React.FC<{x: number; y: number; at: number; until: number}> = ({x, y, at, until}) => {
+  const frame = useCurrentFrame();
+  if (frame < at || frame >= until) return null;
+  const p = interpolate(frame, [at, at + 6], [0, 1], {extrapolateRight: 'clamp'});
+  return (
+    <svg width={1920} height={1080} style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
+      <line x1={x - 44} y1={y + 18} x2={x - 44 + 92 * p} y2={y + 18 - 40 * p} stroke="#C9C3B4" strokeWidth={5} strokeLinecap="round" />
+    </svg>
+  );
+};
+
+/**
+ * Главная хоррор-сцена сериала. Вход под «Сверху сыпался пепел…» (E3-N05), счёт сидящих (E3-N06),
+ * «Господи…» (E3-06), паника (E3-07), тишина с задержанным дыханием (E3-08) и «Тсс» (E3-09).
+ */
 export const Ep3Shaft: React.FC<{dur: number}> = ({dur}) => {
+  const counted = COUNTED.map((c) => useWordFrame('E3-N06', c.word, SHAFT.findThem + 10));
+  const dont = useWordFrame('E3-N06', 'Не', SHAFT.findThem + 120);
+  const rain = useWordFrame('E3-N05', 'Наверху', SHAFT.enterChamber);
   return (
     <AbsoluteFill>
       <Sequence durationInFrames={SHAFT.enterChamber}>
@@ -221,11 +248,26 @@ export const Ep3Shaft: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={SHAFT.back} durationInFrames={dur - SHAFT.back}>
         <Corridor back />
       </Sequence>
+      {/* счёт сидящих — цифры на словах, на «Не считай» перечёркнуты */}
+      <div style={{position: 'absolute', inset: 0}}>
+        {COUNTED.map((c, i) => (
+          <React.Fragment key={c.text}>
+            <PencilNumber x={c.x} y={c.y} text={c.text} at={counted[i]} until={SHAFT.god} size={60} />
+            {counted[i] < SHAFT.god ? <Strike x={c.x} y={c.y} at={dont + i * 3} until={SHAFT.god} /> : null}
+          </React.Fragment>
+        ))}
+      </div>
+      <Monologue voice="E3-N05" start={8} end={rain} lines={['Сверху сыпался пепел. Мокрый.']} />
+      <Monologue voice="E3-N05" start={rain} end={SHAFT.findThem} lines={['Наверху шёл дождь.', 'Вот почему он был мокрый.']} />
+      <Monologue voice="E3-N06" start={dont - 2} end={SHAFT.god} lines={['Не считай. Не считай.']} />
       <Subtitle voice="E3-06" who="КОРНЕЕВ" text="Господи…" start={SHAFT.god} end={SHAFT.turn + 4} />
+      <Subtitle voice="E3-07" who="КОРНЕЕВ" text="Назад! Пошли назад! Не трогай меня!" />
+      <Subtitle voice="E3-09" text="Тсс." italic small />
       {/* звук */}
       <Snd src="tunnel_drone.wav" dur={SHAFT.god} vol={0.5} loop trim={30} fadeOut={20} />
       <Snd src="breath_close_left.wav" dur={SHAFT.enterChamber + 200} vol={0.55} loop fadeIn={40} />
-      <Snd src="drip.wav" from={SHAFT.enterChamber + 60} dur={15} vol={0.3} />
+      <Snd src="drip.wav" from={SHAFT.enterChamber + 40} dur={15} vol={0.3} />
+      <Snd src="drip.wav" from={SHAFT.findThem - 20} dur={15} vol={0.25} />
       <Snd src="shuffle.wav" from={SHAFT.turn} dur={14} vol={0.6} rate={1.6} />
       <Snd src="scream.wav" from={SHAFT.panic + 10} dur={42} vol={0.95} />
       <Snd src="scream_muffled.wav" from={SHAFT.panic + 52} dur={66} vol={0.8} fadeOut={8} />

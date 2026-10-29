@@ -9,6 +9,7 @@ import {Nina, NINA_POSES} from '../../../components/Characters/Nina';
 import {Gleb, GLEB_POSES} from '../../../components/Characters/Gleb';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
+import {useWordFrame} from '../../../components/Voice';
 import {ElbowShot, EyeShot} from '../../common/closeups';
 
 /** Кабина: Семён лежит, руки кем-то сложены на груди; очки рядом. */
@@ -38,26 +39,35 @@ export const CabRoom: React.FC<{frame: number; beam?: boolean; push?: number; ni
   );
 };
 
-/** 0:12–0:40. Кабина. Семён мёртв, руки сложены. «Лучевая. Я предупреждала.» Зрачки в точку, прокол на сгибе локтя. */
+/**
+ * Кабина. Семён мёртв, руки сложены. «Лучевая. Я предупреждала» (E3-02). Глеб осматривает (E3-N01):
+ * на «Зрачки» — глаз крупно, на «И прокол» — сгиб локтя; вывод — E3-03.
+ */
 export const Ep3Cab: React.FC<{dur: number; standalone: boolean}> = ({dur, standalone}) => {
   const frame = useCurrentFrame();
+  const eye = useWordFrame('E3-N01', 'Зрачки', 150) - 6;
+  const elbow = useWordFrame('E3-N01', 'И', 240) - 4;
+  const back = useWordFrame('E3-N01', 'Свежий', 300) + 28;
+  const verdict = useWordFrame('E3-03', 'Острая', 330);
   return (
     <AbsoluteFill>
-      <Sequence durationInFrames={300}>
+      <Sequence durationInFrames={eye}>
         <CabRoom frame={frame} />
       </Sequence>
-      <Sequence from={300} durationInFrames={120}>
+      <Sequence from={eye} durationInFrames={elbow - eye}>
         <EyeShot pupil={0.05} skin="#B09C88" iris="#5a5e5a" lidOpen={0.75} />
       </Sequence>
-      <Sequence from={420} durationInFrames={140}>
+      <Sequence from={elbow} durationInFrames={back - elbow}>
         <ElbowShot />
       </Sequence>
-      <Sequence from={560} durationInFrames={dur - 560}>
+      <Sequence from={back} durationInFrames={dur - back}>
         <CabRoom frame={frame} push={0.25} />
       </Sequence>
+      <Monologue voice="E3-N01" start={eye} end={verdict - 2} lines={['Зрачки — с булавочную головку.', 'И прокол на сгибе локтя. Свежий.']} />
+      <Snd src="hit.wav" from={eye} dur={20} vol={0.2} />
       <Timestamp text="ДЕНЬ 4 — 06:05" suffix={standalone ? 'за 7 часов до этого' : undefined} start={0} end={dur} suffixEnd={130} />
       <Subtitle voice="E3-02" who="НИНА" text="Лучевая. Я предупреждала." start={70} end={180} />
-      <Monologue voice="E3-03" start={590} end={dur - 4} lines={['Острая лучевая убивает за дни. Не за ночь.', 'Убыток не сходился с причиной.']} />
+      <Monologue voice="E3-03" start={verdict - 2} end={dur - 4} lines={['Острая лучевая убивает за дни. Не за ночь.', 'Убыток не сходился с причиной.']} />
       <Snd src="hit.wav" dur={50} vol={0.6} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.42} loop trim={50} />
     </AbsoluteFill>

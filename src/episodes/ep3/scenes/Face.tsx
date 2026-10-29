@@ -30,17 +30,17 @@ export const GlebHalfRed: React.FC<{episode?: 3 | 4 | 5; zoom0?: number; zoom1?:
   );
 };
 
-/** 2:45–3:00. Лицо Глеба в красном. Карточка «Серия 3. Список». */
+/** Лицо Глеба в красном 4 с, карточка «Серия 3. Список» 2,5 с (патч №1; тизер E3-N08 не озвучен). */
 export const Ep3Face: React.FC<{dur: number; standalone: boolean}> = ({dur, standalone}) => (
   <AbsoluteFill style={{background: '#000'}}>
-    <Sequence durationInFrames={300}>
-      <GlebHalfRed />
+    <Sequence durationInFrames={120}>
+      <GlebHalfRed dur={120} />
     </Sequence>
     {standalone ? (
-      <Sequence from={315} durationInFrames={dur - 315}>
-        <TitleCard episode={3} title="Список" dur={dur - 315} />
+      <Sequence from={126} durationInFrames={dur - 126}>
+        <TitleCard episode={3} title="Список" dur={dur - 126} />
       </Sequence>
     ) : null}
-    <Snd src="heartbeat.wav" dur={300} vol={0.85} loop />
+    <Snd src="heartbeat.wav" dur={124} vol={0.85} loop fadeOut={6} />
   </AbsoluteFill>
 );

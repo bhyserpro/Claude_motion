@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Stage25D} from '../../../components/Stage25D';
 import {FlashlightMask} from '../../../components/FX';
+import {Monologue} from '../../../components/Text';
 import {AmpouleBox, AmpouleLabel} from '../../../components/Props/Ampoule';
 import {NinaNotebook} from '../../../components/Props/Notebook';
 import {Nina} from '../../../components/Characters/Nina';
@@ -82,6 +83,8 @@ export const Ep3Bag: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={650} durationInFrames={dur - 650}>
         <NinaAsleep frame={frame} push={0.1} />
       </Sequence>
+      <Monologue voice="E3-04" start={130} end={320} lines={['Морфин. Из больничного сейфа.', 'Пустые.']} />
+      <Monologue voice="E3-04" start={350} end={640} lines={['Список. Имена… дозы.', 'И галочки.']} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.38} loop trim={150} />
       <Snd src="breath_close.wav" dur={dur} vol={0.12} loop />
       <Snd src="noise_cut.wav" from={600} dur={14} vol={0.25} />

@@ -5,11 +5,19 @@ import {Timestamp} from '../../components/Text';
 import {FONT_MONO} from '../../lib/fonts';
 import {UI} from '../../config';
 import {Snd} from './audio';
+import {VoiceLine, VoiceProvider} from '../../components/Voice';
 
-/** Общая «плёнка» серии: зерно, виньетка, летербокс (отключаемый для актов). */
-export const Film: React.FC<{children: React.ReactNode; noLetterbox?: [number, number][]; grain?: number; vignette?: number}> = ({
+/** Общая «плёнка» серии: зерно, виньетка, летербокс (отключаемый для актов), озвучка из voice.json. */
+export const Film: React.FC<{
+  children: React.ReactNode;
+  noLetterbox?: [number, number][];
+  grain?: number;
+  vignette?: number;
+  voice?: VoiceLine[];
+}> = ({
   children,
   noLetterbox = [],
+  voice = [],
   grain = 0.16,
   vignette = 0.75,
 }) => {
@@ -17,7 +25,7 @@ export const Film: React.FC<{children: React.ReactNode; noLetterbox?: [number, n
   const paper = noLetterbox.some(([a, b]) => frame >= a && frame < b);
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      {children}
+      <VoiceProvider lines={voice}>{children}</VoiceProvider>
       {vignette > 0 && !paper ? <Vignette strength={vignette} /> : null}
       <FilmGrain opacity={paper ? grain * 0.6 : grain} />
       {!paper ? <Letterbox /> : null}

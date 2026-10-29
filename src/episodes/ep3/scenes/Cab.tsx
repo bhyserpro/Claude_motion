@@ -56,8 +56,8 @@ export const Ep3Cab: React.FC<{dur: number; standalone: boolean}> = ({dur, stand
         <CabRoom frame={frame} push={0.25} />
       </Sequence>
       <Timestamp text="ДЕНЬ 4 — 06:05" suffix={standalone ? 'за 7 часов до этого' : undefined} start={0} end={dur} suffixEnd={130} />
-      <Subtitle who="НИНА" text="Лучевая. Я предупреждала." start={70} end={180} />
-      <Monologue start={590} end={dur - 4} lines={['Острая лучевая убивает за дни. Не за ночь.', 'Убыток не сходился с причиной.']} />
+      <Subtitle voice="E3-02" who="НИНА" text="Лучевая. Я предупреждала." start={70} end={180} />
+      <Monologue voice="E3-03" start={590} end={dur - 4} lines={['Острая лучевая убивает за дни. Не за ночь.', 'Убыток не сходился с причиной.']} />
       <Snd src="hit.wav" dur={50} vol={0.6} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.42} loop trim={50} />
     </AbsoluteFill>

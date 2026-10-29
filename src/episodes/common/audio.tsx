@@ -1,11 +1,12 @@
 import React from 'react';
 import {Audio, Sequence, staticFile} from 'remotion';
+import {useDuck} from '../../components/Voice';
 
 type Vol = number | ((f: number) => number);
 
 /**
  * Звук в окне [from, from+dur). Громкость — число или функция кадра (относительно начала звука),
- * плюс автоматические fadeIn/fadeOut в кадрах.
+ * плюс автоматические fadeIn/fadeOut в кадрах. Зацикленный фон (гул, дозиметр) сам приглушается под голосом (duck).
  */
 export const Snd: React.FC<{
   src: string;
@@ -18,7 +19,9 @@ export const Snd: React.FC<{
   fadeOut?: number;
   rate?: number;
   name?: string;
-}> = ({src, from = 0, dur, vol = 1, loop = false, trim = 0, fadeIn = 0, fadeOut = 0, rate, name}) => {
+  duck?: boolean;
+}> = ({src, from = 0, dur, vol = 1, loop = false, trim = 0, fadeIn = 0, fadeOut = 0, rate, name, duck = loop}) => {
+  const ducking = useDuck();
   if (dur <= 0) return null;
   // у зацикленного звука сдвиг начала должен быть меньше длины файла (самый короткий цикл ~7.7 с)
   const tr = loop ? trim % 180 : trim;
@@ -26,7 +29,8 @@ export const Snd: React.FC<{
     const base = typeof vol === 'function' ? vol(f) : vol;
     const a = fadeIn > 0 ? Math.min(1, f / fadeIn) : 1;
     const b = fadeOut > 0 ? Math.min(1, (dur - f) / fadeOut) : 1;
-    return Math.max(0, base * a * b);
+    const d = duck && ducking ? ducking(from + f) : 1;
+    return Math.max(0, base * a * b * d);
   };
   return (
     <Sequence from={from} durationInFrames={dur} name={name ?? src} layout="none">

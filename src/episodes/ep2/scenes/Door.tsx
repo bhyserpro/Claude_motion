@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Stage25D} from '../../../components/Stage25D';
 import {FlashlightMask} from '../../../components/FX';
+import {Subtitle} from '../../../components/Text';
 import {Pavel} from '../../../components/Characters/Pavel';
 import {Gleb, GLEB_POSES} from '../../../components/Characters/Gleb';
 import {Semyon} from '../../../components/Characters/Semyon';
@@ -24,6 +25,7 @@ export const Ep2Door: React.FC<{dur: number}> = ({dur}) => (
     <Sequence from={630} durationInFrames={dur - 630}>
       <Kneel />
     </Sequence>
+    <Subtitle voice="E2-05" who="СЕМЁН" text="Паша… Господи, Паша." start={512} end={660} />
     <Snd src="tunnel_drone.wav" dur={dur} vol={0.55} loop trim={90} />
   </AbsoluteFill>
 );

@@ -55,8 +55,8 @@ export const Ep5Reason: React.FC<{dur: number; standalone: boolean}> = ({dur, st
         <GlebSick />
       </Sequence>
       <Timestamp text="ДЕНЬ 6 — 04:00" suffix={standalone ? 'за 2 часа до этого' : undefined} start={0} end={dur} suffixEnd={130} />
-      <Monologue start={30} end={290} lines={['Двадцать лет я считал чужие убытки.', 'Свой посчитал за минуту.']} />
-      <Monologue start={650} end={dur - 4} lines={['Им нужен звук. Я дам им звук.']} />
+      <Monologue voice="E5-02" start={30} end={290} lines={['Двадцать лет я считал чужие убытки.', 'Свой посчитал за минуту.']} />
+      <Monologue voice="E5-03" start={650} end={dur - 4} lines={['Им нужен звук. Я дам им звук.']} />
       <Snd src="hit.wav" dur={50} vol={0.6} />
       <Snd src="drip.wav" from={80} dur={14} vol={0.6} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={60} />

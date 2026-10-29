@@ -61,8 +61,8 @@ export const Ep4Dosimeters: React.FC<{dur: number; standalone: boolean}> = ({dur
         <TwoDosimeters />
       </Sequence>
       <Timestamp text="ДЕНЬ 5 — 09:00" suffix={standalone ? 'за час до этого' : undefined} start={0} end={dur} suffixEnd={130} />
-      <Monologue start={360} end={600} lines={['Когда клиент присылает идеальные документы —', 'они поддельные.']} />
-      <Monologue start={620} end={dur - 4} lines={['У Нины были идеальные документы.']} />
+      <Monologue voice="E4-02" start={360} end={600} lines={['Когда клиент присылает идеальные документы —', 'они поддельные.']} />
+      <Monologue voice="E4-02" start={620} end={dur - 4} lines={['У Нины были идеальные документы.']} />
       <Snd src="hit.wav" dur={50} vol={0.6} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={100} />
     </AbsoluteFill>

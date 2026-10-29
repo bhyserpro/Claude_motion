@@ -221,7 +221,7 @@ export const Ep3Shaft: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={SHAFT.back} durationInFrames={dur - SHAFT.back}>
         <Corridor back />
       </Sequence>
-      <Subtitle who="КОРНЕЕВ" text="Господи…" start={SHAFT.god} end={SHAFT.turn + 4} />
+      <Subtitle voice="E3-06" who="КОРНЕЕВ" text="Господи…" start={SHAFT.god} end={SHAFT.turn + 4} />
       {/* звук */}
       <Snd src="tunnel_drone.wav" dur={SHAFT.god} vol={0.5} loop trim={30} fadeOut={20} />
       <Snd src="breath_close_left.wav" dur={SHAFT.enterChamber + 200} vol={0.55} loop fadeIn={40} />

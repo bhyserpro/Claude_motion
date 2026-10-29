@@ -47,8 +47,8 @@ export const Ep1Ride: React.FC<{dur: number}> = ({dur}) => {
         />
       </Stage25D>
       <Timestamp text="ДЕНЬ 0 — 18:39" start={0} end={dur} />
-      <Monologue start={40} end={320} lines={['Двадцать лет я оцениваю убытки.']} />
-      <Monologue start={340} end={dur - 6} lines={['Пожар, потоп, авария. Я прихожу после.', 'Считаю, что осталось.']} />
+      <Monologue voice="E1-02" start={40} end={320} lines={['Двадцать лет я оцениваю убытки.']} />
+      <Monologue voice="E1-02" start={340} end={dur - 6} lines={['Пожар, потоп, авария. Я прихожу после.', 'Считаю, что осталось.']} />
       <Snd src="hit.wav" dur={60} vol={0.8} />
       <Snd src="rails_loop.wav" dur={dur} vol={0.7} loop />
       <Snd src="tunnel_drone.wav" dur={dur} vol={(f) => 0.3 + interpolate(f, [0, dur], [0, 0.05])} loop />

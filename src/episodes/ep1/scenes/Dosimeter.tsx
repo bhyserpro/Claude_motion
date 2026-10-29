@@ -21,8 +21,8 @@ export const Ep1Dosimeter: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={220} durationInFrames={dur - 220}>
         <Lcd offset={220} />
       </Sequence>
-      <Subtitle who="НИНА" text="Это ещё ничего." start={235} end={330} />
-      <Monologue start={350} end={dur} lines={['Она сказала это так, как врачи', 'говорят о том, что уже случилось.']} />
+      <Subtitle voice="E1-07" who="НИНА" text="Это ещё ничего." start={235} end={330} />
+      <Monologue voice="E1-08" start={350} end={dur} lines={['Она сказала это так, как врачи', 'говорят о том, что уже случилось.']} />
       <GeigerTrack segs={SEGS} end={dur} vol={0.85} />
     </AbsoluteFill>
   );

@@ -24,7 +24,7 @@ export const Ep3Korneev: React.FC<{dur: number}> = ({dur}) => (
     <Sequence from={300} durationInFrames={dur - 300}>
       <ToShaft dur={dur - 300} />
     </Sequence>
-    <Subtitle who="КОРНЕЕВ" text="Хватит. Я наверх, через шахту." start={50} end={170} />
+    <Subtitle voice="E3-05" who="КОРНЕЕВ" text="Хватит. Я наверх, через шахту." start={50} end={170} />
     <Snd src="tunnel_drone.wav" dur={dur} vol={0.45} loop trim={170} />
     <Snd src="shuffle.wav" from={300} dur={dur - 300} vol={0.4} loop />
   </AbsoluteFill>

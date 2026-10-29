@@ -75,7 +75,7 @@ export const Ep2Act: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={1110} durationInFrames={dur - 1110}>
         <PocketInsert />
       </Sequence>
-      <Monologue start={960} end={dur} lines={['С такой дозой живут.', 'От неё не умирают с камнями во рту.']} />
+      <Monologue voice="E2-07" start={960} end={dur} lines={['С такой дозой живут.', 'От неё не умирают с камнями во рту.']} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={20} />
       <Snd src="scrape.wav" from={575} dur={120} vol={0.42} fadeIn={10} />
     </AbsoluteFill>

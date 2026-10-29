@@ -1,6 +1,8 @@
 import React from 'react';
 import {ChapterGap, Film, Shot} from '../common/Shell';
 import {EpisodeProps} from '../types';
+import {VoiceLine} from '../../components/Voice';
+import voice from './voice.json';
 import {ACT2_PAPER, EP4} from './timing';
 import {Ep4Hook} from './scenes/Hook';
 import {Ep4Recap} from './scenes/Recap';
@@ -12,7 +14,7 @@ import {Ep4End} from './scenes/End';
 
 /** Серия 4. «Доза». */
 export const Ep4: React.FC<EpisodeProps> = ({standalone}) => (
-  <Film noLetterbox={ACT2_PAPER.map(([a, b]) => [EP4.act.from + a, EP4.act.from + b] as [number, number])}>
+  <Film voice={voice as VoiceLine[]} noLetterbox={ACT2_PAPER.map(([a, b]) => [EP4.act.from + a, EP4.act.from + b] as [number, number])}>
     <Shot {...EP4.hook} name="Хук">
       <Ep4Hook dur={EP4.hook.dur} />
     </Shot>

@@ -62,8 +62,8 @@ export const Ep2Walk: React.FC<{dur: number}> = ({dur}) => {
         ]}
         darkness={0.975}
       />
-      <Subtitle who="СЕМЁН" text="Вентшахта. Наверх ведёт. Решётка там на замке." start={stop0 + 20} end={stop1} />
-      <Subtitle who="СЕМЁН" text="До гермы двести метров. Я тут тридцать лет ходил." start={stop1 + 20} end={dur - 10} />
+      <Subtitle voice="E2-04" who="СЕМЁН" text="Вентшахта. Наверх ведёт. Решётка там на замке." start={stop0 + 20} end={stop1} />
+      <Subtitle voice="E2-03" who="СЕМЁН" text="До гермы двести метров. Я тут тридцать лет ходил." start={stop1 + 20} end={dur - 10} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.5} loop trim={40} />
       <Snd src="shuffle.wav" dur={stop0} vol={0.45} loop />
       <Snd src="shuffle.wav" from={stop1} dur={dur - stop1} vol={0.45} loop trim={30} />

@@ -1,6 +1,8 @@
 import React from 'react';
 import {ChapterGap, Film, Shot} from '../common/Shell';
 import {EpisodeProps} from '../types';
+import {VoiceLine} from '../../components/Voice';
+import voice from './voice.json';
 import {ACT3_PAPER, EP5} from './timing';
 import {Ep5Hook} from './scenes/Hook';
 import {Ep5Recap} from './scenes/Recap';
@@ -14,7 +16,7 @@ import {Ep5End} from './scenes/End';
 
 /** Серия 5. «Акт осмотра». */
 export const Ep5: React.FC<EpisodeProps> = ({standalone}) => (
-  <Film noLetterbox={[[EP5.act.from + ACT3_PAPER[0], EP5.act.from + ACT3_PAPER[1]]]}>
+  <Film voice={voice as VoiceLine[]} noLetterbox={[[EP5.act.from + ACT3_PAPER[0], EP5.act.from + ACT3_PAPER[1]]]}>
     <Shot {...EP5.hook} name="Хук">
       <Ep5Hook dur={EP5.hook.dur} />
     </Shot>

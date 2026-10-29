@@ -39,10 +39,9 @@ export const Ep5Plan: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={780} durationInFrames={dur - 780}>
         <NinaEyes />
       </Sequence>
-      <Subtitle who="ГЛЕБ" text="Я включу гудок. Они пойдут к поезду." small start={40} end={150} />
-      <Subtitle who="ГЛЕБ" text="Вы — в шахту. Наверх, по лестнице." small start={158} end={262} />
-      <Subtitle who="ГЛЕБ" text="Лица обмотать. Ни звука." small start={270} end={370} />
-      <Subtitle who="НИНА" text="Я пойду с ними. Без того, кто знает про дозу, они не дойдут." small start={400} end={565} />
+      <Subtitle voice="E5-04" who="ГЛЕБ" text="Когда загудит — идите к шахте. Вдоль стены." small start={34} end={190} />
+      <Subtitle voice="E5-04" who="ГЛЕБ" text="Не говорите. Не светите. Не считайте." small start={198} end={365} />
+      <Subtitle voice="E5-05" who="НИНА" text="Я пойду с ними. Без того, кто знает про дозу, они не дойдут." small start={400} end={565} />
       <Snd src="breath_close.wav" dur={dur} vol={0.22} loop />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.3} loop trim={140} />
     </AbsoluteFill>

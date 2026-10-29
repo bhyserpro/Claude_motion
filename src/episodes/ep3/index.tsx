@@ -1,6 +1,8 @@
 import React from 'react';
 import {ChapterGap, Film, Shot} from '../common/Shell';
 import {EpisodeProps} from '../types';
+import {VoiceLine} from '../../components/Voice';
+import voice from './voice.json';
 import {EP3} from './timing';
 import {Ep3Hook} from './scenes/Hook';
 import {Ep3Recap} from './scenes/Recap';
@@ -13,7 +15,7 @@ import {Ep3Face} from './scenes/Face';
 
 /** Серия 3. «Список». */
 export const Ep3: React.FC<EpisodeProps> = ({standalone}) => (
-  <Film>
+  <Film voice={voice as VoiceLine[]}>
     <Shot {...EP3.hook} name="Хук">
       <Ep3Hook dur={EP3.hook.dur} />
     </Shot>

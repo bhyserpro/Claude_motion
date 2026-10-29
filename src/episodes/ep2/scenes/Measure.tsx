@@ -32,9 +32,9 @@ export const Ep2Measure: React.FC<{dur: number}> = ({dur}) => (
     <Sequence from={520} durationInFrames={dur - 520}>
       <GlebMeasured />
     </Sequence>
-    <Subtitle who="НИНА" text="У вас много. Вам нужно отдельно." start={310} end={405} />
-    <Subtitle who="НИНА" text="Нормально." start={640} end={705} />
-    <Monologue start={670} end={dur} lines={['Она мерила всех. Себя — нет.']} />
+    <Subtitle voice="E2-08" who="НИНА" text="У вас много. Вам нужно отдельно." start={310} end={405} />
+    <Subtitle voice="E2-09" who="НИНА" text="Нормально." start={640} end={705} />
+    <Monologue voice="E2-10" start={670} end={dur} lines={['Она мерила всех. Себя — нет.']} />
     <GeigerTrack segs={GEIGER} end={650} vol={0.75} />
     <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={70} />
   </AbsoluteFill>

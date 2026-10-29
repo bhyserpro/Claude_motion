@@ -22,7 +22,7 @@ export const Ep3List: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={520} durationInFrames={dur - 520}>
         <NinaClose />
       </Sequence>
-      <Subtitle who="НИНА" text="Мне жаль. Я хотела, чтобы ты не мучился." start={545} end={dur - 10} />
+      <Subtitle voice="E3-10" who="НИНА" text="Мне жаль. Я хотела, чтобы ты не мучился." start={545} end={dur - 10} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.38} loop trim={10} />
       <Snd src="heartbeat.wav" from={260} dur={dur - 260} vol={0.35} loop fadeIn={40} />
     </AbsoluteFill>

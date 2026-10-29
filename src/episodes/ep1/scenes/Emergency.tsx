@@ -68,7 +68,7 @@ export const Ep1Emergency: React.FC<{dur: number}> = ({dur}) => (
     <Sequence from={430} durationInFrames={dur - 430}>
       <PhonesShot />
     </Sequence>
-    <Subtitle who="ПАВЕЛ" text="Без паники. Связи нет. Ждём." start={40} end={175} />
+    <Subtitle voice="E1-05" who="ПАВЕЛ" text="Без паники. Связи нет. Ждём." start={40} end={175} />
     <Subtitle text="…режим радиационной опасности…" italic start={205} end={300} />
     <Subtitle text="…гермозатворы закрыты…" italic start={305} end={390} />
     <Subtitle text="…оставайтесь на местах…" italic start={395} end={480} />

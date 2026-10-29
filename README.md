@@ -73,3 +73,21 @@ scripts/gen_audio.py     синтез звука (numpy + scipy) + момент�
 ## Звук
 
 Музыки нет. `scripts/gen_audio.py` синтезирует: стыки рельсов, гул туннеля 35–60 Гц, щелчки дозиметра (пуассоновский процесс: 0,5 / 2 / 8 / 40 / 200 в секунду), инфразвуковой удар с треском стекла, стук под полом, гудок электропоезда, сердцебиение, дыхание (в том числе «не с той стороны» — стерео), скрежет, радиошум оповещения и несколько служебных звуков. Индикатор на дозиметре мигает в те же моменты, что и щелчки в звуке (`src/audio/geigerTimes.json`).
+
+## Озвучка (ElevenLabs)
+
+Всё по `PEREGON_voice.md`, код в `voice/`. Ключ берётся только из переменной окружения `ELEVENLABS_API_KEY`: он не появляется ни в коде, ни в логах, ни в файлах.
+
+```bash
+pip install -r voice/requirements.txt
+python3 voice/casting.py          # кандидаты на роли → voice/review/casting.html
+# человек слушает, выбирает и сохраняет voice/voices.json
+python3 voice/generate.py         # реплики → voice/raw/epN/<ID>.wav + .json (тайминг символов, seed, проверка)
+python3 voice/process.py          # обработка → public/voice/epN/<ID>.wav + src/episodes/epN/voice.json
+python3 voice/qa.py               # проверка → voice/review/index.html
+python3 scripts/master_loudness.py out/ep01.mp4   # после рендера: −16 LUFS, пик ≤ −1 dBTP
+```
+
+- `voice/lines.py` — все реплики E1-01…E5-09 с тегами, окнами, обработкой и манерой; описания голосов для Voice Design.
+- `voice/process.py` — базовая цепочка (срез < 70 Гц, де-эссер, компрессия 2:1, громкость по манере), пространства `CAR`/`CAR_DARK`/`TUNNEL`/`SHAFT`/`CAB` свёрткой с синтетическими импульсами, `INTERCOM`, `RADIO_INTERCOM` (выпадения не задевают ключевые слова), `STREET_PA`. `--selftest` прогоняет все цепочки на синтетическом сигнале без сети.
+- В Remotion: `<Film voice={…}>` проигрывает реплики из `voice.json`; `Monologue` и `Subtitle` с пропсом `voice="E1-02"` печатают и показывают текст по таймингу произнесённых символов; зацикленный фон сам уходит на −5 дБ под голосом. Пока `voice.json` пустой, серии рендерятся как раньше.

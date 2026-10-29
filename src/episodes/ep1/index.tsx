@@ -1,6 +1,8 @@
 import React from 'react';
 import {Film, Shot} from '../common/Shell';
 import {EpisodeProps} from '../types';
+import {VoiceLine} from '../../components/Voice';
+import voice from './voice.json';
 import {EP1} from './timing';
 import {Ep1Hook} from './scenes/Hook';
 import {Ep1Ride} from './scenes/Ride';
@@ -15,7 +17,7 @@ import {Ep1End} from './scenes/End';
 
 /** Серия 1. «18:47» (у первой серии нет блока «РАНЕЕ»). */
 export const Ep1: React.FC<EpisodeProps> = ({standalone}) => (
-  <Film>
+  <Film voice={voice as VoiceLine[]}>
     <Shot {...EP1.hook} name="Хук">
       <Ep1Hook dur={EP1.hook.dur} />
     </Shot>

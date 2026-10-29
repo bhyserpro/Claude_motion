@@ -28,7 +28,7 @@ export const Ep1Count: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={PAN_DUR + 120} durationInFrames={dur - PAN_DUR - 120}>
         <Reflection />
       </Sequence>
-      <Monologue start={PAN_DUR + 140} end={dur} lines={['Четырнадцать. Я всегда считаю.', 'Привычка. Потом проще описывать ущерб.']} />
+      <Monologue voice="E1-04" start={PAN_DUR + 140} end={dur} lines={['Четырнадцать. Я всегда считаю.', 'Привычка. Потом проще описывать ущерб.']} />
       <Snd src="rails_loop.wav" dur={dur} vol={0.6} loop trim={60} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.3} loop trim={200} />
     </AbsoluteFill>

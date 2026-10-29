@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, random, useCurrentFrame} from 'remotion';
 import {Layer, Stage25D} from '../../../components/Stage25D';
 import {FlashlightMask} from '../../../components/FX';
-import {Timestamp} from '../../../components/Text';
+import {Subtitle, Timestamp} from '../../../components/Text';
 import {Tunnel, TUN} from '../../../components/Props/Tunnel';
 import {Pavel} from '../../../components/Characters/Pavel';
 import {walkPose} from '../../../components/Characters/Rig';
@@ -55,6 +55,7 @@ export const Ep1PavelLeaves: React.FC<{dur: number}> = ({dur}) => {
         />
       </Stage25D>
       <Timestamp text="ДЕНЬ 1 — 19:20" start={0} end={dur} />
+      <Subtitle voice="E1-09" who="ПАВЕЛ" text="Схожу до гермы. Посмотрю. Двери не открывать." start={6} end={124} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.5} loop trim={600} />
       <Snd src="shuffle.wav" dur={walkEnd} vol={(f) => interpolate(f, [0, walkEnd], [0.35, 0.02])} loop />
       <Snd src="noise_cut.wav" from={404} dur={12} vol={0.15} />

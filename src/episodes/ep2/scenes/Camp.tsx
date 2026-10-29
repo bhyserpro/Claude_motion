@@ -55,8 +55,8 @@ export const Ep2Camp: React.FC<{dur: number; standalone: boolean}> = ({dur, stan
         />
       </Stage25D>
       <Timestamp text="ДЕНЬ 3 — 07:15" suffix={standalone ? 'за 4 часа до этого' : undefined} start={0} end={dur} suffixEnd={130} />
-      <Monologue start={60} end={330} lines={['На третий день люди перестают быть пассажирами.']} />
-      <Monologue start={350} end={dur - 4} lines={['Становятся заявителями.', 'Каждый уверен, что его случай особый.']} />
+      <Monologue voice="E2-02" start={60} end={330} lines={['На третий день люди перестают быть пассажирами.']} />
+      <Monologue voice="E2-02" start={350} end={dur - 4} lines={['Становятся заявителями.', 'Каждый уверен, что его случай особый.']} />
       <Snd src="hit.wav" dur={50} vol={0.7} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.45} loop />
       <Snd src="breath_close.wav" from={200} dur={300} vol={0.1} loop />

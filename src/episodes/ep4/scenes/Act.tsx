@@ -116,11 +116,12 @@ export const Ep4Act: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={1340} durationInFrames={dur - 1340}>
         <Room phase="rush" frame={frame} />
       </Sequence>
-      <Subtitle who="НИНА" text="Воды на пять дней. Нас было тринадцать." start={1065} end={1155} />
-      <Subtitle who="НИНА" text="Я выбирала тех, кто умрёт всё равно." start={1160} end={1245} />
-      <Subtitle who="НИНА" text="Ошиблась я в одном. Всё равно умрут все." start={1250} end={1338} />
-      <Subtitle who="АХМЕД" text="Ты их убивала!" start={1350} end={1405} />
-      <Subtitle who="ГЛЕБ" text="Тихо!" start={1440} end={dur} />
+      <Subtitle voice="E4-04" who="НИНА" text="Воды на пять дней. Нас было тринадцать." start={1065} end={1155} />
+      <Subtitle voice="E4-04" who="НИНА" text="Я выбирала тех, кто умрёт всё равно." start={1160} end={1245} />
+      <Subtitle voice="E4-04" who="НИНА" text="Ошиблась я в одном. Всё равно умрут все." start={1250} end={1338} />
+      <Subtitle voice="E4-05" who="АХМЕД" text="Ты их убила?! Ты сама решала, кому жить?!" start={1340} end={1398} />
+      <Subtitle voice="E4-06" who="ОЛЬГА" text="Да как ты могла…" small start={1398} end={1438} />
+      <Subtitle voice="E4-07" who="ГЛЕБ" text="Тихо!" start={1440} end={dur} />
       <GeigerTrack segs={[[946, 2]]} end={1050} vol={0.7} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={130} />
       <Snd src="shuffle.wav" from={1340} dur={dur - 1340} vol={0.7} loop />

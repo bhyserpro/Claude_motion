@@ -1,6 +1,8 @@
 import React from 'react';
 import {ChapterGap, Film, Shot} from '../common/Shell';
 import {EpisodeProps} from '../types';
+import {VoiceLine} from '../../components/Voice';
+import voice from './voice.json';
 import {EP2} from './timing';
 import {Ep2Hook} from './scenes/Hook';
 import {Ep2Recap} from './scenes/Recap';
@@ -14,7 +16,7 @@ import {Ep2End} from './scenes/End';
 
 /** Серия 2. «Машинист». */
 export const Ep2: React.FC<EpisodeProps> = ({standalone}) => (
-  <Film noLetterbox={[[EP2.act.from, EP2.act.from + 150], [EP2.act.from + 230, EP2.act.from + 380], [EP2.act.from + 460, EP2.act.from + 620], [EP2.act.from + 700, EP2.act.from + 860], [EP2.act.from + 940, EP2.act.from + 1040]]}>
+  <Film voice={voice as VoiceLine[]} noLetterbox={[[EP2.act.from, EP2.act.from + 150], [EP2.act.from + 230, EP2.act.from + 380], [EP2.act.from + 460, EP2.act.from + 620], [EP2.act.from + 700, EP2.act.from + 860], [EP2.act.from + 940, EP2.act.from + 1040]]}>
     <Shot {...EP2.hook} name="Хук">
       <Ep2Hook dur={EP2.hook.dur} />
     </Shot>

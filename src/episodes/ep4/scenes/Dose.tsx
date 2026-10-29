@@ -34,7 +34,7 @@ export const Ep4Dose: React.FC<{dur: number}> = ({dur}) => {
       <Sequence from={430} durationInFrames={dur - 430}>
         <Crackle offset={430} />
       </Sequence>
-      <Subtitle who="НИНА" text="Я подделала всех. Кроме тебя." small start={70} end={230} />
+      <Subtitle voice="E4-08" who="НИНА" text="Я подделала всех. Кроме тебя." small start={70} end={230} />
       <Snd src="breath_close.wav" dur={300} vol={0.3} loop />
       <GeigerTrack segs={SEGS} end={dur} vol={1} xfade={6} />
     </AbsoluteFill>

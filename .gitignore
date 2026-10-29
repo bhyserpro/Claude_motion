@@ -6,3 +6,4 @@ build/
 __pycache__/
 *.pyc
 voice/raw/**/*.vtmp.*
+preview/

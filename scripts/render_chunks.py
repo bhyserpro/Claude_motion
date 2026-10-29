@@ -13,7 +13,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from fullfilm_splice import DIFF, EP_FRAMES, FPS, ep_offset  # noqa: E402
+from fullfilm_splice import DIFF, EP_FRAMES, FPS, ep_offset, has_audio  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 PARTS = os.path.join(ROOT, 'out', 'parts')
@@ -67,9 +67,12 @@ def assemble(names):
             cmd += ['-i', p]
         # точная длина каждого куска: звук у кусков бывает чуть длиннее картинки
         chains = []
-        for i, (_, a, b, _) in enumerate(items):
+        for i, (_, a, b, p) in enumerate(items):
             chains.append(f'[{i}:v]trim=end_frame={b - a},setpts=PTS-STARTPTS[v{i}]')
-            chains.append(f'[{i}:a]atrim=end={(b - a) / FPS:.6f},asetpts=PTS-STARTPTS[a{i}]')
+            if has_audio(p):
+                chains.append(f'[{i}:a]atrim=end={(b - a) / FPS:.6f},asetpts=PTS-STARTPTS[a{i}]')
+            else:  # кусок без звука (тишина в кадре): Remotion не пишет аудиодорожку
+                chains.append(f'anullsrc=r=48000:cl=stereo,atrim=end={(b - a) / FPS:.6f}[a{i}]')
         graph = ';'.join(chains) + ';' + ''.join(f'[v{i}][a{i}]' for i in range(len(parts))) + f'concat=n={len(parts)}:v=1:a=1[v][a]'
         cmd += ['-filter_complex', graph, '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-crf', '18', '-preset', 'medium',
                 '-pix_fmt', 'yuv420p', '-r', str(FPS), '-c:a', 'aac', '-b:a', '320k', '-movflags', '+faststart', f'out/ep0{ep}.mp4']

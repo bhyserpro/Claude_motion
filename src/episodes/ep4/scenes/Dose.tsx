@@ -38,6 +38,9 @@ export const Ep4Dose: React.FC<{dur: number}> = ({dur}) => {
       </Sequence>
       <Subtitle voice="E4-08" who="НИНА" text="Я подделала всех. Кроме тебя." small start={20} end={140} />
       <Snd src="breath_close.wav" dur={PULL} vol={0.3} loop />
+      {/* рука в кармане пальто — шорох ткани */}
+      <Snd src="shuffle.wav" from={PULL + 8} dur={22} vol={0.4} rate={0.9} />
+      <Snd src="shuffle.wav" from={PULL + 62} dur={18} vol={0.32} rate={1.1} />
       <GeigerTrack segs={SEGS} end={dur} vol={1} xfade={6} />
     </AbsoluteFill>
   );

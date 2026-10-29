@@ -106,6 +106,10 @@ export const Ep4Siege: React.FC<{dur: number}> = ({dur}) => {
       <Snd src="knock.wav" from={PULL + 110} dur={30} vol={0.45} />
       <Snd src="heartbeat.wav" from={PULL + 30} dur={HUSH - PULL - 30} vol={0.3} loop fadeIn={20} fadeOut={6} />
       <GeigerTrack segs={[[CLICK, 2]]} end={STOP} vol={0.9} />
+      {/* первый щелчок после тишины — отчётливо; поворот голов — со скрипом стекла */}
+      <Snd src="hit.wav" from={CLICK} dur={10} vol={0.25} />
+      <Snd src="glass_squeak.wav" from={CLICK + 28} dur={40} vol={0.35} trim={12} />
+      <Snd src="glass_squeak.wav" from={AWAY + 250} dur={44} vol={0.3} trim={4} />
       <Snd src="noise_cut.wav" from={STOP} dur={8} vol={0.2} />
       <Snd src="shuffle.wav" from={AWAY} dur={200} vol={0.25} loop fadeOut={60} />
       <Snd src="drip.wav" from={AWAY + 200} dur={14} vol={0.35} />

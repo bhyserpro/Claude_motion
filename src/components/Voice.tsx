@@ -111,6 +111,14 @@ export const useWordFrame = (id: string, word: string, fallback: number, nth = 0
   return w ? line.startFrame + Math.round(w.a * FPS) - off : fallback;
 };
 
+/** То же без хуков: кадр серии, на котором начинается слово (для расчётов вне компонентов, например летербокса). */
+export const wordFrameIn = (lines: VoiceLine[], id: string, word: string, fallback: number, nth = 0): number => {
+  const line = lines.find((l) => l.id === id);
+  if (!line || !line.chars.length) return fallback;
+  const w = spokenWords(line.chars).filter((x) => x.w === norm(word))[nth];
+  return w ? line.startFrame + Math.round(w.a * FPS) : fallback;
+};
+
 /** Кадр (в текущей Sequence), на котором реплика заканчивается. */
 export const useVoiceEnd = (id: string, fallback: number): number => {
   const line = useVoiceLine(id);

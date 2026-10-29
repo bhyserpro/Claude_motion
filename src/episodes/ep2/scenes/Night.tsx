@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
 import {Stage25D} from '../../../components/Stage25D';
 import {PencilNumber, Timestamp} from '../../../components/Text';
+import {useWordFrame} from '../../../components/Voice';
 import {camKeys, handheld} from '../../../lib/camera';
 import {Snd} from '../../common/audio';
 import {Actor} from '../../common/cast';
@@ -26,9 +27,9 @@ const SLEEPERS: Actor[] = ([
   {id: 'nina', x: 2420, y: BENCH_Y, scale: S, pose: lie(1), ep: 2},
 ] as Actor[]).map((a) => ({...a, view: 'front' as const, dirt: 0.5}));
 
-const KNOCK0 = 60;
-const KNOCK_GAP = 16;
-const FIFTEEN = 345;
+const KNOCK0 = 30;
+const KNOCK_GAP = 15; // стуки 1–8 — быстро, по 0,5 с, без голоса
+const WORDS = ['Девять', 'десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать'];
 // где появляются карандашные цифры (в координатах стены)
 const SPOTS: [number, number][] = [
   [260, 560],
@@ -47,9 +48,15 @@ const SPOTS: [number, number][] = [
   [2820, 560],
 ];
 
-/** 2:25–2:50. День 3, 02:40. Все лежат. Из-под пола — стуки, ровно, как счёт. 1…14. Пауза. 15. Вскрик из кабины. */
+/**
+ * День 3, 02:40. Все лежат. Из-под пола — стуки, как счёт: 1–8 быстро, 9–14 — под шёпот Глеба (E2-N06),
+ * «Пятнадцать» (E2-11) вместе с 15-м стуком, вскрик Семёна из кабины (E2-12).
+ */
 export const Ep2Night: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
+  const voiced = WORDS.map((w, i) => useWordFrame('E2-N06', w, 150 + i * 36));
+  const knocks = [...Array.from({length: 8}, (_, i) => KNOCK0 + i * KNOCK_GAP), ...voiced];
+  const FIFTEEN = useWordFrame('E2-11', 'Пятнадцать', 380);
   const cam = handheld(camKeys(frame, [{f: 0, x: 900, dolly: 0.0}, {f: dur, x: 500, dolly: 0.12}]), frame, 1.5, 'nt');
   return (
     <AbsoluteFill>
@@ -67,7 +74,7 @@ export const Ep2Night: React.FC<{dur: number}> = ({dur}) => {
           wallOverlay={
             <>
               {SPOTS.map(([x, y], i) => (
-                <PencilNumber key={i} x={x} y={y} text={String(i + 1)} at={KNOCK0 + i * KNOCK_GAP} size={64} color="#8a867c" writeFrames={4} />
+                <PencilNumber key={i} x={x} y={y} text={String(i + 1)} at={knocks[i]} size={64} color="#8a867c" writeFrames={4} />
               ))}
               <PencilNumber x={560} y={400} text="15" at={FIFTEEN} size={96} color="#a39d90" tremble={3} writeFrames={6} />
             </>
@@ -75,12 +82,17 @@ export const Ep2Night: React.FC<{dur: number}> = ({dur}) => {
         />
       </Stage25D>
       <Timestamp text="ДЕНЬ 3 — 02:40" start={0} end={dur} />
-      <Snd src="tunnel_drone.wav" dur={dur} vol={(f) => interpolate(f, [0, 40, 330, 345, 420, dur], [0.4, 0.3, 0.3, 0.0, 0.0, 0.35], {extrapolateRight: 'clamp'})} loop trim={110} />
-      {Array.from({length: 14}).map((_, i) => (
-        <Snd key={i} src="knock.wav" from={KNOCK0 + i * KNOCK_GAP} dur={30} vol={0.75} />
+      <Snd
+        src="tunnel_drone.wav"
+        dur={dur}
+        vol={(f) => interpolate(f, [0, 40, FIFTEEN - 15, FIFTEEN, FIFTEEN + 75, dur], [0.4, 0.3, 0.3, 0.0, 0.0, 0.35], {extrapolateRight: 'clamp'})}
+        loop
+        trim={110}
+      />
+      {knocks.map((k, i) => (
+        <Snd key={i} src="knock.wav" from={k} dur={30} vol={i < 8 ? 0.6 : 0.75} />
       ))}
       <Snd src="knock.wav" from={FIFTEEN} dur={30} vol={1} />
-      <Snd src="cry_short.wav" from={FIFTEEN + 30} dur={12} vol={0.9} fadeOut={2} />
     </AbsoluteFill>
   );
 };

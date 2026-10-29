@@ -29,7 +29,7 @@ export const Ep2Hook: React.FC<{dur: number}> = ({dur}) => {
         beams={[{x: bx + jx, y: by + jy, z: bz, r: 0.8, intensity: dead}]}
         darkness={0.96}
       />
-      <HookText lines={['Ты нашёл человека, который ушёл за помощью.', 'У него во рту **камни**.']} start={3} end={dur - 2} top={0.18} />
+      <HookText voice="E2-01" lines={['Ты нашёл человека, который ушёл за помощью.', 'У него во рту **камни**.']} start={3} end={dur - 2} top={0.18} />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.6} loop />
       <Snd src="heartbeat.wav" dur={dur} vol={0.45} loop fadeIn={20} />
       <Snd src="breath_close.wav" dur={dur} vol={0.3} loop />

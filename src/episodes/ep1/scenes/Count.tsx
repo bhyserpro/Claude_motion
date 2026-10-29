@@ -105,7 +105,7 @@ const CabGlance: React.FC<{dur: number}> = ({dur}) => {
   );
 };
 
-const Reflection: React.FC = () => {
+export const Reflection: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{background: '#040505'}}>

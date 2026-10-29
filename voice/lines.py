@@ -205,39 +205,51 @@ LINES = [
       '[whispering, close] Пятнадцатый был мокрый. [pause] А туннель — сухой.', new=True, chain=True, prio=3),
     # ── СЕРИЯ 2. «Машинист»
     L('E2-01', '0:00', '0:06', 'gleb', 'DRY', 'quiet',
-      '[low, close to the mic, steady] Ты нашёл человека, который ушёл за помощью. [pause] [quieter] У него во рту... камни.', chain=True),
+      '[low, close to the mic, steady] Ты нашёл человека, который ушёл за помощью. [pause] [quieter] У него во рту... камни.', chain=True,
+      scene='hook', pos=0.15),
     L('E2-02', '0:13', '0:34', 'gleb', 'DRY', 'normal',
       '[dry, cold, measured] На третий день люди перестают быть пассажирами. [pause] Становятся заявителями. [slight bitter irony] '
-      'Каждый уверен, что его случай особый.', chain=True),
-    L('E2-03', '0:38', '0:44', 'semyon', 'TUNNEL', 'normal', '[slow, a little out of breath] До гермы двести метров. Я тут тридцать лет ходил.'),
-    L('E2-04', '0:46', '0:52', 'semyon', 'TUNNEL', 'normal', '[pointing something out, matter-of-fact] Вентшахта. Наверх ведёт. Решётка там на замке.'),
-    L('E2-05', '1:12', '1:17', 'semyon', 'TUNNEL', 'whisper', '[whispering, shaken, trembling voice] Паша... Господи, Паша.', new=True),
+      'Каждый уверен, что его случай особый.', chain=True, scene='camp', pos=2.0),
+    L('E2-03', '0:38', '0:44', 'semyon', 'TUNNEL', 'normal', '[slow, a little out of breath] До гермы двести метров. Я тут тридцать лет ходил.',
+      scene='walk', pos=0.6),
+    L('E2-04', '0:46', '0:52', 'semyon', 'TUNNEL', 'normal', '[pointing something out, matter-of-fact] Вентшахта. Наверх ведёт. Решётка там на замке.',
+      scene='walk', pos=11.9),  # у прохода ВШ-12
+    L('E2-05', '1:12', '1:17', 'semyon', 'TUNNEL', 'whisper', '[whispering, shaken, trembling voice] Паша... Господи, Паша.', new=True,
+      scene='door', pos=9.3),
     L('E2-06', '1:21', '1:58', 'gleb', 'DRY', 'quiet',
       '[quiet, precise, like dictating a report] Акт осмотра номер один. [pause] Пункт первый. Ожогов нет. [pause] Пункт второй. '
       'Ногти сорваны. Он царапал герму. [pause] Пункт третий. Царапины на герме... [long pause] [quieter] и с этой стороны. [pause] '
       'Пункт четвёртый. Следы. Его ботинки — к герме. Другие — босые. От шахты. К поезду. [pause] Обратно — нет. [pause] '
-      'Пункт пятый. Дозиметр машиниста. Ноль целых четыре десятых миллизиверта.', chain=True),
-    L('E2-07', '1:58', '2:00', 'gleb', 'DRY', 'quiet', '[low, grim, quiet] С такой дозой живут. [pause] От неё не умирают с камнями во рту.', chain=True),
-    L('E2-08', '2:06', '2:09', 'nina', 'CAR_DARK', 'quiet', '[calm, gentle, final] У вас много. Вам нужно отдельно.'),
-    L('E2-09', '2:14', '2:15', 'nina', 'CAR_DARK', 'quiet', '[soft, after a short hesitation] Нормально.'),
-    L('E2-10', '2:17', '2:22', 'gleb', 'DRY', 'quiet', '[quiet, suspicious, slow] Она мерила всех. [pause] Себя — нет.', chain=True),
-    L('E2-11', '2:42', '2:43', 'gleb', 'CAR_DARK', 'whisper', '[barely audible whisper] Пятнадцать.'),
-    L('E2-12', '2:45', '2:47', 'semyon', 'CAB', 'raised', '[a short, choked cry of fear, cut off abruptly] А-а...', cut_frames=3),
+      'Пункт пятый. Дозиметр машиниста. Ноль целых четыре десятых миллизиверта.', chain=True, scene='act', pos=0.5),
+    L('E2-07', '1:58', '2:00', 'gleb', 'DRY', 'quiet', '[low, grim, quiet] С такой дозой живут. [pause] От неё не умирают с камнями во рту.', chain=True,
+      scene='act', pos=29.6),
+    L('E2-08', '2:06', '2:09', 'nina', 'CAR_DARK', 'quiet', '[calm, gentle, final] У вас много. Вам нужно отдельно.',
+      scene='measure', pos=7.1),  # Семёну — без числа
+    L('E2-09', '2:14', '2:15', 'nina', 'CAR_DARK', 'quiet', '[soft, after a short hesitation] Нормально.', scene='measure', pos=16.0),  # после взгляда на экран
+    L('E2-10', '2:17', '2:22', 'gleb', 'DRY', 'quiet', '[quiet, suspicious, slow] Она мерила всех. [pause] Себя — нет.', chain=True,
+      scene='measure', pos=17.5),
+    L('E2-11', '2:42', '2:43', 'gleb', 'CAR_DARK', 'whisper', '[barely audible whisper] Пятнадцать.', scene='night', pos=12.6),
+    L('E2-12', '2:45', '2:47', 'semyon', 'CAB', 'raised', '[a short, choked cry of fear, cut off abruptly] А-а...', cut_frames=3,
+      scene='night', pos=14.6),  # из кабины, после 15-го стука
     # патч №1
     L('E2-N01', '0:24', '0:35', 'gleb', 'DRY', 'normal',
       '[dry, quoting, bitter irony] Пункт три-один. Страхователь обязан принять все меры к уменьшению убытков. [pause] Корнеев принял меры первым.',
-      new=True, chain=True, prio=2),
+      new=True, chain=True, prio=2, scene='camp', pos=10.7),
     L('E2-N02', '0:30', '0:35', 'korneev', 'CAR_DARK', 'raised',
-      '[gruff, loud enough for everyone, threatening] Воду делю я. По крышке в час. [pause] Кто тронет — пожалеет.', new=True, prio=1),
+      '[gruff, loud enough for everyone, threatening] Воду делю я. По крышке в час. [pause] Кто тронет — пожалеет.', new=True, prio=1,
+      scene='camp', pos=18.9),
     L('E2-N03', '0:44', '0:48', 'semyon', 'TUNNEL', 'quiet',
-      '[slow, uneasy, lowering his voice] Слышишь? [pause] Туннель всегда гудит. А сейчас молчит. [pause] Плохо это.', new=True, prio=2),
+      '[slow, uneasy, lowering his voice] Слышишь? [pause] Туннель всегда гудит. А сейчас молчит. [pause] Плохо это.', new=True, prio=2,
+      scene='walk', pos=5.3),  # под «молчит» гул туннеля стихает
     L('E2-N04', '0:55', '1:05', 'gleb', 'DRY', 'quiet',
       '[quiet, focused, deducing] Фонарь машиниста ещё горел. [pause] Батарейки садятся за двое суток. [pause] Значит, он сидит здесь... с первой ночи.',
-      new=True, chain=True, prio=1),
+      new=True, chain=True, prio=1, scene='door', pos=0.6),
     L('E2-N05', '2:02', '2:06', 'nina', 'CAR_DARK', 'quiet',
-      '[calm, quiet, clinical] Ноль тридцать. [pause] Ноль тридцать. [pause] Ноль тридцать одна. [pause] Ноль тридцать.', new=True, prio=1),
+      '[calm, quiet, clinical] Ноль тридцать. [pause] Ноль тридцать. [pause] Ноль тридцать одна. [pause] Ноль тридцать.', new=True, prio=1,
+      scene='measure', pos=1.0),  # по числу на каждой остановке Нины
     L('E2-N06', '2:36', '2:42', 'gleb', 'CAR_DARK', 'whisper',
-      '[whispering, slow, in rhythm with knocks] Девять... десять... одиннадцать... двенадцать... тринадцать... четырнадцать...', new=True, prio=1),
+      '[whispering, slow, in rhythm with knocks] Девять... десять... одиннадцать... двенадцать... тринадцать... четырнадцать...', new=True, prio=1,
+      scene='night', pos=5.0),  # стуки 9–14 по словам
     L('E2-N07', '2:57', '3:00', 'gleb', 'DRY', 'whisper',
       '[low, grim, whispering] Семён кричал недолго. [pause] Утром у него были сложены руки. Сам он так лечь не мог.', new=True, chain=True, prio=3),
     # ── СЕРИЯ 3. «Список»
@@ -326,6 +338,16 @@ LINES = [
 ]
 
 BY_ID = {l.id: l for l in LINES}
+
+# «РАНЕЕ» (патч №1, §4): фрагменты уже озвученных реплик, 0 кредитов. (реплика, первое слово, последнее слово) —
+# None — вся реплика. Фрагмент i звучит в i-й двухсекундной вставке блока: с кадра recap.from + 60·i + RECAP_LEAD.
+RECAPS = {
+    2: [('E1-04', 'Четырнадцать', 'Четырнадцать'), ('E1-06', 'оставайтесь', 'местах'), ('E1-10', 'пятнадцать', 'пятнадцать')],
+    3: [('E2-01', 'У', 'камни'), ('E2-06', 'Другие', 'босые'), ('E2-12', None, None)],
+    4: [('E3-07', 'Не', 'меня'), ('E3-09', None, None), ('E3-10', 'Мне', 'жаль')],
+    5: [('E4-07', None, None), ('E4-08', 'Кроме', 'тебя')],
+}
+RECAP_LEAD = 8
 
 
 def plain(text: str) -> str:

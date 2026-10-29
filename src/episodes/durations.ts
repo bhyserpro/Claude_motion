@@ -1,6 +1,7 @@
 import {EP_FRAMES} from '../config';
 import {EP1_FRAMES} from './ep1/timing';
+import {EP2_FRAMES} from './ep2/timing';
 
 /** Длительность каждой серии в кадрах: серии, подогнанные под озвучку, длиннее 3:00. */
-export const EPISODE_FRAMES = [EP1_FRAMES, EP_FRAMES, EP_FRAMES, EP_FRAMES, EP_FRAMES];
+export const EPISODE_FRAMES = [EP1_FRAMES, EP2_FRAMES, EP_FRAMES, EP_FRAMES, EP_FRAMES];
 export const FILM_FRAMES = EPISODE_FRAMES.reduce((a, b) => a + b, 0);

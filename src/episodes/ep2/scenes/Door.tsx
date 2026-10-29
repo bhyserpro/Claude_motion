@@ -2,7 +2,8 @@ import React from 'react';
 import {AbsoluteFill, interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Stage25D} from '../../../components/Stage25D';
 import {FlashlightMask} from '../../../components/FX';
-import {Subtitle} from '../../../components/Text';
+import {Monologue, Subtitle} from '../../../components/Text';
+import {useWordFrame} from '../../../components/Voice';
 import {Pavel} from '../../../components/Characters/Pavel';
 import {Gleb, GLEB_POSES} from '../../../components/Characters/Gleb';
 import {Semyon} from '../../../components/Characters/Semyon';
@@ -13,27 +14,41 @@ import {placeAt} from '../../common/cast';
 import {headCloseY, TunnelShot} from '../../common/tunnelShot';
 import {deadPavel, DOOR_Z, PAVEL_X, PAVEL_Z} from '../shared';
 
-/** 0:55–1:20. Гермозатвор. Павел у стены, его фонарь ещё светит. Медленный подход. Лицо — частично. */
-export const Ep2Door: React.FC<{dur: number}> = ({dur}) => (
-  <AbsoluteFill>
-    <Sequence durationInFrames={480}>
-      <Approach dur={480} />
-    </Sequence>
-    <Sequence from={480} durationInFrames={150}>
-      <PavelFace />
-    </Sequence>
-    <Sequence from={630} durationInFrames={dur - 630}>
-      <Kneel />
-    </Sequence>
-    <Subtitle voice="E2-05" who="СЕМЁН" text="Паша… Господи, Паша." start={512} end={660} />
-    <Snd src="tunnel_drone.wav" dur={dur} vol={0.55} loop trim={90} />
-  </AbsoluteFill>
-);
+/**
+ * Гермозатвор. Подход 9 с под дедукцию Глеба (E2-N04): на «Фонарь машиниста ещё горел» луч находит его фонарь,
+ * на «Значит» — его самого. Лицо Павла 2,5 с под «Паша… Господи, Паша» (E2-05), затем Глеб на коленях.
+ */
+export const Ep2Door: React.FC<{dur: number}> = ({dur}) => {
+  const lamp = useWordFrame('E2-N04', 'Фонарь', 20);
+  const found = useWordFrame('E2-N04', 'Значит', 170);
+  const face = useWordFrame('E2-05', 'Паша', 280) - 10;
+  const kneel = face + 76;
+  return (
+    <AbsoluteFill>
+      <Sequence durationInFrames={face}>
+        <Approach dur={face} lamp={lamp} found={found} />
+      </Sequence>
+      <Sequence from={face} durationInFrames={kneel - face}>
+        <PavelFace />
+      </Sequence>
+      <Sequence from={kneel} durationInFrames={dur - kneel}>
+        <Kneel />
+      </Sequence>
+      <Monologue voice="E2-N04" start={lamp - 2} end={found} lines={['Фонарь машиниста ещё горел.', 'Батарейки садятся за двое суток.']} />
+      <Monologue voice="E2-N04" start={found} end={face} lines={['Значит, он сидит здесь… с первой ночи.']} />
+      <Subtitle voice="E2-05" who="СЕМЁН" text="Паша… Господи, Паша." />
+      <Snd src="tunnel_drone.wav" dur={dur} vol={0.55} loop trim={90} />
+      <Snd src="shuffle.wav" dur={face} vol={(f) => interpolate(f, [0, face], [0.4, 0.15])} loop />
+      <Snd src="hit.wav" from={face} dur={30} vol={0.35} />
+      <Snd src="breath_close.wav" from={face} dur={dur - face} vol={0.2} loop />
+    </AbsoluteFill>
+  );
+};
 
-const Approach: React.FC<{dur: number}> = ({dur}) => {
+const Approach: React.FC<{dur: number; lamp: number; found: number}> = ({dur, lamp, found}) => {
   const frame = useCurrentFrame();
-  const camZ = interpolate(frame, [0, dur], [DOOR_Z - 12, DOOR_Z - 4.4]);
-  const find = interpolate(frame, [0, 180, 300, dur], [0, 0, 1, 1], {extrapolateRight: 'clamp'});
+  const camZ = interpolate(frame, [0, dur], [DOOR_Z - 11, DOOR_Z - 4.4]);
+  const find = interpolate(frame, [0, lamp, found, dur], [0, 0.15, 1, 1], {extrapolateRight: 'clamp'});
   // сначала луч ищет по путям, потом находит слабое пятно его фонаря и его самого
   const bx = interpolate(find, [0, 1], [0.4, PAVEL_X + 0.2]);
   const by = interpolate(find, [0, 1], [1.2, 0.9]);

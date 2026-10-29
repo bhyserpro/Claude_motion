@@ -20,7 +20,7 @@ import soundfile as sf
 from scipy import signal
 
 sys.path.insert(0, os.path.dirname(__file__))
-from lines import BY_ID, CHARACTERS, LEVEL_DB, LINES, Line  # noqa: E402
+from lines import BY_ID, CHARACTERS, LEVEL_DB, LINES, RECAPS, RECAP_LEAD, Line  # noqa: E402
 
 SR = 44100
 FPS = 30
@@ -506,6 +506,39 @@ def place_words(x, alignment, first_at, targets):
     return np.concatenate(pieces), al, late
 
 
+def recap_fragment(y, chars, w0, w1, max_s=1.9):
+    """Кусок обработанной реплики от слова w0 до слова w1 (включительно) с короткими спадами; None — вся реплика."""
+    words, cur, tag = [], None, False
+    for i, ch in enumerate(chars):
+        c = ch['c']
+        if c == '[':
+            tag = True
+        if not tag and c.isalpha():
+            nxt = chars[i + 1]['t'] if i + 1 < len(chars) else ch['t'] + 0.12
+            cur = [cur[0] + c, cur[1], nxt] if cur else [c, ch['t'], nxt]
+        elif cur:
+            words.append(cur)
+            cur = None
+        if c == ']':
+            tag = False
+    if cur:
+        words.append(cur)
+    if w0 is None:
+        a = max(0.0, (words[0][1] if words else 0) - 0.35)
+        b = min(len(y) / SR, a + max_s)
+    else:
+        i0 = next(i for i, w in enumerate(words) if _norm(w[0]) == _norm(w0))
+        i1 = next(i for i in range(i0, len(words)) if _norm(words[i][0]) == _norm(w1))
+        a, b = max(0.0, words[i0][1] - 0.06), min(len(y) / SR, words[i1][2] + 0.3)
+    seg = y[int(a * SR):int(b * SR)].copy()
+    n = min(int(0.025 * SR), len(seg) // 4)
+    ramp = np.linspace(0, 1, n)
+    seg[:n] = (seg[:n].T * ramp).T
+    seg[-n:] = (seg[-n:].T * ramp[::-1]).T
+    frag_chars = [{'c': ch['c'], 't': round(ch['t'] - a, 3)} for ch in chars if a - 0.01 <= ch['t'] <= b]
+    return seg, frag_chars
+
+
 def chars_from(alignment, shift, keep=None):
     if not alignment:
         return []
@@ -540,6 +573,7 @@ def run(ids=None):
     entries = {ep: [] for ep in range(1, 6)}
     report = []
     scenes_by_ep = {}
+    done_lines = {}  # id → (обработанный сигнал, тайминг символов, персонаж) — для фрагментов «РАНЕЕ»
     missing = []
     for line in LINES:
         src_id = line.reuse or line.id
@@ -566,6 +600,7 @@ def run(ids=None):
                 for w, d in late:
                     report.append(f'{line.id}: «{w}» ' + ('не найдено в генерации' if d is None else f'опаздывает на {d:.2f} с'))
         y, shift = process_line(line, x, al)
+        done_lines[line.id] = (y, chars_from(al, shift + frag_shift, keep), line.who)
         if ids is None or line.id in ids or not os.path.exists(out_abs):
             os.makedirs(os.path.dirname(out_abs), exist_ok=True)
             sf.write(out_abs, y.astype(np.float32), SR, subtype='PCM_16')
@@ -585,10 +620,26 @@ def run(ids=None):
         })
         if scene_end is None and dur_f > win_f * 1.1 and win_f > FPS:
             report.append(f'{line.id}: {dur_f / FPS:.1f} с при окне {win_f / FPS:.1f} с — сцену нужно удлинить (§7.4)')
+    # «РАНЕЕ» из фрагментов готовых реплик (0 кредитов)
+    for ep, specs in RECAPS.items():
+        scenes = scenes_by_ep.setdefault(ep, scene_times(ep))
+        if 'recap' not in scenes or not entries[ep]:
+            continue
+        r0 = scenes['recap'][0]
+        for i, (src, w0, w1) in enumerate(specs):
+            if src not in done_lines:
+                report.append(f'R{ep}-{i + 1}: нет {src}')
+                continue
+            y, chars, who = done_lines[src]
+            seg, fc = recap_fragment(y, chars, w0, w1)
+            rel = f'voice/ep{ep}/R{ep}-{i + 1}.wav'
+            sf.write(os.path.join(ROOT, 'public', rel), seg.astype(np.float32), SR, subtype='PCM_16')
+            entries[ep].append({'id': f'R{ep}-{i + 1}', 'character': who, 'file': rel, 'startFrame': round(r0 * FPS) + 60 * i + RECAP_LEAD,
+                                'durationFrames': math.ceil(len(seg) / SR * FPS), 'chars': fc})
     for ep, items in entries.items():
         if not items:
             continue
-        loose = [e['id'] for e in items if not BY_ID[e['id']].scene]  # не озвученные (нет файла) не мешают
+        loose = [e['id'] for e in items if e['id'] in BY_ID and not BY_ID[e['id']].scene]  # не озвученные (нет файла) не мешают
         if loose:  # пока реплики серии не привязаны к сценам, серия остаётся без голоса — WAV готовы, voice.json не трогаем
             report.append(f'ep{ep}: voice.json не записан — нет привязки к сценам у {" ".join(loose)}')
             continue

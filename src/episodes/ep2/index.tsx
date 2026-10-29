@@ -4,6 +4,7 @@ import {EpisodeProps} from '../types';
 import {VoiceLine} from '../../components/Voice';
 import voice from './voice.json';
 import {EP2} from './timing';
+import {ACT1_PAPER} from './act1';
 import {Ep2Hook} from './scenes/Hook';
 import {Ep2Recap} from './scenes/Recap';
 import {Ep2Camp} from './scenes/Camp';
@@ -16,7 +17,7 @@ import {Ep2End} from './scenes/End';
 
 /** Серия 2. «Машинист». */
 export const Ep2: React.FC<EpisodeProps> = ({standalone}) => (
-  <Film voice={voice as VoiceLine[]} noLetterbox={[[EP2.act.from, EP2.act.from + 150], [EP2.act.from + 230, EP2.act.from + 380], [EP2.act.from + 460, EP2.act.from + 620], [EP2.act.from + 700, EP2.act.from + 860], [EP2.act.from + 940, EP2.act.from + 1040]]}>
+  <Film voice={voice as VoiceLine[]} noLetterbox={ACT1_PAPER.map(([a, b]) => [EP2.act.from + a, EP2.act.from + b] as [number, number])}>
     <Shot {...EP2.hook} name="Хук">
       <Ep2Hook dur={EP2.hook.dur} />
     </Shot>

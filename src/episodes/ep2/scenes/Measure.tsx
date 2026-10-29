@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, Sequence, useCurrentFrame} from 'remotion';
 import {DSvg, Stage25D} from '../../../components/Stage25D';
 import {Monologue, Subtitle} from '../../../components/Text';
+import {useVoiceEnd, useWordFrame} from '../../../components/Voice';
 import {Nina, NINA_POSES} from '../../../components/Characters/Nina';
 import {Gleb} from '../../../components/Characters/Gleb';
 import {walkPose} from '../../../components/Characters/Rig';
@@ -11,8 +12,8 @@ import {CarSideLayers, SIDE_FEET} from '../../common/sets';
 import {Actor} from '../../common/cast';
 import {EP2_CAMP} from '../cast';
 
-// Нина мерит всех по очереди. Щелчки у всех одинаковые — 2 в секунду (улика!).
-const STOPS: [number, number][] = [
+// Нина мерит всех по очереди. Щелчки у всех одинаковые — 2 в секунду (улика!). Без голоса — эти остановки.
+const STATIC_STOPS: [number, number][] = [
   [0, 365],
   [90, 365],
   [110, 770],
@@ -23,30 +24,47 @@ const STOPS: [number, number][] = [
   [520, 1330],
 ];
 const GEIGER: [number, number][] = [[6, 2]];
+const XS = [365, 560, 770, 980, 1190]; // у кого Нина останавливается: четыре замера вслух, последний — Семён
 
-export const Ep2Measure: React.FC<{dur: number}> = ({dur}) => (
-  <AbsoluteFill>
-    <Sequence durationInFrames={520}>
-      <Round />
-    </Sequence>
-    <Sequence from={520} durationInFrames={dur - 520}>
-      <GlebMeasured />
-    </Sequence>
-    <Subtitle voice="E2-08" who="НИНА" text="У вас много. Вам нужно отдельно." start={310} end={405} />
-    <Subtitle voice="E2-09" who="НИНА" text="Нормально." start={640} end={705} />
-    <Monologue voice="E2-10" start={670} end={dur} lines={['Она мерила всех. Себя — нет.']} />
-    <GeigerTrack segs={GEIGER} end={650} vol={0.75} />
-    <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={70} />
-  </AbsoluteFill>
-);
+/**
+ * Нина мерит всех и называет показания вслух (E2-N05): «0,30… 0,30… 0,31… 0,30» — по числу на остановке.
+ * Семёну число не называет — сразу «У вас много» (E2-08). Глеба мерит последним: «Нормально» (E2-09), мысль Глеба (E2-10).
+ */
+export const Ep2Measure: React.FC<{dur: number}> = ({dur}) => {
+  const reads = [0, 1, 2, 3].map((i) => useWordFrame('E2-N05', 'Ноль', 20 + i * 45, i));
+  const many = useWordFrame('E2-08', 'У', 220);
+  const leave = useVoiceEnd('E2-08', 290);
+  const roundEnd = leave + 50;
+  // остановки: к каждому числу Нина уже стоит у человека; к Семёну подходит после 4-го числа
+  const stops: [number, number][] = [[0, XS[0] - 120]];
+  reads.forEach((r, i) => stops.push([r - 8, XS[i]], [r + 10, XS[i]]));
+  stops.push([many - 10, XS[4]], [roundEnd, XS[4]]);
+  return (
+    <AbsoluteFill>
+      <Sequence durationInFrames={roundEnd}>
+        <Round stops={stops} leave={leave} end={roundEnd} />
+      </Sequence>
+      <Sequence from={roundEnd} durationInFrames={dur - roundEnd}>
+        <GlebMeasured />
+      </Sequence>
+      <Subtitle voice="E2-N05" who="НИНА" text="0,30… 0,30… 0,31… 0,30." />
+      <Subtitle voice="E2-08" who="НИНА" text="У вас много. Вам нужно отдельно." />
+      <Subtitle voice="E2-09" who="НИНА" text="Нормально." />
+      <Monologue voice="E2-10" start={roundEnd + 120} end={dur} lines={['Она мерила всех. Себя — нет.']} />
+      <GeigerTrack segs={GEIGER} end={roundEnd + 150} vol={0.75} />
+      <Snd src="tunnel_drone.wav" dur={dur} vol={0.4} loop trim={70} />
+    </AbsoluteFill>
+  );
+};
 
-export const Round: React.FC = () => {
+export const Round: React.FC<{stops?: [number, number][]; leave?: number; end?: number}> = ({stops = STATIC_STOPS, leave = 420, end = 520}) => {
+  const STOPS = stops;
   const frame = useCurrentFrame();
   const nx = interpolate(frame, STOPS.map((s) => s[0]), STOPS.map((s) => s[1]), {extrapolateRight: 'clamp'});
   const moving = STOPS.some(([f], i) => i > 0 && frame > STOPS[i - 1][0] && frame < f && STOPS[i - 1][1] !== STOPS[i][1]);
-  const semyonLeaves = frame >= 420;
-  const sx = interpolate(frame, [420, 520], [1175, 720], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const cam = handheld(camKeys(frame, [{f: 0, x: -520, dolly: 0.35}, {f: 300, x: 380, dolly: 0.4}, {f: 520, x: 260, dolly: 0.42}]), frame, 2.5, 'msr');
+  const semyonLeaves = frame >= leave;
+  const sx = interpolate(frame, [leave, end], [1175, 720], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const cam = handheld(camKeys(frame, [{f: 0, x: -520, dolly: 0.35}, {f: Math.round(end * 0.58), x: 380, dolly: 0.4}, {f: end, x: 260, dolly: 0.42}]), frame, 2.5, 'msr');
   const actors: Actor[] = EP2_CAMP.filter((a) => a.id !== 'nina' && (a.id !== 'semyon' || !semyonLeaves));
   if (semyonLeaves) {
     actors.push({id: 'semyon', x: sx, y: SIDE_FEET + 10, scale: 0.41, view: 'profile', facing: -1, pose: walkPose((frame / 40) % 1, 0.5)});

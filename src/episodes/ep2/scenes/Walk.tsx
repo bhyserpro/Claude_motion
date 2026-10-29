@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
 import {Subtitle} from '../../../components/Text';
+import {useWordFrame} from '../../../components/Voice';
 import {Gleb} from '../../../components/Characters/Gleb';
 import {Semyon, SEMYON_POSES} from '../../../components/Characters/Semyon';
 import {walkPose} from '../../../components/Characters/Rig';
@@ -12,16 +13,21 @@ import {TunnelShot} from '../../common/tunnelShot';
 
 export const PASSAGE_Z = 9;
 
-/** 0:35–0:55. Глеб и Семён идут по туннелю. Боковой проход «ВШ-12». */
+/**
+ * Глеб и Семён идут по туннелю (E2-03). На «Слышишь?» Семён встаёт — гул туннеля пропадает (E2-N03),
+ * на «Плохо это» идут дальше; у прохода «ВШ-12» он показывает вентшахту (E2-04).
+ */
 export const Ep2Walk: React.FC<{dur: number}> = ({dur}) => {
   const frame = useCurrentFrame();
-  const stop0 = 250;
-  const stop1 = 400;
-  // идут, останавливаются у прохода, идут дальше
+  const listen = useWordFrame('E2-N03', 'Слышишь', 140) - 4;
+  const resume = useWordFrame('E2-N03', 'Плохо', 300) + 10;
+  const stop0 = useWordFrame('E2-04', 'Вентшахта', 350) - 12;
+  const stop1 = useWordFrame('E2-04', 'замке', 450) + 25; // у реплики длинный хвост эха — считаем от последнего слова
+  // идут → слушают → идут → у прохода → идут дальше
   const zt = (f: number) =>
-    f < stop0 ? interpolate(f, [0, stop0], [0, 5.4]) : f < stop1 ? 5.4 : interpolate(f, [stop1, dur], [5.4, 8.6]);
+    interpolate(f, [0, listen, resume, stop0, stop1, dur], [0, 2.4, 2.4, 5.4, 5.4, 6.8], {extrapolateRight: 'clamp'});
   const camZ = zt(frame) - 0.6;
-  const walking = frame < stop0 || frame >= stop1;
+  const walking = frame < listen || (frame >= resume && frame < stop0) || frame >= stop1;
   const phase = (frame / 34) % 1;
   const zS = camZ + 3.2;
   const zG = camZ + 2.4;
@@ -62,13 +68,23 @@ export const Ep2Walk: React.FC<{dur: number}> = ({dur}) => {
         ]}
         darkness={0.975}
       />
-      <Subtitle voice="E2-04" who="СЕМЁН" text="Вентшахта. Наверх ведёт. Решётка там на замке." start={stop0 + 20} end={stop1} />
-      <Subtitle voice="E2-03" who="СЕМЁН" text="До гермы двести метров. Я тут тридцать лет ходил." start={stop1 + 20} end={dur - 10} />
-      <Snd src="tunnel_drone.wav" dur={dur} vol={0.5} loop trim={40} />
-      <Snd src="shuffle.wav" dur={stop0} vol={0.45} loop />
-      <Snd src="shuffle.wav" from={stop1} dur={dur - stop1} vol={0.45} loop trim={30} />
-      <Snd src="knock.wav" from={120} dur={20} vol={0.18} />
-      <Snd src="knock.wav" from={135} dur={20} vol={0.15} />
+      <Subtitle voice="E2-03" who="СЕМЁН" text="До гермы двести метров. Я тут тридцать лет ходил." />
+      <Subtitle voice="E2-N03" who="СЕМЁН" text="Слышишь? Туннель всегда гудит. А сейчас молчит. Плохо это." />
+      <Subtitle voice="E2-04" who="СЕМЁН" text="Вентшахта. Наверх ведёт. Решётка там на замке." />
+      {/* гул туннеля пропадает, пока Семён слушает */}
+      <Snd
+        src="tunnel_drone.wav"
+        dur={dur}
+        vol={(f) => interpolate(f, [listen - 6, listen + 10, resume + 20, resume + 60], [0.5, 0.06, 0.06, 0.5], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}
+        loop
+        trim={40}
+      />
+      <Snd src="shuffle.wav" dur={listen} vol={0.45} loop />
+      <Snd src="shuffle.wav" from={resume} dur={stop0 - resume} vol={0.45} loop trim={30} />
+      <Snd src="shuffle.wav" from={stop1} dur={dur - stop1} vol={0.45} loop trim={60} />
+      <Snd src="drip.wav" from={listen + 50} dur={14} vol={0.35} />
+      <Snd src="knock.wav" from={resume + 30} dur={20} vol={0.18} />
+      <Snd src="knock.wav" from={resume + 45} dur={20} vol={0.15} />
     </AbsoluteFill>
   );
 };

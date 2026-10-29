@@ -1,0 +1,128 @@
+{
+ "gleb": {
+  "voice_id": "nPczCjzI2devNBz1zQrb",
+  "kind": "premade",
+  "name": "Brian - Deep, Resonant and Comforting",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 96.1,
+  "centroid": 758.7
+ },
+ "nina": {
+  "voice_id": "EXAVITQu4vr4xnSDxMaL",
+  "kind": "premade",
+  "name": "Sarah - Mature, Reassuring, Confident",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 218.3,
+  "centroid": 556.4
+ },
+ "semyon": {
+  "voice_id": "pqHfZKP75CvOlQylNhV4",
+  "kind": "premade",
+  "name": "Bill - Wise, Mature, Balanced",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 127.8,
+  "centroid": 857.8
+ },
+ "korneev": {
+  "voice_id": "pNInz6obpgDQGcFmaJgB",
+  "kind": "premade",
+  "name": "Adam - Dominant, Firm",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 112.5,
+  "centroid": 610.6
+ },
+ "pavel": {
+  "voice_id": "cjVigY5qzO86Huf0OWal",
+  "kind": "premade",
+  "name": "Eric - Smooth, Trustworthy",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 126.0,
+  "centroid": 570.7
+ },
+ "announcer": {
+  "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+  "kind": "premade",
+  "name": "Alice - Clear, Engaging Educator",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 223.9,
+  "centroid": 902.8
+ },
+ "olga": {
+  "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+  "kind": "premade",
+  "name": "Lily - Velvety Actress",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 222.7,
+  "centroid": 828.3
+ },
+ "akhmed": {
+  "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+  "kind": "premade",
+  "name": "Harry - Fierce Warrior",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": 151.5,
+  "centroid": 475.6
+ },
+ "fifteen": {
+  "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+  "kind": "premade",
+  "name": "Callum - Husky Trickster",
+  "settings": {
+   "stability": 0.5,
+   "similarity_boost": 0.8,
+   "style": 0.15,
+   "use_speaker_boost": true,
+   "speed": 1.0
+  },
+  "f0": null,
+  "centroid": 603.0
+ }
+}

@@ -13,7 +13,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
-from fullfilm_splice import DIFF, EP, FPS  # noqa: E402
+from fullfilm_splice import DIFF, EP_FRAMES, FPS, ep_offset  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 PARTS = os.path.join(ROOT, 'out', 'parts')
@@ -25,12 +25,13 @@ def tasks(names):
     for n in names:
         if n == 'ff':
             for ep, ranges in DIFF.items():
-                off = (ep - 1) * EP
+                off = ep_offset(ep)
                 for a, b in ranges:
                     out.append(('FullFilm', off + a, off + b, f'out/parts/ff_ep{ep}_{a}_{b}.mp4'))
         else:
-            for a in range(0, EP, CHUNK):
-                b = min(EP, a + CHUNK)
+            ep_len = EP_FRAMES[int(n[2:])]
+            for a in range(0, ep_len, CHUNK):
+                b = min(ep_len, a + CHUNK)
                 out.append((n, a, b, f'out/parts/{n}_{a:05d}.mp4'))
     return out
 

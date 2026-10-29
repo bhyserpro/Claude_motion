@@ -29,7 +29,16 @@ ROOT = os.path.join(os.path.dirname(__file__), '..')
 RAW = os.path.join(ROOT, 'voice', 'raw')
 VOICES = os.path.join(ROOT, 'voice', 'voices.json')
 LOG = os.path.join(RAW, 'log.json')
-ATTEMPTS = 5
+ATTEMPTS = 3
+# Перегенерировать имеет смысл только из-за брака, который слышно сразу: не тот текст, произнесённый тег, клиппинг.
+# Остальные флаги (высота, монотонность, длина) — подсказка для прослушивания, на них символы не тратим.
+RETRY_ON = ('текст:', 'произнесён тег', 'клиппинг')
+RESERVE = 0  # сколько символов оставить нетронутыми (BUDGET_RESERVE в окружении)
+
+
+def budget_left():
+    used, limit = el.usage()
+    return limit - used - int(os.environ.get('BUDGET_RESERVE', RESERVE))
 
 
 def load_voices():
@@ -58,10 +67,11 @@ def paths(line_id, variant=None):
     return os.path.join(d, stem + '.wav'), os.path.join(d, stem + '.json')
 
 
-def save(line_id, pcm, meta, variant=None):
+def save(line_id, audio, meta, variant=None):
+    """audio — PCM из API (bytes) или уже готовый float-сигнал на частоте el.SR."""
     wav, js = paths(line_id, variant)
     os.makedirs(os.path.dirname(wav), exist_ok=True)
-    sf.write(wav, el.pcm_to_float(pcm), el.SR, subtype='PCM_16')
+    sf.write(wav, el.pcm_to_float(audio) if isinstance(audio, bytes) else audio, el.SR, subtype='PCM_16')
     el.dump(js, meta)
     return wav
 
@@ -71,7 +81,11 @@ def seed_for(line_id, attempt):
 
 
 def score(res):
-    return len(res['flags'])
+    return 10 * len(critical(res)) + len(res['flags'])
+
+
+def critical(res):
+    return [f for f in res['flags'] if f.startswith(RETRY_ON)]
 
 
 def gen_line(line: Line, voices, model, stitch, chain, stt):
@@ -89,10 +103,12 @@ def gen_line(line: Line, voices, model, stitch, chain, stt):
     attempt = 0
     tried = []
     while attempt < ATTEMPTS * variants:
+        if tried and budget_left() < len(line.text) * 3:  # повтор не должен съесть символы следующих реплик
+            break
         s = seed_for(line.id, attempt)
         pcm, al, rid = el.tts(v['voice_id'], line.text, model, v['settings'], seed=s, **kw)
         meta = {'id': line.id, 'model': model, 'voice_id': v['voice_id'], 'seed': s, 'request_id': rid, 'alignment': al}
-        wav = save(line.id, pcm, meta, len(tried) + 1 if variants > 1 else 'tmp')
+        wav = save(line.id, pcm, meta, len(tried) + 1 if variants > 1 else f'{attempt}.vtmp')  # у каждой попытки свой файл
         res = qa.check(line, wav, stt=stt)
         meta['qa'] = res
         el.dump(wav[:-4] + '.json', meta)
@@ -100,7 +116,7 @@ def gen_line(line: Line, voices, model, stitch, chain, stt):
         attempt += 1
         if variants > 1 and len(tried) >= variants:
             break
-        if variants == 1 and not res['flags']:
+        if variants == 1 and not critical(res):
             break
     tried.sort(key=lambda t: t[0])
     _, wav, meta = tried[0]
@@ -130,7 +146,7 @@ def gen_dialogue(group, voices, model, stt):
             return False
         a = min(s['start_time_seconds'] for s in segs)
         b = max(s['end_time_seconds'] for s in segs)
-        part = (x[int(a * el.SR):int(b * el.SR)] * 32768).clip(-32768, 32767).astype('<i2').tobytes()
+        part = x[int(a * el.SR):int(b * el.SR)]
         meta = {'id': l.id, 'model': model, 'voice_id': voices[l.who]['voice_id'], 'dialogue': group, 'alignment': None}
         wav = save(l.id, part, meta)
         meta['qa'] = qa.check(l, wav, stt=stt)
@@ -199,6 +215,8 @@ def main():
         el.dump(LOG, log)
     many = [k for k, v in log.items() if v['attempts'] > 3]
     print('перегенерировались больше 3 раз:', ' '.join(many) or 'нет')
+    used, limit = el.usage()
+    print(f'символов израсходовано: {used} из {limit}')
     print('дальше: python3 voice/process.py && python3 voice/qa.py')
 
 

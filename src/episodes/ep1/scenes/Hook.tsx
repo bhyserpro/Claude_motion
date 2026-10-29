@@ -55,7 +55,7 @@ export const Ep1Hook: React.FC<{dur: number}> = ({dur}) => {
       <SubliminalFlash at={150} dur={3}>
         <WarmCorridor z0={3.2} z1={3.3} dur={3} red coat />
       </SubliminalFlash>
-      <HookText lines={['Ты едешь домой с работы.', 'Через восемь минут твоего города **не станет**.']} start={3} end={dur - 4} top={0.6} />
+      <HookText voice="E1-01" lines={['Ты едешь домой с работы.', 'Через восемь минут твоего города **не станет**.']} start={3} end={dur - 4} top={0.6} />
       <Snd src="rails_loop.wav" dur={dur} vol={0.75} loop />
       <Snd src="tunnel_drone.wav" dur={dur} vol={0.35} loop />
       <Snd src="hit.wav" from={150} dur={12} vol={0.5} />

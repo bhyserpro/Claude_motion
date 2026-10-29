@@ -3,11 +3,10 @@ export const WIDTH = 1920;
 export const HEIGHT = 1080;
 export const FPS = 30;
 
-// Длительность одной серии: 3:00.
+// Базовая длительность серии: 3:00 (серии, подогнанные под озвучку, длиннее — см. episodes/durations.ts).
 export const EP_SECONDS = 180;
 export const EP_FRAMES = EP_SECONDS * FPS; // 5400
 export const EPISODES = 5;
-export const FILM_FRAMES = EP_FRAMES * EPISODES; // 27000
 
 // Все сцены рисуются в «дизайн-пространстве» 1920×1080 и вписываются в кадр по ширине.
 export const DW = 1920;

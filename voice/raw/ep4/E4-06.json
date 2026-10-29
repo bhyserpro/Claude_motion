@@ -1,0 +1,24 @@
+{
+ "id": "E4-06",
+ "model": "eleven_v4",
+ "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+ "dialogue": "E4-crowd",
+ "alignment": null,
+ "qa": {
+  "id": "E4-06",
+  "dur": 2.44,
+  "f0": 264.07185628742513,
+  "f0_st": 7.131849922426023,
+  "centroid": 824.7953613131388,
+  "stt": "Да как ты могла?",
+  "cer": 0.0,
+  "hf_peak_db": 14.575850679847129,
+  "clicks": 0,
+  "clip": 0,
+  "flags": [
+   "высота 264 Гц при эталоне 223",
+   "высота 264 Гц вне 160–210"
+  ]
+ },
+ "listen": true
+}

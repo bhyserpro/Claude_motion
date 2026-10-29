@@ -1,9 +1,10 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
-import {HEIGHT, UI, WIDTH} from '../../config';
+import {FPS, HEIGHT, UI, WIDTH} from '../../config';
 import {FONT_SERIF} from '../../lib/fonts';
 import {PALETTE} from '../../theme/palette';
 import {typeLines} from './typing';
+import {alignText, useEpisodeFrame, useVoiceLine} from '../Voice';
 
 /** Отрисовка строки с выделенным **словом** (аварийный красный). */
 const renderMarked = (full: string, visible: number) => {
@@ -30,16 +31,24 @@ const renderMarked = (full: string, visible: number) => {
 /**
  * Текст хука: 2 фразы на «ты», ~35 символов/с, PT Serif 64px, слева от центра.
  * Первая строка начинается не позже 6-го кадра.
+ * voice — ID реплики: если голос есть, буквы появляются вместе с произнесёнными словами.
  */
-export const HookText: React.FC<{lines: string[]; start?: number; cps?: number; end?: number; top?: number}> = ({
+export const HookText: React.FC<{lines: string[]; start?: number; cps?: number; end?: number; top?: number; voice?: string}> = ({
   lines,
   start = 3,
   cps = 35,
   end,
   top = 0.38,
+  voice,
 }) => {
   const frame = useCurrentFrame();
-  const {out} = typeLines(lines, frame, start, cps, 10);
+  const epFrame = useEpisodeFrame();
+  const line = useVoiceLine(voice);
+  let {out} = typeLines(lines, frame, start, cps, 10);
+  if (line && line.chars.length) {
+    const t = (epFrame - line.startFrame) / FPS;
+    out = alignText(lines, line.chars).map((row, i) => lines[i].replace(/\*\*/g, '').slice(0, row.filter((x) => x <= t).length));
+  }
   const fade = end ? interpolate(frame, [end - 8, end], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) : 1;
   return (
     <AbsoluteFill style={{pointerEvents: 'none', opacity: fade, zIndex: 10}}>

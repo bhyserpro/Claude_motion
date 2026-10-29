@@ -422,6 +422,89 @@ def street_fragment(x, alignment):
     return seg, t0
 
 
+# ─────────────────────────── привязка к картинке
+
+def scene_times(ep):
+    """Сцены серии из src/episodes/epN/timing.ts: {id: (начало, конец)} в секундах."""
+    import re
+    from lines import tc
+    with open(os.path.join(ROOT, 'src', 'episodes', f'ep{ep}', 'timing.ts'), encoding='utf-8') as f:
+        src = f.read()
+    return {m[1]: (tc(m[2]), tc(m[3])) for m in re.finditer(r"\['(\w+)',\s*'([\d:.]+)',\s*'([\d:.]+)'\]", src)}
+
+
+def spoken_words(alignment):
+    """[(слово, начало, конец)] без тегов [..] — по таймингу символов."""
+    out, cur, tag = [], None, False
+    chars = alignment['characters']
+    for i, c in enumerate(chars):
+        if c == '[':
+            tag = True
+        if not tag and (c.isalpha() or c.isdigit()):
+            a, b = alignment['character_start_times_seconds'][i], alignment['character_end_times_seconds'][i]
+            cur = [cur[0] + c, cur[1], b] if cur else [c, a, b]
+        elif cur:
+            out.append(tuple(cur))
+            cur = None
+        if c == ']':
+            tag = False
+    if cur:
+        out.append(tuple(cur))
+    return out
+
+
+def _norm(w):
+    return w.lower().replace('ё', 'е')
+
+
+def place_words(x, alignment, first_at, targets):
+    """
+    Вставить тишину в сухой сигнал, чтобы слова из targets ({слово: время в серии, с}) прозвучали в свой момент,
+    если первое слово реплики звучит в first_at. Тишина ставится сразу после предыдущего слова
+    (вдох перед словом остаётся при нём). Возвращает (сигнал, alignment, [(слово, опоздание с)]).
+    """
+    words = spoken_words(alignment)
+    if not words:
+        return x, alignment, []
+    t0 = words[0][1]
+    late = []
+    gaps = []  # (момент в сыром сигнале, длительность)
+    added = 0.0
+    k = 0
+    for target_word, target_t in targets.items():
+        idx = next((i for i in range(max(k, 1), len(words)) if _norm(words[i][0]) == _norm(target_word)), None)
+        if idx is None:
+            late.append((target_word, None))
+            continue
+        k = idx + 1
+        natural = first_at + (words[idx][1] - t0) + added
+        gap = target_t - natural
+        if gap < -0.05:
+            late.append((target_word, -gap))
+        if gap <= 0:
+            continue
+        prev_end, start = words[idx - 1][2], words[idx][1]
+        gaps.append((prev_end + min(0.15, (start - prev_end) / 2), gap))
+        added += gap
+    if not gaps:
+        return x, alignment, late
+    pieces, last = [], 0
+    x = x.copy()
+    ramp = int(0.01 * SR)
+    for at_s, g in gaps:
+        i = int(at_s * SR)
+        # короткие спады по краям вставки — без щелчка, даже если в точке разреза шум или вдох
+        x[max(last, i - ramp):i] *= np.linspace(1, 0, i - max(last, i - ramp))
+        x[i:i + ramp] *= np.linspace(0, 1, len(x[i:i + ramp]))
+        pieces += [x[last:i], np.zeros(int(round(g * SR)))]
+        last = i
+    pieces.append(x[last:])
+    al = {k2: list(v) for k2, v in alignment.items()}
+    for key in ('character_start_times_seconds', 'character_end_times_seconds'):
+        al[key] = [t + sum(g for a, g in gaps if t >= a) for t in alignment[key]]
+    return np.concatenate(pieces), al, late
+
+
 def chars_from(alignment, shift, keep=None):
     if not alignment:
         return []
@@ -454,6 +537,7 @@ def load_raw(line_id):
 def run(ids=None):
     entries = {ep: [] for ep in range(1, 6)}
     report = []
+    scenes_by_ep = {}
     missing = []
     for line in LINES:
         src_id = line.reuse or line.id
@@ -468,6 +552,17 @@ def run(ids=None):
             keep = (frag_shift, frag_shift + len(x) / SR)
         out_rel = f'voice/ep{line.ep}/{line.id}.wav'
         out_abs = os.path.join(ROOT, 'public', out_rel)
+        scene_end = None
+        if line.scene and al:
+            scenes = scenes_by_ep.setdefault(line.ep, scene_times(line.ep))
+            if line.scene not in scenes:
+                raise ValueError(f'{line.id}: нет сцены {line.scene} в ep{line.ep}/timing.ts')
+            s0, scene_end = scenes[line.scene]
+            first_at = s0 + line.pos
+            if line.at:
+                x, al, late = place_words(x, al, first_at, {w: s0 + t for w, t in line.at.items()})
+                for w, d in late:
+                    report.append(f'{line.id}: «{w}» ' + ('не найдено в генерации' if d is None else f'опаздывает на {d:.2f} с'))
         y, shift = process_line(line, x, al)
         if ids is None or line.id in ids or not os.path.exists(out_abs):
             os.makedirs(os.path.dirname(out_abs), exist_ok=True)
@@ -475,15 +570,25 @@ def run(ids=None):
         dur_f = math.ceil(len(y) / SR * FPS)
         win_f = round((line.win[1] - line.win[0]) * FPS)
         start = round(line.win[0] * FPS)
+        if scene_end is not None:
+            t_first = spoken_words(al)[0][1] - shift  # первое слово в обработанном файле
+            start = round((first_at - t_first) * FPS)
+            over = (start + dur_f) / FPS - scene_end
+            if over > 0.3:
+                report.append(f'{line.id}: заходит в следующую сцену на {over:.1f} с')
         entries[line.ep].append({
             'id': line.id, 'character': line.who, 'file': out_rel, 'startFrame': start, 'durationFrames': dur_f,
             **({} if line.duck else {'duck': False}),
             'chars': chars_from(al, shift + frag_shift, keep),
         })
-        if dur_f > win_f * 1.1 and win_f > FPS:
+        if scene_end is None and dur_f > win_f * 1.1 and win_f > FPS:
             report.append(f'{line.id}: {dur_f / FPS:.1f} с при окне {win_f / FPS:.1f} с — сцену нужно удлинить (§7.4)')
     for ep, items in entries.items():
         if not items:
+            continue
+        loose = [l.id for l in LINES if l.ep == ep and not l.scene]
+        if loose:  # пока реплики серии не привязаны к сценам, серия остаётся без голоса — WAV готовы, voice.json не трогаем
+            report.append(f'ep{ep}: voice.json не записан — нет привязки к сценам у {" ".join(loose)}')
             continue
         path = os.path.join(ROOT, 'src', 'episodes', f'ep{ep}', 'voice.json')
         with open(path, 'w', encoding='utf-8') as f:

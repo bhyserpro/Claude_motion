@@ -13,8 +13,9 @@ import sys
 import requests
 
 API = 'https://api.elevenlabs.io'
-SR = 44100
-OUTPUT = f'pcm_{SR}'
+SR = 44100  # частота файлов проекта
+API_SR = 24000  # PCM 44,1 кГц — только с тарифа Pro; ниже берём 24 кГц и передискретизируем
+OUTPUT = f'pcm_{API_SR}'
 MODELS = ['eleven_v4', 'eleven_v3']  # первая доступная; у v3 нет request stitching
 
 
@@ -113,9 +114,34 @@ def audio_effects_catalog():
     return _req('GET', '/v1/audio-effects/catalog').json()
 
 
-def pcm_to_float(pcm: bytes):
+def pcm_to_float(pcm: bytes, sr=API_SR):
+    """PCM 16 бит из API → float32 на частоте проекта SR."""
     import numpy as np
-    return np.frombuffer(pcm, dtype='<i2').astype('float32') / 32768.0
+    from math import gcd
+    x = np.frombuffer(pcm, dtype='<i2').astype('float32') / 32768.0
+    if sr != SR:
+        from scipy.signal import resample_poly
+        g = gcd(SR, sr)
+        x = resample_poly(x, SR // g, sr // g).astype('float32')
+    return x
+
+
+def float_to_pcm(x):
+    """float на частоте SR → PCM 16 бит на частоте SR (для нарезки диалога)."""
+    return (x * 32768).clip(-32768, 32767).astype('<i2').tobytes()
+
+
+def delete_voice(voice_id):
+    _req('DELETE', f'/v1/voices/{voice_id}')
+
+
+def account_voices():
+    return {v['voice_id']: v for v in _req('GET', '/v1/voices').json().get('voices', [])}
+
+
+def usage():
+    s = _req('GET', '/v1/user/subscription').json()
+    return s['character_count'], s['character_limit']
 
 
 def dump(path, obj):

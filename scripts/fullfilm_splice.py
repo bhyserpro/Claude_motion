@@ -15,14 +15,19 @@ import subprocess
 import sys
 
 FPS = 30
-EP = 5400
+# Длительность серий в кадрах — как в src/episodes/durations.ts (серия 1 подогнана под озвучку: 3:07).
+EP_FRAMES = {1: 5610, 2: 5400, 3: 5400, 4: 5400, 5: 5400}
+
+
+def ep_offset(ep):
+    return sum(EP_FRAMES[e] for e in range(1, ep))
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 OUT = os.path.join(ROOT, 'out')
 PARTS = os.path.join(OUT, 'parts')
 
 # Кадры серии (начало включительно, конец не включительно), которые в FullFilm другие.
 DIFF = {
-    1: [(5100, 5400)],               # карточка серии
+    1: [(5310, 5610)],               # карточка серии
     2: [(180, 1050), (5100, 5400)],  # РАНЕЕ + лагерь (таймкод), карточка
     3: [(180, 1200), (5250, 5400)],  # РАНЕЕ + кабина (таймкод), карточка
     4: [(180, 1200), (5100, 5400)],  # РАНЕЕ + два дозиметра (таймкод), карточка
@@ -50,7 +55,7 @@ def main():
     # 1. кусочки FullFilm
     segments = []  # (файл, кадр начала, кадр конца) — по порядку фильма
     for ep in range(1, 6):
-        off = (ep - 1) * EP
+        off = ep_offset(ep)
         t = 0
         for a, b in DIFF[ep]:
             if a > t:
@@ -60,8 +65,8 @@ def main():
                 run(['npx', 'remotion', 'render', 'FullFilm', part, f'--frames={off + a}-{off + b - 1}', '--codec', 'h264', '--crf', '18', '--log=error'])
             segments.append((part, 0, b - a))
             t = b
-        if t < EP:
-            segments.append((f'out/ep0{ep}.mp4', t, EP))
+        if t < EP_FRAMES[ep]:
+            segments.append((f'out/ep0{ep}.mp4', t, EP_FRAMES[ep]))
 
     # 2. покадровая склейка
     # у каждого куска свой вход: один и тот же поток в filter_complex можно взять только один раз

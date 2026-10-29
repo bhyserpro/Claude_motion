@@ -16,6 +16,10 @@ Line:
   variants      — сколько вариантов сгенерировать для выбора на слух
   dialogue      — группа для Text to Dialogue (одна генерация, потом разрезать)
   duck          — приглушать фон под репликой
+  scene, pos    — привязка к картинке: первое произнесённое слово звучит через pos секунд от начала сцены
+                  (id сцены из src/episodes/epN/timing.ts). Без scene реплика стоит в начале окна win.
+  at            — {слово: секунды от начала сцены}: перед словом вставляется тишина, чтобы оно попало
+                  на нужный кадр (цифра на стене, смена плана). Только удлиняет паузы.
 """
 from dataclasses import dataclass, field
 from typing import Optional
@@ -130,6 +134,9 @@ class Line:
     variants: int = 1
     dialogue: Optional[str] = None
     duck: bool = True
+    scene: Optional[str] = None
+    pos: float = 0.0
+    at: dict = field(default_factory=dict)
 
     @property
     def ep(self) -> int:
@@ -148,26 +155,35 @@ def L(id, a, b, who, fx, level, text, **kw):
 LINES = [
     # ── СЕРИЯ 1. «18:47»
     L('E1-01', '0:00', '0:07', 'gleb', 'DRY', 'quiet',
-      '[low, close to the mic, calm and quiet] Ты едешь домой с работы. [pause] [slower, almost a whisper] Через восемь минут... твоего города не станет.', chain=True),
+      '[low, close to the mic, calm and quiet] Ты едешь домой с работы. [pause] [slower, almost a whisper] Через восемь минут... твоего города не станет.', chain=True,
+      scene='hook', pos=0.15),
     L('E1-02', '0:08', '0:30', 'gleb', 'DRY', 'normal',
-      '[low, tired, dry irony] Двадцать лет я оцениваю убытки. [pause] Пожар. Потоп. Авария. Я прихожу после... и считаю, что осталось.', chain=True),
+      '[low, tired, dry irony] Двадцать лет я оцениваю убытки. [pause] Пожар. Потоп. Авария. Я прихожу после... и считаю, что осталось.', chain=True,
+      scene='ride', pos=1.4, at={'Пожар': 11.4}),  # вторая строка монолога — с кадра 340
     L('E1-03', '0:32', '0:45', 'gleb', 'CAR', 'whisper',
-      '[barely audible, muttering to himself] Одиннадцать... двенадцать... тринадцать... четырнадцать.'),
+      '[barely audible, muttering to himself] Одиннадцать... двенадцать... тринадцать... четырнадцать.',
+      scene='count', pos=13.25, at={'двенадцать': 14.45, 'тринадцать': 17.0, 'четырнадцать': 20.6}),  # цифры 11, 12 на стене, кабина, отражение
     L('E1-04', '0:45', '0:55', 'gleb', 'DRY', 'normal',
-      '[calm, matter-of-fact] Четырнадцать. Я всегда считаю. [pause] Привычка. Потом проще описывать ущерб.', chain=True),
+      '[calm, matter-of-fact] Четырнадцать. Я всегда считаю. [pause] Привычка. Потом проще описывать ущерб.', chain=True,
+      scene='count', pos=22.0),
     L('E1-05', '1:27', '1:33', 'pavel', 'INTERCOM', 'normal',
-      '[trying to sound calm, tense underneath] Говорит машинист. Без паники. Связи нет. [pause] Ждём.'),
+      '[trying to sound calm, tense underneath] Говорит машинист. Без паники. Связи нет. [pause] Ждём.',
+      scene='emergency', pos=2.2),
     L('E1-06', '1:34', '1:50', 'announcer', 'RADIO_INTERCOM', 'normal',
       '[formal, measured, cold] Внимание. Говорит штаб гражданской обороны. В городе объявлен режим радиационной опасности. '
       'Гермозатворы метрополитена закрыты. Оставайтесь на местах. Не покидайте укрытия. Ожидайте указаний. [pause] '
-      'Внимание. Говорит штаб гражданской обороны...'),
-    L('E1-07', '1:55', '1:58', 'nina', 'CAR_DARK', 'quiet', '[calm, gentle, reassuring] Это ещё ничего.'),
+      'Внимание. Говорит штаб гражданской обороны...', scene='emergency', pos=7.6),
+    L('E1-07', '1:55', '1:58', 'nina', 'CAR_DARK', 'quiet', '[calm, gentle, reassuring] Это ещё ничего.',
+      scene='dosimeter', pos=7.9),  # план Нины — с кадра 220
     L('E1-08', '1:59', '2:09', 'gleb', 'DRY', 'quiet',
-      '[quiet, slow] Она сказала это так... как врачи говорят о том, что уже случилось.', chain=True),
+      '[quiet, slow] Она сказала это так... как врачи говорят о том, что уже случилось.', chain=True,
+      scene='dosimeter', pos=11.8),
     L('E1-09', '2:10', '2:14', 'pavel', 'CAR_DARK', 'quiet',
-      '[quiet, steady, forcing confidence] Схожу до гермы. Посмотрю. Двери не открывать.', new=True),
+      '[quiet, steady, forcing confidence] Схожу до гермы. Посмотрю. Двери не открывать.', new=True,
+      scene='pavelLeaves', pos=0.35),
     L('E1-10', '2:28', '2:40', 'gleb', 'CAR_DARK', 'whisper',
-      '[whispering, slow] Двенадцать... тринадцать... четырнадцать... [long pause] [breath catches, barely audible] пятнадцать.'),
+      '[whispering, slow] Двенадцать... тринадцать... четырнадцать... [long pause] [breath catches, barely audible] пятнадцать.',
+      scene='fifteen', pos=1.4, at={'тринадцать': 3.4, 'четырнадцать': 5.55, 'пятнадцать': 10.05}),  # под цифры 12, 13, 14, 15
     # ── СЕРИЯ 2. «Машинист»
     L('E2-01', '0:00', '0:06', 'gleb', 'DRY', 'quiet',
       '[low, close to the mic, steady] Ты нашёл человека, который ушёл за помощью. [pause] [quieter] У него во рту... камни.', chain=True),
@@ -199,7 +215,7 @@ LINES = [
     L('E3-06', '1:52', '1:54', 'korneev', 'SHAFT', 'whisper', '[whispering, terrified] Господи...'),
     L('E3-07', '2:00', '2:06', 'korneev', 'SHAFT', 'shout', '[panicked, shouting] Назад! Пошли назад! [screaming] Не трогай меня!', choke_frames=6),
     L('E3-08', '2:07', '2:18', 'gleb', 'SHAFT', 'whisper',
-      '[holding his breath, a tiny shaky inhale through the nose] ... [long pause] [a long, silent, trembling exhale]', variants=6),
+      '[holding his breath, a tiny shaky inhale through the nose] ... [long pause] [a long, silent, trembling exhale]', variants=3),
     L('E3-09', '2:12', '2:13', 'fifteen', 'TSS', 'whisper', '[extremely quiet, breathy whisper] Тсс.'),
     L('E3-10', '2:33', '2:40', 'nina', 'CAR_DARK', 'quiet', '[soft, almost tender, sincere] Мне жаль. [pause] Я хотела, чтобы ты не мучился.'),
     # ── СЕРИЯ 4. «Доза»
@@ -218,7 +234,7 @@ LINES = [
     L('E4-06', '1:24', '1:27', 'olga', 'CAR_DARK', 'raised', '[crying, voice breaking] Да как ты могла...', new=True, dialogue='E4-crowd'),
     L('E4-07', '1:27', '1:28', 'gleb', 'CAR_DARK', 'shout', '[sharp, loud, urgent hiss] Тихо!'),
     L('E4-08', '2:24', '2:30', 'nina', 'DRY', 'whisper', '[whispering, very close, intimate] Я подделала всех. [long pause] Кроме тебя.'),
-    L('E4-09', '2:35', '2:42', 'gleb', 'CAR_DARK', 'whisper', '[a sharp, quiet intake of breath] ... [silence]', variants=4),
+    L('E4-09', '2:35', '2:42', 'gleb', 'CAR_DARK', 'whisper', '[a sharp, quiet intake of breath] ... [silence]', variants=2),
     # ── СЕРИЯ 5. «Акт осмотра»
     L('E5-01', '0:00', '0:06', 'gleb', 'DRY', 'quiet',
       '[calm, tired, close to the mic] Тебе осталось жить несколько дней. [pause] Ты потратишь их, чтобы нажать одну кнопку.', chain=True),

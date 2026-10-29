@@ -21,6 +21,9 @@ export const sceneMap = (list: SceneDef[]) => {
   return out;
 };
 
+/** Длительность серии — сумма её сцен. */
+export const totalFrames = (list: SceneDef[]) => list.reduce((t, s) => t + s.dur, 0);
+
 /** Проверка: сцены идут без дыр и вместе дают total кадров. */
 export const assertTiling = (list: SceneDef[], total: number, name: string) => {
   let t = 0;

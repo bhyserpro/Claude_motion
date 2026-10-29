@@ -98,7 +98,34 @@ def edge_silence(x, sr, thresh_db=-50):
     return idx[0] / sr, (len(x) - idx[-1]) / sr
 
 
+_UNITS = 'ноль один два три четыре пять шесть семь восемь девять десять одиннадцать двенадцать тринадцать четырнадцать ' \
+         'пятнадцать шестнадцать семнадцать восемнадцать девятнадцать'.split()
+_TENS = ' десять двадцать тридцать сорок пятьдесят шестьдесят семьдесят восемьдесят девяносто'.split(' ')
+_HUNDREDS = ' сто двести триста четыреста пятьсот шестьсот семьсот восемьсот девятьсот'.split(' ')
+
+
+def num_words(n: int) -> str:
+    """0–999 словами (именительный падеж) — Scribe пишет числа цифрами, сценарий — словами."""
+    if n < 20:
+        return _UNITS[n]
+    out = []
+    if n >= 100:
+        out.append(_HUNDREDS[n // 100])
+        n %= 100
+    if n >= 20:
+        out.append(_TENS[n // 10])
+        n %= 10
+        if n:
+            out.append(_UNITS[n])
+    elif n:
+        out.append(_UNITS[n])
+    return ' '.join(out)
+
+
 def cer(ref, hyp):
+    hyp = re.sub(r'[\[(][^\])]*[\])]', ' ', hyp)  # пометки распознавателя: [вдох], (смех)
+    hyp = re.sub(r'(\d+)[,.](\d)\b', lambda m: f'{m[1]} целых {m[2]}', hyp)
+    hyp = re.sub(r'\d{1,3}', lambda m: f' {num_words(int(m[0]))} ', hyp)
     norm = lambda s: re.sub(r'\s+', ' ', re.sub(r'[^\w\s]', ' ', s.lower().replace('ё', 'е'))).strip()
     r, h = norm(ref), norm(hyp)
     if not r:

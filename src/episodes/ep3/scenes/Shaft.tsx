@@ -269,6 +269,10 @@ export const Ep3Shaft: React.FC<{dur: number}> = ({dur}) => {
       <Snd src="drip.wav" from={SHAFT.enterChamber + 40} dur={15} vol={0.3} />
       <Snd src="drip.wav" from={SHAFT.findThem - 20} dur={15} vol={0.25} />
       <Snd src="shuffle.wav" from={SHAFT.turn} dur={14} vol={0.6} rate={1.6} />
+      {/* пока пальто подносит палец к губам — капля и шорох одежды, иначе 3,5 с без события */}
+      <Snd src="drip.wav" from={SHAFT.finger + 12} dur={15} vol={0.4} />
+      <Snd src="shuffle.wav" from={SHAFT.finger + 48} dur={16} vol={0.35} rate={0.8} />
+      <Snd src="breath_close_left.wav" from={SHAFT.finger + 60} dur={20} vol={0.4} />
       <Snd src="scream.wav" from={SHAFT.panic + 10} dur={42} vol={0.95} />
       <Snd src="scream_muffled.wav" from={SHAFT.panic + 52} dur={66} vol={0.8} fadeOut={8} />
       <Snd src="scrape.wav" from={SHAFT.panic + 40} dur={70} vol={0.45} />

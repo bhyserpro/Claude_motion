@@ -11,10 +11,10 @@ export const EP1_SCENES = scenesFromTimecodes([
   ['watch', '0:48.1', '0:56.9'],
   ['impact', '0:56.9', '1:08.3'],
   ['emergency', '1:08.3', '1:32.7'],
-  ['dosimeter', '1:32.7', '1:43.7'],
-  ['pavelLeaves', '1:43.7', '1:57.1'],
-  ['fifteen', '1:57.1', '2:13.9'],
-  ['end', '2:13.9', '2:17.9'],
+  ['dosimeter', '1:32.7', '1:42.6'],
+  ['pavelLeaves', '1:42.6', '1:56.0'],
+  ['fifteen', '1:56.0', '2:12.8'],
+  ['end', '2:12.8', '2:16.3'],
 ]);
 export const EP1_FRAMES = totalFrames(EP1_SCENES);
 assertTiling(EP1_SCENES, EP1_FRAMES, 'Ep1');

@@ -20,7 +20,7 @@ import numpy as np
 
 FPS = 30
 GAP = 2.5
-W, H = 192, 108
+W, H = 192, 104  # кратно сетке участков
 BX, BY = 12, 8
 ROOT = os.path.join(os.path.dirname(__file__), '..')
 

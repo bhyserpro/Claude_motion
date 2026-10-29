@@ -178,10 +178,10 @@ LINES = [
       'Гермозатворы метрополитена закрыты. Оставайтесь на местах. Не покидайте укрытия. Ожидайте указаний. [pause] '
       'Внимание. Говорит штаб гражданской обороны...', scene='emergency', pos=5.9),
     L('E1-07', '1:55', '1:58', 'nina', 'CAR_DARK', 'quiet', '[calm, gentle, reassuring] Это ещё ничего.',
-      scene='dosimeter', pos=4.2),  # план Нины — с кадра 120
+      scene='dosimeter', pos=3.0),  # ЖК крупно — с кадра 75
     L('E1-08', '1:59', '2:09', 'gleb', 'DRY', 'quiet',
       '[quiet, slow] Она сказала это так... как врачи говорят о том, что уже случилось.', chain=True,
-      scene='dosimeter', pos=5.8),
+      scene='dosimeter', pos=4.6),
     L('E1-09', '2:10', '2:14', 'pavel', 'CAR_DARK', 'quiet',
       '[quiet, steady, forcing confidence] Схожу до гермы. Посмотрю. Двери не открывать.', new=True,
       scene='pavelLeaves', pos=0.35),
